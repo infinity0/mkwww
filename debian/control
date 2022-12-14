@@ -1,0 +1,27 @@
+Source: mkwww
+Section: misc
+Priority: optional
+Standards-Version: 4.1.2
+
+Package: mkwww
+Version: 0.20221212
+Maintainer: Ximin Luo <infinity0@pwned.gg>
+Depends:
+  python3 (>= 3.9),
+  jq,
+  python3-tinycss2,
+Recommends:
+  python3-docutils (>= 0.19),
+  python3-myst-parser,
+  python3-linkify-it,
+  asciidoctor,
+# asciidoctor-mathematical,
+  w3c-linkchecker,
+Suggests:
+  pandoc,
+Description: Minimalist engine for building a minimalist static website
+ Features:
+ .
+ * autogenerate navigation sidebar, and include it on every page
+ * autogenerate page metadata from git, e.g. author, modtime
+ * supports md (myst), rst, adoc -- and others can be added easily later

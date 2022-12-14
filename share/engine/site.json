@@ -1,0 +1,24 @@
+{
+  "dir_common": "_common",
+  "_comment": "Common asset directory; taken from various sources including $(SRC) and put into $(DST).",
+
+  "dir_include": "_include",
+  "_comment": "Include files directory under $(SRC); not copied into $(DST).",
+
+  "dir_nodst": ["_private"],
+  "_comment": "More directories under $(SRC) that won't be copied into $(DST).",
+
+  "lang": null,
+  "_comment": "Language for <html> tag",
+
+  "favicon": null,
+  "_comment": "Favicon filename underneath dir_common. Empty string means favicon.svg.",
+
+  "styles": [],
+  "_comment": "Styles to include on every page; filenames underneath dir_common",
+
+  "scripts": [],
+  "_comment": "Scripts to include on every page; filenames underneath dir_common",
+
+  "_": "_"
+}

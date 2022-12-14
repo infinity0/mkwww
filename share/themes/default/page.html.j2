@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% if site.lang is string -%}
+<html lang="{{site.lang}}">
+{% else -%}
+<html>
+{% endif -%}
+<head>
+{%- block head %}
+<meta charset="UTF-8">
+<meta name="generator" content="mkwww" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% if description is defined -%}
+<meta name="description" content="{{description}}">
+{% endif -%}
+{% for author in authors -%}
+<meta name="author" content="{{author}}">
+{% endfor -%}
+{%- set title_separator = site.title_separator -%}
+{%- set title_maxdepth = site.title_maxdepth|int -%}
+{%- set navLength = navPath|length -%}
+{%- macro nav_title(node) -%}
+{#- Generate the full title, from all titles in the navPath. -#}
+{%- if navPath[:(node.navPath|length)] == node.navPath -%}
+{%- for item in node.children.values() -%}
+{{ nav_title(item) }}
+{%- endfor -%}
+{%- if title_maxdepth < 0 or node.navPath|length == 0 or
+       navLength - node.navPath|length < title_maxdepth -%}
+{# #}{{title_separator}}{{node.title}}
+{%- endif -%}
+{%- endif -%}
+{%- endmacro -%}
+<title>{{ nav_title(sitenav) | replace(title_separator, "", 1) }}</title>
+{% set baseCommon = "%s/%s" % (baseRel, site.dir_common) -%}
+{% if site.favicon is string -%}
+<link rel="icon" href="{{baseCommon}}/{{site.favicon|default("favicon.svg", true)}}">
+{% endif -%}
+{% for style in engine_styles -%}
+<link rel="stylesheet" href="{{baseCommon}}/engine/{{style}}.css">
+{% endfor -%}
+<link rel="stylesheet" href="{{baseCommon}}/theme/base.css">
+{% for style in site.styles + common_styles -%}
+<link rel="stylesheet" href="{{baseCommon}}/{{style}}.css">
+{% endfor -%}
+{% for style in page_styles -%}
+<link rel="stylesheet" href="{{style}}.css">
+{% endfor -%}
+{% for script in engine_scripts -%}
+<script src="{{baseCommon}}/engine/{{script}}.js"></script>
+{% endfor -%}
+<script src="{{baseCommon}}/theme/base.js"></script>
+{% for script in site.scripts + common_scripts -%}
+<script src="{{baseCommon}}/{{script}}.js"></script>
+{% endfor -%}
+{% for script in page_scripts -%}
+<script src="{{script}}.js"></script>
+{% endfor -%}
+{% endblock -%}
+</head>
+
+<body>
+{%- block body %}
+<header>
+{%- block header %}
+{% endblock -%}
+</header>
+
+<div id="middle">
+{# CSS flex doesn't compose very cleanly with the show/hide behaviour of
+  <details>; wrapping it in a div works around this -#}
+<div id="sitenav">
+<details class="navbar"><summary class="navswitch">nav</summary>
+<nav>
+{%- block nav %}
+{% macro nav_branch(node) -%}
+{#- Generate a branch of the navigation tree. -#}
+<a class="nav-link{% if node.navPath == navPath %} self-link{% endif %}" href="{{baseRel}}/{{node.href}}">{{node.title}}</a>
+{% if navPath[:(node.navPath|length)] == node.navPath and node.children -%}
+<ul class="sitemap">
+{% for item in node.children.values() -%}
+  <li>
+    {% filter indent(width=4) -%}
+    {{ nav_branch(item) }}
+    {%- endfilter -%}
+  </li>
+{% endfor -%}
+</ul>
+{% endif -%}
+{%- endmacro -%}
+{{ nav_branch(sitenav) }}
+{%- endblock -%}
+</nav>
+</details>
+</div>
+
+<main id="main">
+{%- block main %}
+{% include path_main -%}
+{% endblock -%}
+</main>
+</div>
+
+<footer>
+{%- block footer %}
+{% set path_footer = path_join(path_srcdir, site.dir_include, "footer.html.frag") -%}
+{% if path_exists(path_footer) -%}
+{% include path_footer -%}
+{% else -%}
+{{ sitenav.title }}, built by mkwww
+{% endif -%}
+{% endblock -%}
+</footer>
+{% endblock -%}
+</body>
+</html>

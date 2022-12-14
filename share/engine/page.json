@@ -1,0 +1,21 @@
+{
+  "common_styles": [],
+  "_comment": "Styles to include on this page; filenames underneath dir_common",
+
+  "common_scripts": [],
+  "_comment": "Scripts to include on this page; filenames underneath dir_common",
+
+  "page_styles": [],
+  "_comment": "Styles to include on this page; filenames relative to source",
+
+  "page_scripts": [],
+  "_comment": "Scripts to include on this page; filenames relative to source",
+
+  "navSortChildrenRev": false,
+  "_comment": "In the sitenav, reverse the sort order of child pages",
+
+  "navSortKey": null,
+  "_comment": "In the sitenav, override the sort order this page, by giving it a replacement filename used only for sorting",
+
+  "_": "_"
+}

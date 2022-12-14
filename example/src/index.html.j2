@@ -1,0 +1,59 @@
+{% set title = "mkwww EXAMPLE SITE" -%}
+{% extends path_themepage -%}
+{%- block head -%}
+{{ super() -}}
+<style type="text/css">
+:root {
+  --fancy-max-scale: 4;
+  --fancy-rotation-duration: 4s;
+  --fancy-blink-duration: 0.5s;
+}
+
+#fancy {
+  color: #C00;
+  text-align: center;
+  font-weight: bold;
+}
+
+#fancy-wrapper {
+  width: calc(100% - var(--sidebar-width));
+}
+</style>
+{% endblock -%}
+{%- block main %}
+{% filter md2main -%}
+# HOME PAGE
+
+WELCOME EVERYBODY!
+
+欢迎大家！
+
+This section is written in MarkDown.
+{% endfilter -%}
+{% filter rst2main(initial_header_level=2, id_prefix="r") -%}
+Heading level 2
+===============
+
+This section is written in reStructuredText.
+
+Home page
+---------
+
+Testing duplicate section id. Conflicts are prevented by passing a unique
+``id_prefix`` to the markup jinja2 filter (``adoc2main``, ``md2main``,
+``rst2main``, etc).
+{% endfilter -%}
+<div id="fancy-wrapper">
+<div id="fancy">Fancy stuff on the homepage!!!</div>
+</div>
+<section id="test_raw" class="main-mkwww-j2">
+<h2><a class="anchor" href="#test_raw"></a>Testing raw code and file inclusion</h2>
+<pre>
+{% filter escape -%}
+<style type="text/css">
+{% include_raw path_join(path_srcdir, site.dir_common, "fancy.css") -%}
+</style>
+{% endfilter -%}
+</pre>
+</section>
+{% endblock -%}

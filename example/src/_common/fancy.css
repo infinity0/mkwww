@@ -1,0 +1,26 @@
+@keyframes rotate {
+  from { transform: rotate(-180deg) scale(1); }
+  50% { transform: rotate(0deg) scale(var(--fancy-max-scale)); }
+  to { transform: rotate(180deg) scale(1); }
+}
+
+#fancy {
+  animation-name: rotate;
+  animation-duration: var(--fancy-rotation-duration);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-origin: 50% 50%;
+}
+
+@keyframes blink {
+  0%,25% { visibility: hidden; }
+  25%,75% { visibility: visible; }
+  75%,100% { visibility: hidden; }
+}
+
+#fancy-wrapper {
+  animation-name: blink;
+  animation-duration: var(--fancy-blink-duration);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}

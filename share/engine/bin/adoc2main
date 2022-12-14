@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# asciidoctor treats the level-0 heading in a special way
+# we don't like that and it's inconsistent with other document formats, so we
+# do a transform-inverse-transform trick
+
+DIR="$(mktemp -d)"
+cleanup() { rm -rf "$DIR"; }
+trap 'cleanup; trap - EXIT;' EXIT HUP INT QUIT PIPE TERM
+mkfifo "$DIR/pipe"
+
+fwd() {
+  # in adoc, convert the first level-0 heading into a level-1 heading
+  sed -r -e '0,/^= (.*)/s//== \1/w '"$DIR/pipe"
+}
+
+rev() {
+  read x < "$DIR/pipe"
+  if [ -z "$x" ]; then
+    cat
+  else
+    # if fwd applied then
+    # in html, convert the first level-1 heading into a level-0 heading
+    # also drop the first entry of any toc
+    sed -r \
+      -e '0,/div class="sect1"/s//div class="sect0"/' \
+      -e '/\bsectlevel1\b/,/\bhref=/{s/\bhref=//;T;d;q}' \
+      -e '0,/<h2(.*)<\/h2>/s//<h1\1<\/h1>/'
+  fi
+}
+
+if gem list --silent -i -v ">= 0.1003" '^asciidoctor-mathematical$'; then
+  args="$args -a stem -r asciidoctor-mathematical -a mathematical-format=mathml -a mathematical-inline=true"
+fi
+
+idprefix="$1"
+
+# set idprefix from parameter
+# set idseparator to be slightly more consistent with docutils
+fwd | \
+asciidoctor -a sectanchors -a idprefix="${idprefix}_" -a idseparator=- \
+  -a toc=macro -a toc-title=Contents $args -s -o - - | \
+rev | \
+sed -e 's/class="sect/class="main-asciidoc sect/g'

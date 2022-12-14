@@ -1,0 +1,25 @@
+/* = Definitions needed by our mkwww tweaks of upstream asciidoctor styles. */
+
+/* == Restore section heading anchors ("permalinks") */
+
+:is(h1, h2, h3, h4, h5, h6) .anchor {
+  position: absolute;
+  text-decoration: none;
+  width: 1.75ex;
+  margin-left: -1.25ex;
+  visibility: hidden;
+}
+
+:is(h1, h2, h3, h4, h5, h6) .anchor::before {
+  content: "\00a7";
+}
+
+:is(h1, h2, h3, h4, h5, h6):hover .anchor {
+  visibility: visible;
+}
+
+/* == Restore padding */
+
+ul, ol {
+  padding: 0;
+}

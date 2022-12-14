@@ -1,0 +1,9 @@
+{
+  "title_maxdepth": -1,
+  "_comment": "Maximum number of parent documents to add as a component of each <title>, -1 for no maximum.",
+
+  "title_separator": " - ",
+  "_comment": "Separator for <title> components",
+
+  "_": "_"
+}

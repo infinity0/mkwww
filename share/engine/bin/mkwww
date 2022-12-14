@@ -1,0 +1,210 @@
+#!/usr/bin/make -f
+# Minimalist engine for building a minimalist static website.
+
+## variable dirs
+
+# theme directory, relative to themes directory
+THEME ?= default
+# source input
+SRC ?= src
+# intermediate output
+GEN ?= build
+# final output for publishing
+DST ?= dist
+
+ifeq ($(shell test -d $(SRC); echo $$?),0)
+else
+  $(error non-existent directory: $(SRC))
+endif
+
+## static dirs, relevant to the mkwww installation
+
+mkfile_path := $(lastword $(MAKEFILE_LIST))
+BIN     := $(patsubst %/,%,$(dir $(shell realpath --relative-to $$PWD $(mkfile_path))))
+BIN_ABS := $(patsubst %/,%,$(dir $(realpath $(mkfile_path))))
+ENG     := $(shell realpath --relative-to $$PWD $(BIN)/..)
+ENG_ABS := $(realpath $(BIN_ABS)/..)
+THM     := $(shell realpath --relative-to $$PWD $(ENG)/../themes/$(THEME))
+THM_ABS := $(realpath $(ENG_ABS)/../themes/$(THEME))
+export MKWWW_BIN  := $(BIN_ABS)
+ifneq ($(shell python3 -c 'import mkwww' 2>/dev/null && echo $?),0)
+export PYTHONPATH := $(ENG_ABS)/../../lib/python3:$(PYTHONPATH)
+endif
+
+DIR_COMMON  := $(shell jq -sr '.[0]*.[1]|.dir_common'          $(ENG)/site.json $(SRC)/site.json)
+DIR_INCLUDE := $(shell jq -sr '.[0]*.[1]|.dir_include'         $(ENG)/site.json $(SRC)/site.json)
+DIR_NODST   := $(shell jq -sr '.[0]*.[1]|.dir_nodst|join(" ")' $(ENG)/site.json $(SRC)/site.json)
+
+ENGSRC := $(ENG)/common
+ENGDST := $(DST)/$(DIR_COMMON)/engine
+THMSRC := $(THM)/common
+THMDST := $(DST)/$(DIR_COMMON)/theme
+
+# supported formats, extension in upper case.
+# to add another format, implement $(BIN)/$(fmt)2main then add it below
+SRC_FORMATS = MD RST ADOC
+lc = $(shell echo $(1) | tr A-Z a-z)
+
+# functions to produce output paths from input paths
+gen_INF     = $(1:$(SRC)/%=$(GEN)/%.json)
+gen_DEP     = $(1:$(SRC)/%=$(GEN)/%.d)
+dst_SRC     = $(1:$(SRC)/%=$(DST)/%)
+dst_ENG     = $(1:$(ENGSRC)/%=$(ENGDST)/%)
+dst_THM     = $(1:$(THMSRC)/%=$(THMDST)/%)
+
+define def_SRC_INF_DST =
+  SRC_$(1)      = $$(shell find $$(SRC) -type f -name '*.$(2)')
+  IOV_$(1)      = $$(shell find $$(SRC) -type f -name '*.$(2).json')
+  SRC_OV_$(1)   = $$(patsubst %.json,%,$$(filter $$(SRC_$(1):%=%.json),$$(IOV_$(1))))
+  SRC_NV_$(1)   = $$(filter-out $$(SRC_OV_$(1)),$$(SRC_$(1)))
+  INF_OV_$(1)   = $$(call gen_INF,$$(SRC_OV_$(1)))
+  INF_NV_$(1)   = $$(call gen_INF,$$(SRC_NV_$(1)))
+  INF_$(1)      = $$(call gen_INF,$$(SRC_$(1)))
+  DEP_$(1)      = $$(call gen_DEP,$$(SRC_$(1):%$(3)=%$(4)))
+  DST_$(1)      = $$(call dst_SRC,$$(SRC_$(1):%$(3)=%$(4)))
+ifeq (.$(2),$(3)) # filter out our special handling of .html.j2
+  IOV_ALL      += $$(IOV_$(1))
+  INF_OV_ALL   += $$(INF_OV_$(1))
+  INF_NV_ALL   += $$(INF_NV_$(1))
+  INF_ALL      += $$(INF_$(1))
+  SRC_NONCOPY  += $$(SRC_$(1))
+  DEP_NONCOPY  += $$(DEP_$(1))
+  DST_NONCOPY  += $$(DST_$(1))
+endif
+endef
+
+# path variables
+$(eval $(call def_SRC_INF_DST,J2,j2,.j2,))
+# for sitenav - subset of *.j2 files that are *.html.j2
+$(eval $(call def_SRC_INF_DST,HTML_J2,html.j2,.j2,))
+$(foreach FMT,$(SRC_FORMATS),\
+  $(eval $(call def_SRC_INF_DST,$(FMT),$(call lc,$(FMT)),.$(call lc,$(FMT)),.html)))
+
+SRC_ALL       = $(shell find $(SRC) -type f -print $(patsubst %,-o -path $(SRC)/% -prune,$(DIR_INCLUDE) $(DIR_NODST)))
+SRC_SPEC      = $(SRC)/site.json
+SRC_COPY      = $(filter-out $(IOV_ALL) $(SRC_SPEC) $(SRC_NONCOPY),$(SRC_ALL))
+DST_COPY      = $(call dst_SRC,$(SRC_COPY))
+DST_ENG       = $(call dst_ENG,$(shell find -L $(ENGSRC) -type f))
+DST_ENG_CSS   = $(call dst_ENG,$(shell find -L $(ENGSRC) -type f -name '*.css'))
+DST_ENG_COPY  = $(filter-out $(DST_ENG_CSS),$(DST_ENG))
+DST_THM       = $(call dst_THM,$(shell find -L $(THMSRC) -type f))
+DST_ALL       = $(DST_NONCOPY) $(DST_COPY) $(DST_ENG) $(DST_THM)
+
+.EXTRA_PREREQS := $(mkfile_path)
+# ensure clean-all/clean runs before any other recipe, else conflicts occur under -j
+ifneq ($(filter clean-all,$(MAKECMDGOALS)),)
+  .EXTRA_PREREQS += clean-all
+endif
+ifneq ($(filter clean,$(MAKECMDGOALS)),)
+  .EXTRA_PREREQS += clean
+endif
+
+.DEFAULT_GOAL: check
+check: all
+	echo "Allowed_Protocols = file" > $(GEN)/checklink.conf
+	set -e; X="$$(which checklink)"; \
+	W3C_CHECKLINK_CFG=$(GEN)/checklink.conf perl -XT "$$X" -X '^http' -r -q "$(DST)"
+	@echo "All checks passed!"
+
+all: $(DST_ALL)
+
+clean: .EXTRA_PREREQS := $(filter-out clean-all,$(.EXTRA_PREREQS))
+clean:
+	rm -rf $(GEN) $(DST)/*
+
+# intentionally fail if DST is a symlink, or if it contains dotfiles
+clean-all: clean
+	rmdir $(DST)
+
+debug-%:
+	@echo $* = $($*)
+
+.PHONY: all clean clean-all check debug-%
+
+$(GEN)/site.json: $(ENG)/site.json $(THM)/site.json $(SRC)/site.json
+	@mkdir -p "$(dir $@)"
+	jq -s '.[0] * .[1] * .[2] | del(._comment) | del(._)' $^ > "$@"
+
+define MAYBE_UPDATE =
+	@if cmp -s "$@" "$@.tmp"; then rm "$@.tmp"; echo "rm $@.tmp # $@ not changed"; else PS4=; set -x; mv "$@.tmp" "$@"; fi
+endef
+
+# if the metadata hasn't changed, then don't update the target file. this
+# avoids rebuilding the navtree, which in turn
+# avoids rebuilding *every output page* since it depends on the navtree
+define BUILD_INF =
+	@mkdir -p "$$(dirname "$@")"
+	$(BIN)/page-meta.py "$(ENG)/page.json" "$(THM)/page.json" "$(SRC)/$*" "$*" > "$@.tmp"
+	$(MAYBE_UPDATE)
+endef
+
+$(INF_NV_ALL): $(GEN)/%.json: $(BIN)/page-meta.py $(ENG)/page.json $(THM)/page.json $(SRC)/%
+	$(BUILD_INF)
+
+$(INF_OV_ALL): $(GEN)/%.json: $(BIN)/page-meta.py $(ENG)/page.json $(THM)/page.json $(SRC)/% $(SRC)/%.json
+	$(BUILD_INF)
+
+$(GEN)/sitenav.json: $(BIN)/mk-sitenav.py $(INF_ALL)
+	@mkdir -p "$$(dirname "$@")"
+	$(BIN)/mk-sitenav.py $(GEN) $(SRC) \
+	  $(foreach FMT,HTML_J2 $(SRC_FORMATS),\
+	    $(join $(INF_$(FMT):$(GEN)/%=%),$(DST_$(FMT):$(DST)/%==%))) \
+	  > "$@.tmp"
+	$(MAYBE_UPDATE)
+
+J2_ARGS = site="json:$(GEN)/site.json" \
+	sitenav="json:$(GEN)/sitenav.json" \
+	path_themedir="$(THM)" \
+	path_themepage="$(THM)/page.html.j2" \
+	path_srcdir="$(SRC)" \
+	path_gendir="$(GEN)"
+
+J2_WITH_ARGS = $(BIN)/j2-env.py $(J2_ARGS)
+
+PAGE_INPUTS = $(BIN)/j2-env.py $(GEN)/site.json $(GEN)/sitenav.json
+
+# https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
+$(DEP_NONCOPY): .EXTRA_PREREQS :=
+$(DEP_NONCOPY): ;
+include $(wildcard $(DEP_NONCOPY))
+
+# special build rule for .j2 inputs
+# https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
+$(DST_J2): $(DST)/%: $(PAGE_INPUTS) $(GEN)/%.j2.json $(SRC)/%.j2 $(GEN)/%.d
+	@mkdir -p "$$(dirname "$(GEN)/$*.d")"
+	@mkdir -p "$$(dirname "$@")"
+	$(J2_WITH_ARGS) \
+	  "$(SRC)/$*.j2" "$(GEN)/$*.j2.json" "$@" "$(GEN)/$*.d"
+
+# general build rule for all other inputs
+define build_TY
+# build the main part of the page using $(fmt)2main
+$$(GEN)/%.$(2).html: $$(BIN)/$(2)2main $$(SRC)/%.$(2)
+	@mkdir -p "$$$$(dirname "$$@")"
+	{ echo "{%- raw -%}" && $$(BIN)/$(2)2main && echo "{% endraw -%}"; } < "$$(SRC)/$$*.$(2)" > "$$@"
+
+# build the complete page using j2
+# https://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
+$$(DST_$(1)): $$(DST)/%.html: $$(PAGE_INPUTS) $$(GEN)/%.$(2).json $$(GEN)/%.$(2).html $$(GEN)/%.html.d
+	@mkdir -p "$$$$(dirname "$$@")"
+	$$(J2_WITH_ARGS) path_main="$$(GEN)/$$*.$(2).html" \
+	  "$$(THM)/page.html.j2" "$$(GEN)/$$*.$(2).json" "$$@" "$$(GEN)/$$*.html.d"
+endef
+
+$(foreach FMT,$(SRC_FORMATS),\
+  $(eval $(call build_TY,$(FMT),$(call lc,$(FMT)))))
+
+define copy_LOC
+$$(DST_$(1)): .EXTRA_PREREQS := $(filter-out $(mkfile_path),$(.EXTRA_PREREQS))
+$$(DST_$(1)): $(3)/%: $(2)/%
+	@mkdir -p "$$$$(dirname "$$@")"
+	cp -a "$$<" "$$@"
+endef
+
+$(DST_ENG_CSS): $(ENGDST)/%: $(ENGSRC)/% $(BIN)/format-css.py
+	@mkdir -p "$$(dirname "$@")"
+	$(BIN)/format-css.py "$<" > "$@"
+
+$(eval $(call copy_LOC,ENG_COPY,$(ENGSRC),$(ENGDST)))
+$(eval $(call copy_LOC,THM,$(THMSRC),$(THMDST)))
+$(eval $(call copy_LOC,COPY,$(SRC),$(DST)))
