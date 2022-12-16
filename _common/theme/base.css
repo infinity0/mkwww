@@ -1,0 +1,156 @@
+:root {
+  /** Layout */
+  --sidebar-width: 16em;
+  --min-main-width: 24em;
+  --max-body-width: 72em;
+  --navswitch-width: 4em;
+  --navswitch-height: 3ex;
+  --footer-max-height: 5ex; /* max height the footer is expected to wrap to */
+
+  /** Appearance */
+  --spacer-padding-vertical: 0.5em;
+  --spacer-padding-horizontal: 1em;
+  --content-padding-default: 1em;
+  --main-fg-color: black;
+  --main-fg-color-translucent: gray;
+}
+
+/** Layout */
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* https://github.com/w3c/csswg-drafts/issues/8184 */
+details > * {
+  box-sizing: border-box;
+}
+
+/* hack #1:
+ * this is a workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1803783
+ * our (non-negotiable) use of min-width for <main> triggers the bug, and makes
+ * the navbar unsticky on mobile browsers in certain situations.
+ */
+html {
+  /* hack #1, make position: fixed/sticky work properly on mobile */
+  overflow: auto;
+  /* hack #1, body is effectively our viewport, expand to fill and remove extra spaces */
+  /* push footer to bottom of page */
+  /* don't use 100vh here, it causes problems on mobile which implement a dynamic viewport */
+  height: 100%;
+}
+
+body {
+  /* hack #1, make position: fixed/sticky work properly on mobile */
+  overflow: auto;
+  /* hack #1, body is effectively our viewport, expand to fill and remove extra spaces */
+  /* push footer to bottom of page */
+  /* don't use 100vh here, it causes problems on mobile which implement a dynamic viewport */
+  height: 100%;
+  /* hack #1, avoids extra scrollbars on html */
+  margin: 0;
+  padding: 0;
+}
+
+#middle {
+  /* push footer to bottom of page */
+  /* don't use 100vh here, it causes problems on mobile which implement a dynamic viewport */
+  min-height: calc(100% - var(--footer-max-height));
+  /* center in html/viewport */
+  margin: auto;
+  max-width: var(--max-body-width);
+  display: flex;
+}
+
+#sitenav {
+  position: relative;
+  /* make sure navswitch is always clickable */
+  z-index: 25;
+  /* hack #1: rule out one possibility of the bug, a too-small parent container */
+  height: inherit;
+}
+
+main {
+  position: relative;
+  min-width: var(--min-main-width);
+  /* fill the page, up to body max-width */
+  width: 100%;
+  z-index: 0;
+}
+
+#sitenav .navbar {
+  position: sticky;
+  top: 0;
+  /* make sure navswitch is always visible */
+  min-height: var(--navswitch-width);
+  min-width: var(--navswitch-height);
+  /* don't expand more than 1 viewport, scroll instead */
+  max-height: 100vh;
+  overflow: auto;
+  /* take up less space when closed */
+  margin-right: calc(0px - var(--navswitch-height));
+}
+#sitenav .navbar[open] {
+  /* default margin when open */
+  margin-right: 0;
+}
+
+#sitenav .navswitch {
+  position: absolute;
+  right: 0;
+  top: var(--navswitch-width);
+  width: var(--navswitch-width);
+  height: var(--navswitch-height);
+  transform: rotate(90deg);
+  transform-origin: right top;
+}
+
+#sitenav nav {
+  width: var(--sidebar-width);
+}
+
+/** Appearance */
+
+body {
+  color: var(--main-fg-color);
+  font-family: "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+main, #sitenav nav {
+  padding: var(--content-padding-default);
+}
+
+footer {
+  text-align: center;
+  font-size: smaller;
+  padding: var(--spacer-padding-vertical) var(--content-padding-default);
+}
+
+#sitenav .navbar .navswitch:before { content: "▲"; }
+#sitenav .navbar .navswitch:after  { content: "▲"; }
+#sitenav .navbar[open] .navswitch:before { content: "▼"; }
+#sitenav .navbar[open] .navswitch:after  { content: "▼"; }
+#sitenav .navswitch {
+  /* remove list-item bullet-point */
+  display: inline-block;
+  margin-top: var(--spacer-padding-vertical);
+  text-align: center;
+  line-height: calc(var(--navswitch-height) - 0.7ex);
+  font-size: smaller;
+  border: 1px solid var(--main-fg-color-translucent);
+  cursor: pointer;
+}
+
+#sitenav nav .sitemap {
+  padding-inline-start: var(--spacer-padding-horizontal);
+  list-style: "• " outside;
+}
+
+a.self-link {
+  color: var(--main-fg-color);
+  text-decoration: none;
+}

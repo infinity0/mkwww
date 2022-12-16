@@ -1,0 +1,332 @@
+/*
+*   math2html: convert LaTeX equations to HTML output.
+*
+*   Copyright (C) 2009,2010 Alex Fernández
+*                 2021      Günter Milde
+*
+*   Released under the terms of the `2-Clause BSD license'_, in short:
+*   Copying and distribution of this file, with or without modification,
+*   are permitted in any medium without royalty provided the copyright
+*   notice and this notice are preserved.
+*   This file is offered as-is, without any warranty.
+*
+* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+*
+*   Based on eLyXer: convert LyX source files to HTML output.
+*   http://elyxer.nongnu.org/
+*
+*
+* CSS file for LaTeX formulas.
+*
+* References: http://www.zipcon.net/~swhite/docs/math/math.html
+*             http://www.cs.tut.fi/~jkorpela/math/
+*/
+
+/* Formulas */
+main .main-docutils .formula {
+	text-align: center;
+	margin: 1.2em 0;
+	line-height: 1.4;
+}
+main .main-docutils span.formula {
+	white-space: nowrap;
+}
+main .main-docutils div.formula {
+	padding: 0.5ex;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Basic features */
+main .main-docutils a.eqnumber {
+	display: inline-block;
+	float: right;
+	clear: right;
+	font-weight: bold;
+}
+main .main-docutils span.unknown {
+	color: #800000;
+}
+main .main-docutils span.ignored, main .main-docutils span.arraydef {
+	display: none;
+}
+main .main-docutils .phantom {
+	visibility: hidden;
+}
+main .main-docutils .formula i {
+	letter-spacing: 0.1ex;
+}
+
+/* Alignment */
+main .main-docutils .align-left, main .main-docutils .align-l {
+	text-align: left;
+}
+main .main-docutils .align-right, main .main-docutils .align-r {
+	text-align: right;
+}
+main .main-docutils .align-center, main .main-docutils .align-c {
+	text-align: center;
+}
+
+/* Structures */
+main .main-docutils span.hspace {
+	display: inline-block;
+}
+main .main-docutils span.overline, main .main-docutils span.bar {
+	text-decoration: overline;
+}
+main .main-docutils .fraction, main .main-docutils .fullfraction, main .main-docutils .textfraction {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+main .main-docutils span.formula .fraction,
+main .main-docutils .textfraction,
+main .main-docutils span.smallmatrix {
+	font-size: 80%;
+	line-height: 1;
+}
+main .main-docutils span.numerator {
+	display: block;
+	line-height: 1;
+}
+main .main-docutils span.denominator {
+	display: block;
+	line-height: 1;
+	padding: 0ex;
+	border-top: thin solid;
+}
+main .main-docutils .formula sub, main .main-docutils .formula sup {
+	font-size: 80%;
+}
+main .main-docutils sup.numerator, main .main-docutils sup.unit {
+	vertical-align: 80%;
+}
+main .main-docutils sub.denominator, main .main-docutils sub.unit {
+	vertical-align: -20%;
+}
+main .main-docutils span.smallsymbol {
+	font-size: 75%;
+	line-height: 75%;
+}
+main .main-docutils span.boldsymbol {
+	font-weight: bold;
+}
+main .main-docutils span.sqrt {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0.1ex;
+}
+main .main-docutils sup.root {
+	position: relative;
+	left: 1.4ex;
+}
+main .main-docutils span.radical {
+	display: inline-block;
+	padding: 0ex;
+	/* font-size: 160%; for DejaVu, not required with STIX */
+	line-height: 100%;
+	vertical-align: top;
+	vertical-align: middle;
+}
+
+main .main-docutils span.root {
+	display: inline-block;
+	border-top: thin solid;
+	padding: 0ex;
+	vertical-align: middle;
+}
+main .main-docutils div.formula .bigoperator,
+main .main-docutils .displaystyle .bigoperator,
+main .main-docutils .displaystyle .bigoperator {
+	line-height: 120%;
+	font-size: 140%;
+	padding-right: 0.2ex;
+}
+main .main-docutils span.fraction .bigoperator,
+main .main-docutils span.scriptstyle .bigoperator {
+	line-height: inherit;
+	font-size: inherit;
+	padding-right: 0;
+}
+main .main-docutils span.bigdelimiter {
+	display: inline-block;
+}
+main .main-docutils span.bigdelimiter.size1 {
+	transform: scale(1, 1.2);
+	line-height: 1.2;
+}
+main .main-docutils span.bigdelimiter.size2 {
+	transform: scale(1, 1.62);
+	line-height: 1.62%;
+
+}
+main .main-docutils span.bigdelimiter.size3 {
+	transform: scale(1, 2.05);
+	line-height: 2.05%;
+}
+main .main-docutils span.bigdelimiter.size4 {
+	transform: scale(1, 2.47);
+	line-height: 2.47%;
+}
+/* vertically stacked sub and superscript */
+main .main-docutils span.scripts {
+	display: inline-table;
+	vertical-align: middle;
+	padding-right: 0.2ex;
+}
+main .main-docutils .script {
+	display: table-row;
+	text-align: left;
+	line-height: 150%;
+}
+main .main-docutils span.limits {
+	display: inline-table;
+	vertical-align: middle;
+}
+main .main-docutils .limit {
+	display: table-row;
+	line-height: 99%;
+}
+main .main-docutils sup.limit, main .main-docutils sub.limit {
+	line-height: 100%;
+}
+main .main-docutils span.embellished,
+main .main-docutils span.embellished > .base {
+	display: inline-block;
+}
+main .main-docutils span.embellished > sup,
+main .main-docutils span.embellished > sub {
+	display: inline-block;
+	font-size: 100%;
+	position: relative;
+	bottom: 0.3em;
+	width: 0px;
+}
+main .main-docutils span.embellished > sub {
+	top: 0.4em;
+}
+
+/* Environments */
+main .main-docutils span.array, main .main-docutils span.bracketcases, main .main-docutils span.binomial, main .main-docutils span.environment {
+	display: inline-table;
+	text-align: center;
+	vertical-align: middle;
+}
+main .main-docutils span.arrayrow, main .main-docutils span.binomrow {
+	display: table-row;
+	padding: 0;
+	border: 0;
+}
+main .main-docutils span.arraycell, main .main-docutils span.bracket, main .main-docutils span.case, main .main-docutils span.binomcell, main .main-docutils span.environmentcell {
+	display: table-cell;
+	padding: 0ex 0.2ex;
+	line-height: 1; /* 99%; */
+	border: 0ex;
+}
+main .main-docutils .environment.align > .arrayrow > .arraycell.align-l {
+	padding-right: 2em;
+}
+
+/* Inline binomials */
+main .main-docutils span.binom {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 80%;
+}
+main .main-docutils span.binomstack {
+	display: block;
+	padding: 0em;
+}
+
+/* Over- and underbraces */
+main .main-docutils span.overbrace {
+	border-top: 2pt solid;
+}
+main .main-docutils span.underbrace {
+	border-bottom: 2pt solid;
+}
+
+/* Stackrel */
+main .main-docutils span.stackrel {
+	display: inline-block;
+	text-align: center;
+}
+main .main-docutils span.upstackrel {
+	display: block;
+	padding: 0em;
+	font-size: 80%;
+	line-height: 64%;
+	position: relative;
+	top: 0.15em;
+
+}
+main .main-docutils span.downstackrel {
+	display: block;
+	vertical-align: bottom;
+	padding: 0em;
+}
+
+/* Fonts */
+main .main-docutils .formula {
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
+}
+main .main-docutils span.radical,   main .main-docutils /* ensure correct size of square-root sign */
+span.integral { /* upright integral signs for better alignment of indices */
+	font-family: "STIXIntegralsUp", STIX;
+	/* font-size: 115%; match apparent size with DejaVu */
+}
+main .main-docutils span.bracket {
+  /* some "STIX" and "DejaVu Math TeX Gyre" bracket pieces don't fit */
+	font-family: "DejaVu Serif", serif;
+}
+main .main-docutils span.mathsf, main .main-docutils span.textsf {
+	font-family: sans-serif;
+}
+main .main-docutils span.mathrm, main .main-docutils span.textrm {
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
+}
+main .main-docutils span.mathtt, main .main-docutils span.texttt {
+	font-family: monospace;
+}
+main .main-docutils span.text, main .main-docutils span.textnormal,
+main .main-docutils span.mathsf, main .main-docutils span.mathtt, main .main-docutils span.mathrm {
+	font-style: normal;
+}
+main .main-docutils span.fraktur {
+	font-family: "Lucida Blackletter", eufm10, blackletter;
+}
+main .main-docutils span.blackboard {
+	font-family: Blackboard, msbm10, serif;
+}
+main .main-docutils span.scriptfont {
+	font-family: "Monotype Corsiva", "Apple Chancery", "URW Chancery L", cursive;
+	font-style: italic;
+}
+main .main-docutils span.mathscr {
+  font-family: MathJax_Script, rsfs10,  cursive;
+  font-style: italic;
+}
+main .main-docutils span.textsc {
+	font-variant: small-caps;
+}
+main .main-docutils span.textsl {
+	font-style: oblique;
+}
+
+/* Colors */
+main .main-docutils span.colorbox {
+	display: inline-block;
+	padding: 5px;
+}
+main .main-docutils span.fbox {
+	display: inline-block;
+	border: thin solid black;
+	padding: 2px;
+}
+main .main-docutils span.boxed, main .main-docutils span.framebox {
+	display: inline-block;
+	border: thin solid black;
+	padding: 5px;
+}

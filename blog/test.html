@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="mkwww" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Ximin Luo <infinity0@pwned.gg>">
+<title>Test: md / Blog / mkwww EXAMPLE SITE</title>
+<link rel="icon" href="../_common/favicon.svg">
+<link rel="stylesheet" href="../_common/engine/docutils-minimal.css">
+<link rel="stylesheet" href="../_common/engine/docutils-math.css">
+<link rel="stylesheet" href="../_common/engine/docutils-extend.css">
+<link rel="stylesheet" href="../_common/theme/base.css">
+<script src="../_common/engine/prep.js"></script>
+<script src="../_common/engine/docutils-extend.js"></script>
+<script src="../_common/theme/base.js"></script>
+</head>
+
+<body>
+<header>
+</header>
+
+<div id="middle">
+<div id="sitenav">
+<details class="navbar"><summary class="navswitch">nav</summary>
+<nav>
+<a class="nav-link" href="../index.html">mkwww EXAMPLE SITE</a>
+<ul class="sitemap">
+<li>
+    <a class="nav-link" href="../blog/index.html">Blog</a>
+    <ul class="sitemap">
+    <li>
+        <a class="nav-link self-link" href="../blog/test.html">Test: md</a>
+    </li>
+    <li>
+        <a class="nav-link" href="../blog/2022-02-22.html">2022-02-22 Jupiter</a>
+    </li>
+    <li>
+        <a class="nav-link" href="../blog/2021-12-23.html">2021-12-23 Mars</a>
+    </li>
+    </ul>
+</li>
+<li>
+    <a class="nav-link" href="../notes/index.html">Notes</a>
+</li>
+<li>
+    <a class="nav-link" href="../topics/index.html">Topics</a>
+</li>
+<li>
+    <a class="nav-link" href="../test.html">Test: adoc</a>
+</li>
+</ul>
+</nav>
+</details>
+</div>
+
+<main id="main">
+<div class="main-docutils" id="_test-md">
+<h1 class="title"><a class="anchor" href="#_test-md" title="Permalink to this section"></a>Test: md</h1>
+<p>This page should look pretty much similar to the other test pages.</p>
+<p><a class="reference external" href="../topics/tech/test.html">rst</a> | <a class="reference external" href="../test.html">adoc</a></p>
+<nav class="contents" id="_contents" role="doc-toc">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#_link-check" id="_toc-entry-1">Link-check</a></p>
+<ul>
+<li><p><a class="reference internal" href="#_internal-link-check" id="_toc-entry-2">Internal link check</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#_link-check-1" id="_toc-entry-3">Link check</a></p>
+<ul>
+<li><p><a class="reference internal" href="#_test-md-1" id="_toc-entry-4">Test: md</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#_very-complex-math" id="_toc-entry-5">Very complex math</a></p></li>
+</ul>
+</nav>
+<section id="_link-check">
+<h2><a class="anchor" href="#_link-check" title="Permalink to this section"></a><a class="toc-backref" href="#_toc-entry-1" role="doc-backlink">Link-check</a></h2>
+<p>Link from md <a class="reference external" href="../topics/tech/test.html#_link-check">to rst</a></p>
+<p>Link from md <a class="reference external" href="../test.html#_link-check">to adoc</a></p>
+<section id="_internal-link-check">
+<h3><a class="anchor" href="#_internal-link-check" title="Permalink to this section"></a><a class="toc-backref" href="#_toc-entry-2" role="doc-backlink">Internal link check</a></h3>
+<p>Link to this [](Internal link check). -- TODO: currently fails due to <a class="reference external" href="https://github.com/executablebooks/MyST-Parser/issues/640">MyST-Parser#640</a></p>
+<div id="_fourier-transform">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="script"><mi>ℱ</mi></mstyle><mi>f</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><msup><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt><mrow><mspace width="0.222em"/><mi>n</mi></mrow></msup></mfrac><msub><mo>∫</mo><msup><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle><mi>n</mi></msup></msub><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"/><msup><mi>e</mi><mrow><mo>−</mo><mstyle mathvariant="normal"><mi>i</mi></mstyle><mi>y</mi><mo>⋅</mo><mi>x</mi></mrow></msup><mspace width="0.167em"/><mstyle mathvariant="normal"><mi>d</mi></mstyle><mi>x</mi></mrow><annotation encoding="application/x-tex">(\mathcal{F}f)(y)
+ = \frac{1}{\sqrt{2\pi}^{\ n}}
+   \int_{\mathbb{R}^n} f(x)\,
+   e^{-\mathrm{i} y \cdot x} \,\mathrm{d} x</annotation></semantics></math>
+</div>
+<p>Complex math example, the [](Fourier transform).</p>
+<p>Inline: <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><semantics><mrow><msup><msqrt><mi>a</mi></msqrt><mi>b</mi></msup><mi>&amp;</mi></mrow><annotation encoding="application/x-tex">\sqrt{a}^{b} \&amp;</annotation></semantics></math>.</p>
+</section>
+</section>
+<section id="_link-check-1">
+<h2><a class="anchor" href="#_link-check-1" title="Permalink to this section"></a><a class="toc-backref" href="#_toc-entry-3" role="doc-backlink">Link check</a></h2>
+<p>test section with duplicate heading</p>
+<section id="_test-md-1">
+<h3><a class="anchor" href="#_test-md-1" title="Permalink to this section"></a><a class="toc-backref" href="#_toc-entry-4" role="doc-backlink">Test: md</a></h3>
+<p>test section with duplicate heading as the document title</p>
+</section>
+</section>
+<section id="_very-complex-math">
+<h2><a class="anchor" href="#_very-complex-math" title="Permalink to this section"></a><a class="toc-backref" href="#_toc-entry-5" role="doc-backlink">Very complex math</a></h2>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable><mtr><mtd columnalign="right"/><mtd columnalign="left"><mspace width="1.0em"/><mspace width="0.167em"/><mspace width="0.167em"/><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mi>b</mi></msubsup><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mi>a</mi></msubsup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>δ</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>δ</mi><mi>b</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>δ</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>k</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>b</mi><mi>k</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mi>a</mi></msubsup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mi>δ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mrow><mtext mathvariant="normal">expand </mtext><mspace width="0.333em"/></mrow><mrow><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mi>b</mi></msubsup></mrow></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>δ</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>δ</mi><mi>b</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>δ</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>k</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>b</mi><mi>k</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><munder><mo>lim</mo><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>ε</mi><mi>a</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>k</mi><mi>δ</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>j</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>a</mi><mi>j</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mi>δ</mi><mo>−</mo><mi>j</mi><mi>ε</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mrow><mtext mathvariant="normal">expand </mtext><mspace width="0.333em"/></mrow><mrow><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mi>a</mi></msubsup></mrow></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>δ</mi><mo>→</mo><mn>0</mn></mrow></munder><munder><mo>lim</mo><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>δ</mi><mi>b</mi></msup></mfrac><mfrac><mn>1</mn><msup><mi>ε</mi><mi>a</mi></msup></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>δ</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>k</mi><mi>δ</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>k</mi></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>j</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>b</mi><mi>k</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>a</mi><mi>j</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>k</mi><mi>δ</mi><mo>−</mo><mi>j</mi><mi>ε</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mrow><mtext mathvariant="normal">push constants into </mtext><mspace width="0.333em"/></mrow><mo>lim</mo><mrow><mspace width="0.333em"/><mtext mathvariant="normal"> and </mtext><mspace width="0.333em"/></mrow><mo>∑</mo></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>ε</mi><mrow><mi>b</mi><mo>+</mo><mi>a</mi></mrow></msup></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo><mo>−</mo><mi>k</mi></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>k</mi><mo>+</mo><mi>j</mi></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>b</mi><mi>k</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>a</mi><mi>j</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>+</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>ε</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mrow><mtext mathvariant="normal">(1), unify </mtext><mspace width="0.333em"/></mrow><mi>δ</mi><mrow><mspace width="0.333em"/><mtext mathvariant="normal"> and </mtext><mspace width="0.333em"/></mrow><mi>ε</mi></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>ε</mi><mrow><mi>b</mi><mo>+</mo><mi>a</mi></mrow></msup></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>i</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>i</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>b</mi><mi>k</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mi>a</mi><mrow><mi>i</mi><mo>−</mo><mi>k</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>i</mi><mi>ε</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mrow><mtext mathvariant="normal">rearrange triangle-sum, over </mtext><mspace width="0.333em"/></mrow><mrow><mi>i</mi><mo>=</mo><mi>k</mi><mo>+</mo><mi>j</mi></mrow></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><munder><mo>lim</mo><mrow><mi>ε</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mn>1</mn><msup><mi>ε</mi><mrow><mi>b</mi><mo>+</mo><mi>a</mi></mrow></msup></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mfrac><mrow><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub></mrow><mi>ε</mi></mfrac><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>i</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mrow><mi>b</mi><mo>+</mo><mi>a</mi></mrow><mi>i</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>i</mi><mi>ε</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="right"><mtext mathvariant="normal">Vandermonde’s identity</mtext></mtd></mtr><mtr><mtd columnalign="right"/><mtd columnalign="left"><mo>=</mo><msubsup><mrow/><msub><mi>x</mi><mn>0</mn></msub><mrow><mi>G</mi><mi>L</mi></mrow></msubsup><msubsup><mstyle mathvariant="double-struck"><mi>𝔻</mi></mstyle><mi>x</mi><mrow><mi>b</mi><mo>+</mo><mi>a</mi></mrow></msubsup><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
+&amp; \quad\,\, {}^{GL}_{x_0}\mathbb{D}^b_x {}^{GL}_{x_0}\mathbb{D}^a_x f(x) \\
+&amp; = \lim_{\delta \to 0} \frac{1}{\delta^b} \sum_{k=0}^{\lfloor \frac{x-x_0}{\delta} \rfloor} (-1)^k {b \choose k} {}^{GL}_{x_0}\mathbb{D}^a_x f(x-k\delta) &amp; \text{expand ${}^{GL}_{x_0}\mathbb{D}^b_x$} \\
+&amp; = \lim_{\delta \to 0} \frac{1}{\delta^b} \sum_{k=0}^{\lfloor \frac{x-x_0}{\delta} \rfloor} (-1)^k {b \choose k} \lim_{\varepsilon \to 0} \frac{1}{\varepsilon^a} \sum_{j=0}^{\lfloor \frac{x-k\delta-x_0}{\varepsilon} \rfloor} (-1)^j {a \choose j} f(x-k\delta-j\varepsilon) &amp; \text{expand ${}^{GL}_{x_0}\mathbb{D}^a_x$} \\
+&amp; = \lim_{\delta \to 0} \lim_{\varepsilon \to 0} \frac{1}{\delta^b} \frac{1}{\varepsilon^a} \sum_{k=0}^{\lfloor \frac{x-x_0}{\delta} \rfloor} \sum_{j=0}^{\lfloor \frac{x-k\delta-x_0}{\varepsilon} \rfloor} (-1)^k (-1)^j {b \choose k} {a \choose j} f(x-k\delta-j\varepsilon) &amp; \text{push constants into $\lim$ and $\sum$} \\
+&amp; = \lim_{\varepsilon \to 0} \frac{1}{\varepsilon^{b+a}} \sum_{k=0}^{\lfloor \frac{x-x_0}{\varepsilon} \rfloor} \sum_{j=0}^{\lfloor \frac{x-x_0}{\varepsilon} \rfloor - k} (-1)^{k+j} {b \choose k} {a \choose j} f(x-(k+j)\varepsilon) &amp; \text{(1), unify $\delta$ and $\varepsilon$} \\
+&amp; = \lim_{\varepsilon \to 0} \frac{1}{\varepsilon^{b+a}} \sum_{i=0}^{\lfloor \frac{x-x_0}{\varepsilon} \rfloor} \sum_{k=0}^{i} (-1)^i {b \choose k} {a \choose i-k} f(x-i\varepsilon) &amp; \text{rearrange triangle-sum, over $i = k+j$} \\
+&amp; = \lim_{\varepsilon \to 0} \frac{1}{\varepsilon^{b+a}} \sum_{i=0}^{\lfloor \frac{x-x_0}{\varepsilon} \rfloor} (-1)^i {b+a \choose i} f(x-i\varepsilon) &amp; \text{Vandermonde's identity} \\
+&amp; = {}^{GL}_{x_0}\mathbb{D}^{b+a}_x f(x)
+\end{align}</annotation></semantics></math>
+</div>
+</section>
+</div>
+</main>
+</div>
+
+<footer>
+mkwww example site, generated by mkwww. this footer is fully customisable
+</footer>
+</body>
+</html>

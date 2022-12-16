@@ -1,0 +1,426 @@
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+main .main-asciidoc html{-webkit-text-size-adjust:100%}
+#disabled-rule-asciidoctor{background:none}
+#disabled-rule-asciidoctor{outline:thin dotted}
+#disabled-rule-asciidoctor{outline:0}
+#disabled-rule-asciidoctor{font-size:2em;margin:.67em 0}
+main .main-asciidoc b,main .main-asciidoc strong{font-weight:bold}
+main .main-asciidoc abbr{font-size:.9em}
+main .main-asciidoc abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+main .main-asciidoc dfn{font-style:italic}
+main .main-asciidoc hr{height:0}
+main .main-asciidoc mark{background:#ff0;color:#000}
+main .main-asciidoc code,main .main-asciidoc kbd,main .main-asciidoc pre,main .main-asciidoc samp{font-size:1em}
+main .main-asciidoc pre{white-space:pre-wrap}
+main .main-asciidoc q{quotes:"“" "”" "‘" "’"}
+main .main-asciidoc small{font-size:80%}
+main .main-asciidoc sub,main .main-asciidoc sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+main .main-asciidoc sup{top:-.5em}
+main .main-asciidoc sub{bottom:-.25em}
+main .main-asciidoc img{border:0}
+main .main-asciidoc svg:not(:root){overflow:hidden}
+main .main-asciidoc figure{margin:0}
+main .main-asciidoc audio,main .main-asciidoc video{display:inline-block}
+main .main-asciidoc audio:not([controls]){display:none;height:0}
+main .main-asciidoc fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+main .main-asciidoc legend{border:0;padding:0}
+main .main-asciidoc button,main .main-asciidoc input,main .main-asciidoc select,main .main-asciidoc textarea{font-size:100%;margin:0}
+main .main-asciidoc button,main .main-asciidoc input{line-height:normal}
+main .main-asciidoc button,main .main-asciidoc select{text-transform:none}
+main .main-asciidoc button,main .main-asciidoc html input[type=button],main .main-asciidoc input[type=reset],main .main-asciidoc input[type=submit]{-webkit-appearance:button;cursor:pointer}
+main .main-asciidoc button[disabled],main .main-asciidoc html input[disabled]{cursor:default}
+main .main-asciidoc input[type=checkbox],main .main-asciidoc input[type=radio]{padding:0}
+main .main-asciidoc button::-moz-focus-inner,main .main-asciidoc input::-moz-focus-inner{border:0;padding:0}
+main .main-asciidoc textarea{overflow:auto;vertical-align:top}
+main .main-asciidoc table{border-collapse:collapse;border-spacing:0}
+main .main-asciidoc *,main .main-asciidoc ::before,main .main-asciidoc ::after{box-sizing:border-box}
+main .main-asciidoc html,main .main-asciidoc body{font-size:100%}
+main .main-asciidoc body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+#disabled-rule-asciidoctor{cursor:pointer}
+main .main-asciidoc img,main .main-asciidoc object,main .main-asciidoc embed{max-width:100%;height:auto}
+main .main-asciidoc object,main .main-asciidoc embed{height:100%}
+main .main-asciidoc img{-ms-interpolation-mode:bicubic}
+main .main-asciidoc .left{float:left!important}
+main .main-asciidoc .right{float:right!important}
+main .main-asciidoc .text-left{text-align:left!important}
+main .main-asciidoc .text-right{text-align:right!important}
+main .main-asciidoc .text-center{text-align:center!important}
+main .main-asciidoc .text-justify{text-align:justify!important}
+main .main-asciidoc .hide{display:none}
+main .main-asciidoc img,main .main-asciidoc object,main .main-asciidoc svg{display:inline-block;vertical-align:middle}
+main .main-asciidoc textarea{height:auto;min-height:50px}
+main .main-asciidoc select{width:100%}
+main .main-asciidoc .subheader,main .main-asciidoc .admonitionblock td.content>.title,main .main-asciidoc .audioblock>.title,main .main-asciidoc .exampleblock>.title,main .main-asciidoc .imageblock>.title,main .main-asciidoc .listingblock>.title,main .main-asciidoc .literalblock>.title,main .main-asciidoc .stemblock>.title,main .main-asciidoc .openblock>.title,main .main-asciidoc .paragraph>.title,main .main-asciidoc .quoteblock>.title,main .main-asciidoc table.tableblock>.title,main .main-asciidoc .verseblock>.title,main .main-asciidoc .videoblock>.title,main .main-asciidoc .dlist>.title,main .main-asciidoc .olist>.title,main .main-asciidoc .ulist>.title,main .main-asciidoc .qlist>.title,main .main-asciidoc .hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+#disabled-rule-asciidoctor{margin:0;padding:0}
+#disabled-rule-asciidoctor{color:#2156a5;text-decoration:underline;line-height:inherit}
+#disabled-rule-asciidoctor{color:#1d4b8f}
+#disabled-rule-asciidoctor{border:0}
+#disabled-rule-asciidoctor{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+main .main-asciidoc p aside{font-size:.875em;line-height:1.35;font-style:italic}
+#disabled-rule-asciidoctor{font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+#disabled-rule-asciidoctor{font-size:60%;color:#e99b8f;line-height:0}
+#disabled-rule-asciidoctor{font-size:2.125em}
+#disabled-rule-asciidoctor{font-size:1.6875em}
+#disabled-rule-asciidoctor{font-size:1.375em}
+#disabled-rule-asciidoctor{font-size:1.125em}
+#disabled-rule-asciidoctor{font-size:1em}
+main .main-asciidoc hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+main .main-asciidoc em,main .main-asciidoc i{font-style:italic;line-height:inherit}
+main .main-asciidoc strong,main .main-asciidoc b{font-weight:bold;line-height:inherit}
+main .main-asciidoc small{font-size:60%;line-height:inherit}
+main .main-asciidoc code{font-weight:400;color:rgba(0,0,0,.9)}
+main .main-asciidoc ul,main .main-asciidoc ol,main .main-asciidoc dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;}
+main .main-asciidoc ul,main .main-asciidoc ol{margin-left:1.5em}
+main .main-asciidoc ul li ul,main .main-asciidoc ul li ol{margin-left:1.25em;margin-bottom:0}
+main .main-asciidoc ul.square li ul,main .main-asciidoc ul.circle li ul,main .main-asciidoc ul.disc li ul{list-style:inherit}
+main .main-asciidoc ul.square{list-style-type:square}
+main .main-asciidoc ul.circle{list-style-type:circle}
+main .main-asciidoc ul.disc{list-style-type:disc}
+main .main-asciidoc ol li ul,main .main-asciidoc ol li ol{margin-left:1.25em;margin-bottom:0}
+main .main-asciidoc dl dt{margin-bottom:.3125em;font-weight:bold}
+main .main-asciidoc dl dd{margin-bottom:1.25em}
+main .main-asciidoc blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+main .main-asciidoc blockquote,main .main-asciidoc blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){#disabled-rule-asciidoctor{line-height:1.2}
+#disabled-rule-asciidoctor{font-size:2.75em}
+#disabled-rule-asciidoctor{font-size:2.3125em}
+#disabled-rule-asciidoctor{font-size:1.6875em}
+#disabled-rule-asciidoctor{font-size:1.4375em}}
+main .main-asciidoc table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+main .main-asciidoc table thead,main .main-asciidoc table tfoot{background:#f7f8f7}
+main .main-asciidoc table thead tr th,main .main-asciidoc table thead tr td,main .main-asciidoc table tfoot tr th,main .main-asciidoc table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+#disabled-rule-asciidoctor{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+main .main-asciidoc table tr.even,main .main-asciidoc table tr.alt{background:#f8f8f7}
+#disabled-rule-asciidoctor{line-height:1.6}
+#disabled-rule-asciidoctor{line-height:1.2;word-spacing:-.05em}
+#disabled-rule-asciidoctor{font-weight:400}
+main .main-asciidoc .center{margin-left:auto;margin-right:auto}
+main .main-asciidoc .stretch{width:100%}
+main .main-asciidoc .clearfix::before,main .main-asciidoc .clearfix::after,main .main-asciidoc .float-group::before,main .main-asciidoc .float-group::after{content:" ";display:table}
+main .main-asciidoc .clearfix::after,main .main-asciidoc .float-group::after{clear:both}
+main .main-asciidoc :not(pre).nobreak{word-wrap:normal}
+main .main-asciidoc :not(pre).nowrap{white-space:nowrap}
+main .main-asciidoc :not(pre).pre-wrap{white-space:pre-wrap}
+main .main-asciidoc :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+main .main-asciidoc pre{color:rgba(0,0,0,.9);line-height:1.45;text-rendering:optimizeSpeed}
+main .main-asciidoc pre code,main .main-asciidoc pre pre{color:inherit;font-size:inherit;line-height:inherit}
+main .main-asciidoc pre>code{display:block}
+main .main-asciidoc pre.nowrap,main .main-asciidoc pre.nowrap pre{white-space:pre;word-wrap:normal}
+main .main-asciidoc em em{font-style:normal}
+main .main-asciidoc strong strong{font-weight:400}
+main .main-asciidoc .keyseq{color:rgba(51,51,51,.8)}
+main .main-asciidoc kbd{display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+main .main-asciidoc .keyseq kbd:first-child{margin-left:0}
+main .main-asciidoc .keyseq kbd:last-child{margin-right:0}
+main .main-asciidoc .menuseq,main .main-asciidoc .menuref{color:#000}
+main .main-asciidoc .menuseq b:not(.caret),main .main-asciidoc .menuref{font-weight:inherit}
+main .main-asciidoc .menuseq{word-spacing:-.02em}
+main .main-asciidoc .menuseq b.caret{font-size:1.25em;line-height:.8}
+main .main-asciidoc .menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+main .main-asciidoc b.button::before,main .main-asciidoc b.button::after{position:relative;top:-1px;font-weight:400}
+main .main-asciidoc b.button::before{content:"[";padding:0 3px 0 2px}
+main .main-asciidoc b.button::after{content:"]";padding:0 2px 0 3px}
+main .main-asciidoc p a>code:hover{color:rgba(0,0,0,.9)}
+#disabled-rule-asciidoctor{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#disabled-rule-asciidoctor{content:" ";display:table}
+#disabled-rule-asciidoctor{clear:both}
+#disabled-rule-asciidoctor{margin-top:1.25em}
+#disabled-rule-asciidoctor{content:none}
+#disabled-rule-asciidoctor{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#disabled-rule-asciidoctor{margin-top:8px;border-top:1px solid #dddddf}
+#disabled-rule-asciidoctor{border-bottom:1px solid #dddddf;padding-bottom:8px}
+#disabled-rule-asciidoctor{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#disabled-rule-asciidoctor{margin-left:-.125em}
+#disabled-rule-asciidoctor{color:rgba(0,0,0,.85)}
+#disabled-rule-asciidoctor{display:none}
+#disabled-rule-asciidoctor{content:" – "}
+#disabled-rule-asciidoctor{content:" ⋅ ";color:rgba(0,0,0,.85)}
+#disabled-rule-asciidoctor{content:" | "}
+#disabled-rule-asciidoctor{text-transform:capitalize}
+#disabled-rule-asciidoctor{content:" "}
+#disabled-rule-asciidoctor{color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#disabled-rule-asciidoctor{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#disabled-rule-asciidoctor{margin-left:.125em}
+#disabled-rule-asciidoctor{font-style:italic}
+#disabled-rule-asciidoctor{margin:.5em 0}
+#disabled-rule-asciidoctor{list-style-type:none}
+#disabled-rule-asciidoctor{line-height:1.3334;margin-top:.3334em}
+#disabled-rule-asciidoctor{text-decoration:none}
+#disabled-rule-asciidoctor{text-decoration:underline}
+main .main-asciidoc #toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){main .main-asciidoc #toctitle{font-size:1.375em}
+main .main-asciidoc body.toc2{padding-left:15em;padding-right:0}
+#disabled-rule-asciidoctor{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#disabled-rule-asciidoctor{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#disabled-rule-asciidoctor{font-size:.9em;margin-bottom:0}
+#disabled-rule-asciidoctor{margin-left:0;padding-left:1em}
+#disabled-rule-asciidoctor{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+main .main-asciidoc body.toc2.toc-right{padding-left:0;padding-right:15em}
+main .main-asciidoc body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){main .main-asciidoc body.toc2{padding-left:20em;padding-right:0}
+#disabled-rule-asciidoctor{width:20em}
+#disabled-rule-asciidoctor{font-size:1.375em}
+#disabled-rule-asciidoctor{font-size:.95em}
+#disabled-rule-asciidoctor{padding-left:1.25em}
+main .main-asciidoc body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#disabled-rule-asciidoctor{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#disabled-rule-asciidoctor{margin-top:0}
+#disabled-rule-asciidoctor{margin-bottom:0}
+#disabled-rule-asciidoctor{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#disabled-rule-asciidoctor{color:hsla(0,0%,100%,.8);line-height:1.44}
+#disabled-rule-asciidoctor{margin-bottom:.625em}
+#disabled-rule-asciidoctor{padding-bottom:.625em}
+@media screen and (min-width:768px){#disabled-rule-asciidoctor{margin-bottom:1.25em}
+#disabled-rule-asciidoctor{padding-bottom:1.25em}}
+#disabled-rule-asciidoctor{padding-bottom:0}
+#disabled-rule-asciidoctor{border-top:1px solid #e7e7e9}
+#disabled-rule-asciidoctor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#disabled-rule-asciidoctor{content:"§";font-size:.85em;display:block;padding-top:.1em}
+#disabled-rule-asciidoctor{visibility:visible}
+#disabled-rule-asciidoctor{color:#ba3925;text-decoration:none}
+#disabled-rule-asciidoctor{color:#a53221}
+#disabled-rule-asciidoctor{margin-bottom:1.25em}
+main .main-asciidoc details{margin-left:1.25rem}
+main .main-asciidoc details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+main .main-asciidoc details>summary::-webkit-details-marker{display:none}
+main .main-asciidoc details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+main .main-asciidoc details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+main .main-asciidoc details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+main .main-asciidoc .admonitionblock td.content>.title,main .main-asciidoc .audioblock>.title,main .main-asciidoc .exampleblock>.title,main .main-asciidoc .imageblock>.title,main .main-asciidoc .listingblock>.title,main .main-asciidoc .literalblock>.title,main .main-asciidoc .stemblock>.title,main .main-asciidoc .openblock>.title,main .main-asciidoc .paragraph>.title,main .main-asciidoc .quoteblock>.title,main .main-asciidoc table.tableblock>.title,main .main-asciidoc .verseblock>.title,main .main-asciidoc .videoblock>.title,main .main-asciidoc .dlist>.title,main .main-asciidoc .olist>.title,main .main-asciidoc .ulist>.title,main .main-asciidoc .qlist>.title,main .main-asciidoc .hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-size:1rem;font-style:italic}
+main .main-asciidoc table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+#disabled-rule-asciidoctor{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+main .main-asciidoc .admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+main .main-asciidoc .admonitionblock>table td.icon{text-align:center;width:80px}
+main .main-asciidoc .admonitionblock>table td.icon img{max-width:none}
+main .main-asciidoc .admonitionblock>table td.icon .title{font-weight:bold;text-transform:uppercase}
+main .main-asciidoc .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+main .main-asciidoc .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+main .main-asciidoc .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+main .main-asciidoc .exampleblock>.content>:first-child{margin-top:0}
+main .main-asciidoc .exampleblock>.content>:last-child{margin-bottom:0}
+main .main-asciidoc .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+main .main-asciidoc .sidebarblock>:first-child{margin-top:0}
+main .main-asciidoc .sidebarblock>:last-child{margin-bottom:0}
+main .main-asciidoc .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+main .main-asciidoc .exampleblock>.content>:last-child>:last-child,main .main-asciidoc .exampleblock>.content .olist>ol>li:last-child>:last-child,main .main-asciidoc .exampleblock>.content .ulist>ul>li:last-child>:last-child,main .main-asciidoc .exampleblock>.content .qlist>ol>li:last-child>:last-child,main .main-asciidoc .sidebarblock>.content>:last-child>:last-child,main .main-asciidoc .sidebarblock>.content .olist>ol>li:last-child>:last-child,main .main-asciidoc .sidebarblock>.content .ulist>ul>li:last-child>:last-child,main .main-asciidoc .sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+main .main-asciidoc .literalblock pre,main .main-asciidoc .listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){main .main-asciidoc .literalblock pre,main .main-asciidoc .listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){main .main-asciidoc .literalblock pre,main .main-asciidoc .listingblock>.content>pre{font-size:1em}}
+main .main-asciidoc .literalblock pre,main .main-asciidoc .listingblock>.content>pre:not(.highlight),main .main-asciidoc .listingblock>.content>pre[class=highlight],main .main-asciidoc .listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+main .main-asciidoc .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+main .main-asciidoc .listingblock>.content{position:relative}
+main .main-asciidoc .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+main .main-asciidoc .listingblock:hover code[data-lang]::before{display:block}
+main .main-asciidoc .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+main .main-asciidoc .listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+main .main-asciidoc .listingblock pre.highlightjs{padding:0}
+main .main-asciidoc .listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+main .main-asciidoc .listingblock pre.prettyprint{border-width:0}
+main .main-asciidoc .prettyprint{background:#f7f7f8}
+main .main-asciidoc pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+main .main-asciidoc pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+main .main-asciidoc pre.prettyprint li code[data-lang]::before{opacity:1}
+main .main-asciidoc pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+main .main-asciidoc table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+main .main-asciidoc table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+main .main-asciidoc table.linenotable td.code{padding-left:.75em}
+main .main-asciidoc table.linenotable td.linenos,main .main-asciidoc pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+main .main-asciidoc pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+main .main-asciidoc .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+main .main-asciidoc .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+#disabled-rule-asciidoctor{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+main .main-asciidoc .quoteblock blockquote{margin:0;padding:0;border:0}
+main .main-asciidoc .quoteblock blockquote::before{content:"“";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+main .main-asciidoc .quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+main .main-asciidoc .quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+main .main-asciidoc .verseblock{margin:0 1em 1.25em}
+main .main-asciidoc .verseblock pre{font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+main .main-asciidoc .verseblock pre strong{font-weight:400}
+main .main-asciidoc .verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+main .main-asciidoc .quoteblock .attribution,main .main-asciidoc .verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+main .main-asciidoc .quoteblock .attribution br,main .main-asciidoc .verseblock .attribution br{display:none}
+main .main-asciidoc .quoteblock .attribution cite,main .main-asciidoc .verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+main .main-asciidoc .quoteblock.abstract blockquote::before,main .main-asciidoc .quoteblock.excerpt blockquote::before,main .main-asciidoc .quoteblock .quoteblock blockquote::before{display:none}
+main .main-asciidoc .quoteblock.abstract blockquote,main .main-asciidoc .quoteblock.abstract p,main .main-asciidoc .quoteblock.excerpt blockquote,main .main-asciidoc .quoteblock.excerpt p,main .main-asciidoc .quoteblock .quoteblock blockquote,main .main-asciidoc .quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+main .main-asciidoc .quoteblock.abstract{margin:0 1em 1.25em;display:block}
+main .main-asciidoc .quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+main .main-asciidoc .quoteblock.excerpt>blockquote,main .main-asciidoc .quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+main .main-asciidoc .quoteblock.excerpt,main .main-asciidoc .quoteblock .quoteblock{margin-left:0}
+main .main-asciidoc .quoteblock.excerpt blockquote,main .main-asciidoc .quoteblock.excerpt p,main .main-asciidoc .quoteblock .quoteblock blockquote,main .main-asciidoc .quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+main .main-asciidoc .quoteblock.excerpt .attribution,main .main-asciidoc .quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+main .main-asciidoc p.tableblock:last-child{margin-bottom:0}
+main .main-asciidoc td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+main .main-asciidoc td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+main .main-asciidoc table.tableblock,main .main-asciidoc th.tableblock,main .main-asciidoc td.tableblock{border:0 solid #dedede}
+main .main-asciidoc table.grid-all>*>tr>*{border-width:1px}
+main .main-asciidoc table.grid-cols>*>tr>*{border-width:0 1px}
+main .main-asciidoc table.grid-rows>*>tr>*{border-width:1px 0}
+main .main-asciidoc table.frame-all{border-width:1px}
+main .main-asciidoc table.frame-ends{border-width:1px 0}
+main .main-asciidoc table.frame-sides{border-width:0 1px}
+main .main-asciidoc table.frame-none>colgroup+*>:first-child>*,main .main-asciidoc table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+main .main-asciidoc table.frame-none>:last-child>:last-child>*,main .main-asciidoc table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+main .main-asciidoc table.frame-none>*>tr>:first-child,main .main-asciidoc table.frame-ends>*>tr>:first-child{border-left-width:0}
+main .main-asciidoc table.frame-none>*>tr>:last-child,main .main-asciidoc table.frame-ends>*>tr>:last-child{border-right-width:0}
+main .main-asciidoc table.stripes-all>*>tr,main .main-asciidoc table.stripes-odd>*>tr:nth-of-type(odd),main .main-asciidoc table.stripes-even>*>tr:nth-of-type(even),main .main-asciidoc table.stripes-hover>*>tr:hover{background:#f8f8f7}
+main .main-asciidoc th.halign-left,main .main-asciidoc td.halign-left{text-align:left}
+main .main-asciidoc th.halign-right,main .main-asciidoc td.halign-right{text-align:right}
+main .main-asciidoc th.halign-center,main .main-asciidoc td.halign-center{text-align:center}
+main .main-asciidoc th.valign-top,main .main-asciidoc td.valign-top{vertical-align:top}
+main .main-asciidoc th.valign-bottom,main .main-asciidoc td.valign-bottom{vertical-align:bottom}
+main .main-asciidoc th.valign-middle,main .main-asciidoc td.valign-middle{vertical-align:middle}
+main .main-asciidoc table thead th,main .main-asciidoc table tfoot th{font-weight:bold}
+main .main-asciidoc tbody tr th{background:#f7f8f7}
+main .main-asciidoc tbody tr th,main .main-asciidoc tbody tr th p,main .main-asciidoc tfoot tr th,main .main-asciidoc tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+main .main-asciidoc p.tableblock>code:only-child{background:none;padding:0}
+main .main-asciidoc p.tableblock{font-size:1em}
+main .main-asciidoc ol{margin-left:1.75em}
+main .main-asciidoc ul li ol{margin-left:1.5em}
+main .main-asciidoc dl dd{margin-left:1.125em}
+main .main-asciidoc dl dd:last-child,main .main-asciidoc dl dd:last-child>:last-child{margin-bottom:0}
+main .main-asciidoc li p,main .main-asciidoc ul dd,main .main-asciidoc ol dd,main .main-asciidoc .olist .olist,main .main-asciidoc .ulist .ulist,main .main-asciidoc .ulist .olist,main .main-asciidoc .olist .ulist{margin-bottom:.625em}
+main .main-asciidoc ul.checklist,main .main-asciidoc ul.none,main .main-asciidoc ol.none,main .main-asciidoc ul.no-bullet,main .main-asciidoc ol.no-bullet,main .main-asciidoc ol.unnumbered,main .main-asciidoc ul.unstyled,main .main-asciidoc ol.unstyled{list-style-type:none}
+main .main-asciidoc ul.no-bullet,main .main-asciidoc ol.no-bullet,main .main-asciidoc ol.unnumbered{margin-left:.625em}
+main .main-asciidoc ul.unstyled,main .main-asciidoc ol.unstyled{margin-left:0}
+main .main-asciidoc li>p:empty:only-child::before{content:"";display:inline-block}
+main .main-asciidoc ul.checklist>li>p:first-child{margin-left:-1em}
+main .main-asciidoc ul.checklist>li>p:first-child>.fa-square-o:first-child,main .main-asciidoc ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+main .main-asciidoc ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+main .main-asciidoc ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+main .main-asciidoc ul.inline>li{margin-left:1.25em}
+main .main-asciidoc .unstyled dl dt{font-weight:400;font-style:normal}
+main .main-asciidoc ol.arabic{list-style-type:decimal}
+main .main-asciidoc ol.decimal{list-style-type:decimal-leading-zero}
+main .main-asciidoc ol.loweralpha{list-style-type:lower-alpha}
+main .main-asciidoc ol.upperalpha{list-style-type:upper-alpha}
+main .main-asciidoc ol.lowerroman{list-style-type:lower-roman}
+main .main-asciidoc ol.upperroman{list-style-type:upper-roman}
+main .main-asciidoc ol.lowergreek{list-style-type:lower-greek}
+main .main-asciidoc .hdlist>table,main .main-asciidoc .colist>table{border:0;background:none}
+main .main-asciidoc .hdlist>table>tbody>tr,main .main-asciidoc .colist>table>tbody>tr{background:none}
+main .main-asciidoc td.hdlist1,main .main-asciidoc td.hdlist2{vertical-align:top;padding:0 .625em}
+main .main-asciidoc td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+main .main-asciidoc td.hdlist2{word-wrap:anywhere}
+main .main-asciidoc .literalblock+.colist,main .main-asciidoc .listingblock+.colist{margin-top:-.5em}
+main .main-asciidoc .colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+main .main-asciidoc .colist td:not([class]):first-child img{max-width:none}
+main .main-asciidoc .colist td:not([class]):last-child{padding:.25em 0}
+main .main-asciidoc .thumb,main .main-asciidoc .th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+main .main-asciidoc .imageblock.left{margin:.25em .625em 1.25em 0}
+main .main-asciidoc .imageblock.right{margin:.25em 0 1.25em .625em}
+main .main-asciidoc .imageblock>.title{margin-bottom:0}
+main .main-asciidoc .imageblock.thumb,main .main-asciidoc .imageblock.th{border-width:6px}
+main .main-asciidoc .imageblock.thumb>.title,main .main-asciidoc .imageblock.th>.title{padding:0 .125em}
+main .main-asciidoc .image.left,main .main-asciidoc .image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+main .main-asciidoc .image.left{margin-right:.625em}
+main .main-asciidoc .image.right{margin-left:.625em}
+#disabled-rule-asciidoctor{text-decoration:none;display:inline-block}
+#disabled-rule-asciidoctor{pointer-events:none}
+main .main-asciidoc sup.footnote,main .main-asciidoc sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+main .main-asciidoc sup.footnote a,main .main-asciidoc sup.footnoteref a{text-decoration:none}
+main .main-asciidoc sup.footnote a:active,main .main-asciidoc sup.footnoteref a:active{text-decoration:underline}
+main .main-asciidoc #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+main .main-asciidoc #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+main .main-asciidoc #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+main .main-asciidoc #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+main .main-asciidoc #footnotes .footnote:last-of-type{margin-bottom:0}
+#disabled-rule-asciidoctor{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+main .main-asciidoc div.unbreakable{page-break-inside:avoid}
+main .main-asciidoc .big{font-size:larger}
+main .main-asciidoc .small{font-size:smaller}
+main .main-asciidoc .underline{text-decoration:underline}
+main .main-asciidoc .overline{text-decoration:overline}
+main .main-asciidoc .line-through{text-decoration:line-through}
+main .main-asciidoc .aqua{color:#00bfbf}
+main .main-asciidoc .aqua-background{background:#00fafa}
+main .main-asciidoc .black{color:#000}
+main .main-asciidoc .black-background{background:#000}
+main .main-asciidoc .blue{color:#0000bf}
+main .main-asciidoc .blue-background{background:#0000fa}
+main .main-asciidoc .fuchsia{color:#bf00bf}
+main .main-asciidoc .fuchsia-background{background:#fa00fa}
+main .main-asciidoc .gray{color:#606060}
+main .main-asciidoc .gray-background{background:#7d7d7d}
+main .main-asciidoc .green{color:#006000}
+main .main-asciidoc .green-background{background:#007d00}
+main .main-asciidoc .lime{color:#00bf00}
+main .main-asciidoc .lime-background{background:#00fa00}
+main .main-asciidoc .maroon{color:#600000}
+main .main-asciidoc .maroon-background{background:#7d0000}
+main .main-asciidoc .navy{color:#000060}
+main .main-asciidoc .navy-background{background:#00007d}
+main .main-asciidoc .olive{color:#606000}
+main .main-asciidoc .olive-background{background:#7d7d00}
+main .main-asciidoc .purple{color:#600060}
+main .main-asciidoc .purple-background{background:#7d007d}
+main .main-asciidoc .red{color:#bf0000}
+main .main-asciidoc .red-background{background:#fa0000}
+main .main-asciidoc .silver{color:#909090}
+main .main-asciidoc .silver-background{background:#bcbcbc}
+main .main-asciidoc .teal{color:#006060}
+main .main-asciidoc .teal-background{background:#007d7d}
+main .main-asciidoc .white{color:#bfbfbf}
+main .main-asciidoc .white-background{background:#fafafa}
+main .main-asciidoc .yellow{color:#bfbf00}
+main .main-asciidoc .yellow-background{background:#fafa00}
+main .main-asciidoc span.icon>.fa{cursor:default}
+#disabled-rule-asciidoctor{cursor:inherit}
+main .main-asciidoc .admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+main .main-asciidoc .admonitionblock td.icon .icon-note::before{content:"";color:#19407c}
+main .main-asciidoc .admonitionblock td.icon .icon-tip::before{content:"";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+main .main-asciidoc .admonitionblock td.icon .icon-warning::before{content:"";color:#bf6900}
+main .main-asciidoc .admonitionblock td.icon .icon-caution::before{content:"";color:#bf3400}
+main .main-asciidoc .admonitionblock td.icon .icon-important::before{content:"";color:#bf0000}
+main .main-asciidoc .conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-style:normal;font-weight:bold}
+main .main-asciidoc .conum[data-value] *{color:#fff!important}
+main .main-asciidoc .conum[data-value]+b{display:none}
+main .main-asciidoc .conum[data-value]::after{content:attr(data-value)}
+main .main-asciidoc pre .conum[data-value]{position:relative;top:-.125em}
+main .main-asciidoc b.conum *{color:inherit!important}
+main .main-asciidoc .conum:not([data-value]):empty{display:none}
+main .main-asciidoc dt,main .main-asciidoc th.tableblock,main .main-asciidoc td.content,main .main-asciidoc div.footnote{text-rendering:optimizeLegibility}
+#disabled-rule-asciidoctor{letter-spacing:-.01em}
+#disabled-rule-asciidoctor{letter-spacing:-.005em}
+#disabled-rule-asciidoctor{font-size:1.0625rem}
+#disabled-rule-asciidoctor{margin-bottom:1.25rem}
+main .main-asciidoc .sidebarblock p,main .main-asciidoc .sidebarblock dt,main .main-asciidoc .sidebarblock td.content,main .main-asciidoc p.tableblock{font-size:1em}
+main .main-asciidoc .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+main .main-asciidoc .print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{main .main-asciidoc *{box-shadow:none!important;text-shadow:none!important}
+main .main-asciidoc html{font-size:80%}
+#disabled-rule-asciidoctor{color:inherit!important;text-decoration:underline!important}
+#disabled-rule-asciidoctor{text-decoration:none!important}
+#disabled-rule-asciidoctor{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+main .main-asciidoc abbr[title]{border-bottom:1px dotted}
+main .main-asciidoc abbr[title]::after{content:" (" attr(title) ")"}
+main .main-asciidoc pre,main .main-asciidoc blockquote,main .main-asciidoc tr,main .main-asciidoc img,main .main-asciidoc object,main .main-asciidoc svg{page-break-inside:avoid}
+main .main-asciidoc thead{display:table-header-group}
+main .main-asciidoc svg{max-width:100%}
+#disabled-rule-asciidoctor{font-size:1em;orphans:3;widows:3}
+#disabled-rule-asciidoctor{page-break-after:avoid}
+#disabled-rule-asciidoctor{max-width:none}
+#disabled-rule-asciidoctor{background:none!important}
+#disabled-rule-asciidoctor{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+main .main-asciidoc body.book #header{text-align:center}
+main .main-asciidoc body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+main .main-asciidoc body.book #header .details{border:0!important;display:block;padding:0!important}
+main .main-asciidoc body.book #header .details span:first-child{margin-left:0!important}
+main .main-asciidoc body.book #header .details br{display:block}
+main .main-asciidoc body.book #header .details br+span::before{content:none!important}
+main .main-asciidoc body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+main .main-asciidoc body.book #toc,main .main-asciidoc body.book #preamble,main .main-asciidoc body.book h1.sect0,main .main-asciidoc body.book .sect1>h2{page-break-before:always}
+main .main-asciidoc .listingblock code[data-lang]::before{display:block}
+#disabled-rule-asciidoctor{padding:0 .9375em}
+main .main-asciidoc .hide-on-print{display:none!important}
+main .main-asciidoc .print-only{display:block!important}
+main .main-asciidoc .hide-for-print{display:none!important}
+main .main-asciidoc .show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#disabled-rule-asciidoctor{margin-top:1.25rem}
+#disabled-rule-asciidoctor{padding:0!important}
+#disabled-rule-asciidoctor{border:0}
+#disabled-rule-asciidoctor{background:none}
+#disabled-rule-asciidoctor{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#disabled-rule-asciidoctor{padding:0}}

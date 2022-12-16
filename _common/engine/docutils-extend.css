@@ -1,0 +1,67 @@
+/* = Definitions needed by our mkwww extensions to docutils. */
+
+/* == Section heading anchors ("permalinks") */
+
+main .main-docutils :is(h1, h2, h3, h4, h5, h6) .anchor {
+  position: absolute;
+  text-decoration: none;
+  width: 1.75ex;
+  margin-left: -1.25ex;
+  visibility: hidden;
+}
+
+main .main-docutils :is(h1, h2, h3, h4, h5, h6) .anchor::before {
+  content: "§";
+}
+
+main .main-docutils :is(h1, h2, h3, h4, h5, h6):hover .anchor {
+  visibility: visible;
+}
+
+/* == Details lists */
+
+/* === Layout */
+
+/* ensure same indent across dtlist and no-dtlist */
+main .main-docutils .dtlist details, main .main-docutils .no-dtlist {
+  padding-inline-start: 1em;
+}
+main .main-docutils .dtlist summary, main .main-docutils .no-dtlist li {
+  list-style-position: outside;
+}
+
+/* treat summaries like normal paragraphs, with margins */
+main .main-docutils .dtlist.simple summary, main .main-docutils .no-dtlist.simple p {
+  margin-block-start: 0; margin-block-end: 0;
+}
+main .main-docutils .dtlist summary, main .main-docutils .no-dtlist p {
+  margin-block-start: 1em; margin-block-end: 1em;
+}
+/* chromium rendering bug for the above:
+ * margins on <summary> don't collapse like they are supposed to according
+ * to normal CSS rules, probably because they are inside a <details>.
+ * works fine in firefox. */
+main .main-docutils .dtlist details:not(:first-child) summary {
+  margin-block-start: 0;
+}
+
+/* details with no details should look like normal lists */
+main .main-docutils .dtlist summary:only-child {
+  list-style-type: disc;
+}
+
+/* === Tooltips */
+
+main .main-docutils .dtlist summary:not(:only-child) .dtlist-tooltip:hover {
+  cursor: pointer;
+}
+main .main-docutils .dtlist summary:not(:only-child) .dtlist-tooltip::after {
+  content: "[↴↴↴]";
+  font-size: smaller;
+  display: inline;
+  margin-left: 0.5em;
+  font-family: monospace;
+}
+main .main-docutils .dtlist details[open] > summary:not(:only-child) .dtlist-tooltip::after {
+  content: "[↰↰↰]";
+}

@@ -1,0 +1,276 @@
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 9079 2022-06-19 14:00:56Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+main .main-docutils p.topic-title,
+main .main-docutils p.admonition-title,
+main .main-docutils p.system-message-title {
+  font-weight: bold;
+}
+main .main-docutils p.sidebar-title,
+main .main-docutils p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+main .main-docutils p.rubric {
+  color: maroon;
+}
+main .main-docutils p.subtitle,
+main .main-docutils p.section-subtitle,
+main .main-docutils p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+main .main-docutils h1 + p.subtitle {
+  font-size: 1.6em;
+}
+main .main-docutils a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+main .main-docutils .system-messages h2,
+main .main-docutils .system-message-title,
+main .main-docutils span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+main .main-docutils .docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+main .main-docutils .literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+main .main-docutils .simple  li, main .main-docutils .simple  ul, main .main-docutils .simple  ol,
+main .main-docutils .compact li, main .main-docutils .compact ul, main .main-docutils .compact ol,
+main .main-docutils .simple  > li p, main .main-docutils dl.simple  > dd,
+main .main-docutils .compact > li p, main .main-docutils dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+main .main-docutils p:first-child { margin-top: 0; }
+main .main-docutils p:last-child { margin-bottom: 0; }
+main .main-docutils details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+main .main-docutils .contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+main .main-docutils ol.arabic     { list-style: decimal }
+main .main-docutils ol.loweralpha { list-style: lower-alpha }
+main .main-docutils ol.upperalpha { list-style: upper-alpha }
+main .main-docutils ol.lowerroman { list-style: lower-roman }
+main .main-docutils ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+main .main-docutils dt .classifier { font-style: italic }
+main .main-docutils dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+main .main-docutils dl.field-list,
+main .main-docutils dl.option-list,
+main .main-docutils dl.docinfo {
+  display: flow-root;
+}
+main .main-docutils dl.field-list > dt,
+main .main-docutils dl.option-list > dt,
+main .main-docutils dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.2em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+main .main-docutils dl.field-list > dd,
+main .main-docutils dl.option-list > dd,
+main .main-docutils dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+main .main-docutils dd > dl:first-child,
+main .main-docutils dd > ul:first-child,
+main .main-docutils dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+main .main-docutils dl.field-list > dd > *:first-child,
+main .main-docutils dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+main .main-docutils dl.docinfo pre.address {
+  font: inherit;
+  margin: 0.5em 0;
+}
+main .main-docutils dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+main .main-docutils dl.option-list > dt { font-weight: normal; }
+main .main-docutils span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+main .main-docutils .footnote, main .main-docutils .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+main .main-docutils .citation { padding-left: 2em; }
+main .main-docutils .footnote { padding-left: 1.7em; }
+main .main-docutils .footnote.superscript { padding-left: 1.0em; }
+main .main-docutils .citation > .label { margin-left: -2em; }
+main .main-docutils .footnote > .label { margin-left: -1.7em; }
+main .main-docutils .footnote.superscript > .label { margin-left: -1.0em; }
+
+main .main-docutils .footnote > .label + *,
+main .main-docutils .citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+main .main-docutils .footnote > .backrefs + *,
+main .main-docutils .citation > .backrefs + * {
+  margin-top: 0;
+}
+main .main-docutils .footnote > .label + p, main .main-docutils .footnote > .backrefs + p,
+main .main-docutils .citation > .label + p, main .main-docutils .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+main .main-docutils .backrefs { user-select: none; }
+main .main-docutils .backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+main .main-docutils a[role="doc-noteref"].superscript,
+main .main-docutils .footnote.superscript > .label,
+main .main-docutils .footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+main .main-docutils a[role="doc-noteref"].superscript > .fn-bracket,
+main .main-docutils .footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+main .main-docutils [role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+main .main-docutils .align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+main .main-docutils .align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+main .main-docutils .align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+main .main-docutils .align-top    { vertical-align: top; }
+main .main-docutils .align-middle { vertical-align: middle; }
+main .main-docutils .align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+main .main-docutils figure.align-left, main .main-docutils figure.align-right,
+main .main-docutils table.align-left, main .main-docutils table.align-center, main .main-docutils table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+main .main-docutils .topic { margin: 1em 2em; }
+main .main-docutils .sidebar,
+main .main-docutils .admonition,
+main .main-docutils .system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+main .main-docutils div.line-block { display: block; }
+main .main-docutils div.line-block div.line-block, main .main-docutils pre { margin-left: 2em; }
+
+/* Code line numbers: dropped when copying text from the page */
+main .main-docutils pre.code .ln { display: none; }
+main .main-docutils pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
+
+/* Tables */
+main .main-docutils table {
+  border-collapse: collapse;
+}
+main .main-docutils td, main .main-docutils th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+main .main-docutils .borderless td, main .main-docutils .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+main .main-docutils table > caption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+main .main-docutils table.captionbelow {
+  caption-side: bottom;
+}
+
+/* Document Header and Footer */
+main .main-docutils header { border-bottom: 1px solid black; }
+main .main-docutils footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+main .main-docutils img, main .main-docutils header, main .main-docutils footer, main .main-docutils main, main .main-docutils aside, main .main-docutils nav, main .main-docutils section, main .main-docutils figure, main .main-docutils video, main .main-docutils details {
+  display: block;
+}
+/* inline images */
+main .main-docutils p img, main .main-docutils p video, main .main-docutils figure img, main .main-docutils figure video {
+  display: inline;
+}
