@@ -35,9 +35,9 @@ ENGINE_STYLES = {
 }
 
 ENGINE_SCRIPTS = {
-  "*0": [],
+  "*0": ["prep"],
   "mkwww-j2": [],
-  "docutils": [],
+  "docutils": ["docutils-" + f for f in ["extend"]],
   "asciidoctor": [],
   "*1": [],
 }

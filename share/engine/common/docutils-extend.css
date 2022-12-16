@@ -17,3 +17,50 @@
 :is(h1, h2, h3, h4, h5, h6):hover .anchor {
   visibility: visible;
 }
+
+/* == Details lists */
+
+/* === Layout */
+
+/* ensure same indent across dtlist and no-dtlist */
+.dtlist details, .no-dtlist {
+  padding-inline-start: 1em;
+}
+.dtlist summary, .no-dtlist li {
+  list-style-position: outside;
+}
+
+/* treat summaries like normal paragraphs, with margins */
+.dtlist.simple summary, .no-dtlist.simple p {
+  margin-block-start: 0; margin-block-end: 0;
+}
+.dtlist summary, .no-dtlist p {
+  margin-block-start: 1em; margin-block-end: 1em;
+}
+/* chromium rendering bug for the above:
+ * margins on <summary> don't collapse like they are supposed to according
+ * to normal CSS rules, probably because they are inside a <details>.
+ * works fine in firefox. */
+.dtlist details:not(:first-child) summary {
+  margin-block-start: 0;
+}
+
+/* details with no details should look like normal lists */
+.dtlist summary:only-child {
+  list-style-type: disc;
+}
+
+/* === Tooltips */
+
+.dtlist summary:not(:only-child) .dtlist-tooltip:hover {
+  cursor: pointer;
+}
+.dtlist summary:not(:only-child) .dtlist-tooltip::after {
+  content: "[↴↴↴]";
+  font-size: smaller;
+  display: inline;
+  margin-left: 0.5em;
+  font-family: monospace;
+}
+.dtlist details[open] > summary:not(:only-child) .dtlist-tooltip::after {
+  content: "[↰↰↰]";
