@@ -33,7 +33,7 @@
     <a class="nav-link self-link" href="../blog/index.html">Blog</a>
     <ul class="sitemap">
     <li>
-        <a class="nav-link" href="../blog/test.html">Test: md</a>
+        <a class="nav-link" href="../blog/test%20with%20spaces.html">Test: md</a>
     </li>
     <li>
         <a class="nav-link" href="../blog/2022-02-22.html">2022-02-22 Jupiter</a>
@@ -50,7 +50,7 @@
     <a class="nav-link" href="../topics/index.html">Topics</a>
 </li>
 <li>
-    <a class="nav-link" href="../test.html">Test: adoc</a>
+    <a class="nav-link" href="../test%20with%20spaces.html">Test: adoc</a>
 </li>
 </ul>
 </nav>
@@ -73,7 +73,7 @@
 <p>2022-12-14 - <a href="../blog/2021-12-23.html">2021-12-23 Mars</a></p>
 </li>
 <li>
-<p>1970-01-01 - <a href="../blog/test.html">Test: md</a></p>
+<p>1970-01-01 - <a href="../blog/test%20with%20spaces.html">Test: md</a></p>
 </li>
 </ul>
 </div>
@@ -88,7 +88,7 @@ navigation bar uses. Code:</p>
 <div class="listingblock">
 <div class="content">
 <pre>{% for post in sitenav.children["blog"].children.values()|sort(attribute='modifiedTs', reverse=True) -%}
-* {{post.modifiedTs|ts_date}} - link:{{baseRel}}/{{post.href}}[{{post.title}}]
+* {{post.modifiedTs|ts_date}} - link:{{baseRel}}/{{post.href|urlencode}}[{{post.title}}]
 {% endfor %}</pre>
 </div>
 </div>
@@ -106,7 +106,7 @@ the block source is passed to the markup jinja2 filter (<code>adoc2main</code>, 
 <ul class="simple">
 <li><p>2022-12-14 - <a class="reference external" href="../blog/2022-02-22.html">2022-02-22 Jupiter</a></p></li>
 <li><p>2022-12-14 - <a class="reference external" href="../blog/2021-12-23.html">2021-12-23 Mars</a></p></li>
-<li><p>1970-01-01 - <a class="reference external" href="../blog/test.html">Test: md</a></p></li>
+<li><p>1970-01-01 - <a class="reference external" href="../blog/test%20with%20spaces.html">Test: md</a></p></li>
 </ul>
 <p>Same list, with docutils styling.</p>
 </section>
