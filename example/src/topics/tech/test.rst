@@ -4,16 +4,16 @@ Test: rst
 
 This page should look pretty much similar to the other test pages.
 
-`adoc <../../test.html>`_ | `md <../../blog/test.html>`_
+`adoc <../../test%20with%20spaces.html>`_ | `md <../../blog/test%20with%20spaces.html>`_
 
 .. contents::
 
 Link check
 ==========
 
-Link from rst `to adoc <../../test.html#_link-check>`_.
+Link from rst `to adoc <../../test%20with%20spaces.html#_link-check>`_.
 
-Link from rst `to md <../../blog/test.html#_link-check>`_.
+Link from rst `to md <../../blog/test%20with%20spaces.html#_link-check>`_.
 
 Internal link check
 -------------------

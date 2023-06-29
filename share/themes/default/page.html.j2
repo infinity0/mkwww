@@ -26,7 +26,7 @@
 {%- endfor -%}
 {%- if title_maxdepth < 0 or node.navPath|length == 0 or
        navLength - node.navPath|length < title_maxdepth -%}
-{# #}{{title_separator}}{{node.title}}
+{# #}{{title_separator}}{{node.title|e}}
 {%- endif -%}
 {%- endif -%}
 {%- endmacro -%}
@@ -74,7 +74,7 @@
 {%- block nav %}
 {% macro nav_branch(node) -%}
 {#- Generate a branch of the navigation tree. -#}
-<a class="nav-link{% if node.navPath == navPath %} self-link{% endif %}" href="{{baseRel}}/{{node.href}}">{{node.title}}</a>
+<a class="nav-link{% if node.navPath == navPath %} self-link{% endif %}" href="{{baseRel}}/{{node.href|urlencode}}">{{node.title|e}}</a>
 {% if navPath[:(node.navPath|length)] == node.navPath and node.children -%}
 <ul class="sitemap">
 {% for item in node.children.values() -%}
@@ -94,8 +94,8 @@
 </div>
 
 <main id="main">
-{%- block main %}
-{% include path_main -%}
+{% block main -%}
+{%- include path_main -%}
 {% endblock -%}
 </main>
 </div>
@@ -106,7 +106,7 @@
 {% if path_exists(path_footer) -%}
 {% include path_footer -%}
 {% else -%}
-{{ sitenav.title }}, built by mkwww
+{{ sitenav.title|e }}, built by mkwww
 {% endif -%}
 {% endblock -%}
 </footer>

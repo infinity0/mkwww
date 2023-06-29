@@ -17,6 +17,13 @@ def runlines(*args, **kwargs):
   output = subprocess.check_output(*args, **kwargs)
   return list(output.decode("utf-8").splitlines())
 
+def runfirstline(*args, **kwargs):
+  p = subprocess.Popen(*args, stdout=subprocess.PIPE, **kwargs)
+  for i in p.stdout.readlines():
+    if i.rstrip(b"\n"):
+      p.terminate()
+      return i.decode("utf-8").rstrip("\n")
+
 GIT_LOG_NONMINOR = ["git", "log", "--invert-grep", "--grep=^\[minor\]"]
 
 FORMAT_GROUPS = {
@@ -61,10 +68,10 @@ def j2_meta(subject):
 
 def main(eng_def, thm_def, subject, *args):
   # git-shortlog for some reason doesn't work when run in parallel
-  authors = runlines(GIT_LOG_NONMINOR + ["--format=%an <%ae>", subject])
+  authors = list(runlines(GIT_LOG_NONMINOR + ["--format=%an <%ae>", subject]))
   authors = [a[0] for a in collections.Counter(authors).most_common()]
 
-  dates = runlines(GIT_LOG_NONMINOR + ["--format=%at", subject])
+  dates = list(runlines(GIT_LOG_NONMINOR + ["--format=%at", subject]))
   if not authors or not dates:
     print("no git info for %s; continuing but there may be errors in output" % subject, file=sys.stderr)
 
@@ -80,16 +87,17 @@ def main(eng_def, thm_def, subject, *args):
   # TODO(--): maybe extract titles "properly" via their respective tools
   title = None
   formats = None
+  UT = "<%s>" % os.path.basename(os.path.splitext(rel_subject)[0].removesuffix("/index"))
   if subject.endswith(".j2"):
     title, formats = j2_meta(subject)
   elif subject.endswith(".md"):
-    title = runlines(["sed", "-rne", r"s/^# (.*)/\1/gp;T;q", subject])[0]
+    title = runfirstline(["sed", "-rne", r"s/^# ?(.*)/\1/gp;T;q", subject]) or UT
     formats = ["md"]
   elif subject.endswith(".rst"):
-    title = runlines(["sed", "-rne", r'/^=+$/,/^=+$/p', subject])[1]
+    title = runfirstline(["sed", "-rne", r's/^(=+)$/&/;t y;h;b;:y x;p', subject]) or UT
     formats = ["rst"]
   elif subject.endswith(".adoc"):
-    title = runlines(["sed", "-rne", r"s/^= (.*)/\1/gp;T;q", subject])[0]
+    title = runfirstline(["sed", "-rne", r"s/^= ?(.*)/\1/gp;T;q", subject]) or UT
     formats = ["adoc"]
   else:
     print("don't know how to extract metadata from:", subject, file=sys.stderr)

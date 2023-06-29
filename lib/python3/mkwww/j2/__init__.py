@@ -64,12 +64,6 @@ def readfile(n):
   with open(n) as fp:
     return fp.read()
 
-def path_exists(f):
-  return os.path.exists(f)
-
-def path_join(base, *path):
-  return os.path.join(base, *path)
-
 def default_env():
   j2env = DependencyRecordedEnvironment(
     loader = loaders.FunctionLoader(readfile),
@@ -88,9 +82,10 @@ def default_env():
     if inspect.isfunction(func)
   }
   j2env.globals |= {
-    "path_exists": path_exists,
-    "path_join": path_join,
-    "zip": zip,
+    "path_exists": os.path.exists,
+    "path_join": os.path.join,
     "relpath": os.path.relpath,
+    "map": map,
+    "zip": zip,
   }
   return j2env

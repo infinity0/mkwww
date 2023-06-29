@@ -29,3 +29,15 @@ def ts_date(ts):
 
 def ts_time(ts):
   return datetime.utcfromtimestamp(int(ts)).strftime('%H:%M:%S')
+
+def nj_q(f):
+  # https://ninja-build.org/manual.html#ref_lexer
+  return f.replace("$", "$$").replace("\n", "$\n")
+
+def nj_qi(f):
+  # https://ninja-build.org/manual.html#ref_lexer
+  return nj_q(f).replace(" ", "$ ")
+
+def nj_qo(f):
+  # https://ninja-build.org/manual.html#ref_lexer
+  return nj_qi(f).replace(":","$:")

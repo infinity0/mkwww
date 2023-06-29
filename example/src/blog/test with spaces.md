@@ -2,7 +2,7 @@
 
 This page should look pretty much similar to the other test pages.
 
-[rst](../topics/tech/test.html) | [adoc](../test.html)
+[rst](../topics/tech/test.html) | [adoc](../test%20with%20spaces.html)
 
 ```{contents}
 ```
@@ -11,7 +11,7 @@ This page should look pretty much similar to the other test pages.
 
 Link from md [to rst](../topics/tech/test.html#_link-check)
 
-Link from md [to adoc](../test.html#_link-check)
+Link from md [to adoc](../test%20with%20spaces.html#_link-check)
 
 ### Internal link check
 
