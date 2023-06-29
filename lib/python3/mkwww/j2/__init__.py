@@ -1,5 +1,9 @@
 from . import filters
-from jinja2 import ext, nodes, loaders, Markup, Environment
+from jinja2 import ext, nodes, loaders, Environment
+try:
+  from jinja2.utils.markupsafe import Markup
+except ImportError:
+  from markupsafe import Markup
 
 import inspect
 import json
@@ -86,5 +90,7 @@ def default_env():
   j2env.globals |= {
     "path_exists": path_exists,
     "path_join": path_join,
+    "zip": zip,
+    "relpath": os.path.relpath,
   }
   return j2env

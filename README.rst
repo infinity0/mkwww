@@ -2,19 +2,25 @@
 mkwww
 =====
 
-Minimalist engine for building a minimalist static website. Features:
+Minimalist engine for building a minimalist static website. Features include:
 
-- autogenerate navigation sidebar, and include it on every page
-- autogenerate page metadata from git, e.g. author, modtime
-- supports md (myst), rst, adoc -- and others can be added easily later
+- page metadata read from git (e.g. author, modtime) or custom attached
+- page content or whole pages generated from this metadata, such as navigation
+  sidebars on every page, or complex blog indexes sorted by time and category
+- support for all major common markup formats: md (myst), rst, adoc; and any
+  combination of these within a single page
+- support for MathML output from LaTeX embedded in the above formats
 
-Sphinx can do most of this, but its code, themes, and configuration are all too
-bloated for my simple needs; I just want a minimalist website. Other simpler
-tools I looked at were either:
+Other website builders I looked at either were:
 
-- unable to generate a navigation sidebar
-- could in theory do it, but you had to learn 1000 internal details
-- didn't support all of {md, rst, adoc}
+- simple but inflexible, e.g. were unable to support website features that
+  require complex dependency relationships, such as a full-site navigation bar
+  on every page, where every output page depends on every input page; or
+
+- convenient, but flexible only in the sense of burdening the user with having
+  to understand 1000 different configuration options, and yet when you finally
+  actually tried to tweak these options, something else broke that was a major
+  aspect of the advertised "convenience" of the tool in the first place.
 
 So, I wrote my own. The target audience is someone who, like myself:
 
@@ -30,10 +36,26 @@ To that end, this tool is essentially a high-level lightweight structure around
 jinja2, that automates away those basic website tasks, yet also provides a
 simple way to use fundamental web technologies directly.
 
+Usage
+=====
+
+Build our example site from ``example/src`` (`view on GitHub
+<https://github.com/infinity0/mkwww/tree/master/example/src>`_)::
+
+  $ cd example
+  $ ../mkwww
+  $ open dist/index.html
+
+You can also see the generated site here on `GitHub Pages
+<https://infinity0.github.io/mkwww/>`_, but it may be slightly out of date.
+
+See more usage info at the top of the ``mkwww`` program `source code
+<https://github.com/infinity0/mkwww/blob/master/share/engine/bin/mkwww>`_.
+
 Dependencies
 ============
 
-- GNU make -- tested with v4.3
+- ninja-build -- tested with v1.11.1
 - Python 3 -- tested with v3.10
 - jinja2 -- tested with v3.0.3
 - jq -- tested with v1.6
@@ -44,15 +66,6 @@ Dependencies
 - pandoc -- optional for better LaTeX MathML support in MarkDown and reStructuredText; tested with v2.17
 - asciidoctor-mathematical `custom fork <https://github.com/infinity0/asciidoctor-mathematical>`_ -- optional for LaTeX MathML support in AsciiDoc; tested with `v0.1003.5 <https://github.com/infinity0/asciidoctor-mathematical/tree/local-testing>`_; requires pandoc
 - `checklink <https://github.com/w3c/link-checker>`_ -- optional for testing
-
-Usage
-=====
-
-Example::
-
-  $ cd example
-  $ ../mkwww -j check
-  $ open dist/index.html
 
 FAQ
 ===

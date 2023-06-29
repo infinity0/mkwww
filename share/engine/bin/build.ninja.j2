@@ -1,0 +1,186 @@
+{{"\n".join(MKWWW_NINJA_HEADER)}}
+
+SRC = {{SRC}}
+GEN = {{GEN}}
+DST = {{DST}}
+
+BIN = {{BIN}}
+ENG = {{ENG}}
+ENGSRC = {{ENGSRC}}
+ENGDST = {{ENGDST}}
+THM = {{THM}}
+THMSRC = {{THMSRC}}
+THMDST = {{THMDST}}
+
+J2_ENV = $BIN/j2-env.py
+MK_INF = $BIN/mk-pageinf.py
+MK_NAV = $BIN/mk-sitenav.py
+FMT_CSS = $BIN/format-css.py
+
+rule regenerate
+  command = $BIN/mkwww noninja
+  generator = true
+
+# TODO: ideally declare dependencies on the *list of files* in SRC,ENGSRC,THMSRC,
+# (not their contents). not sure if ninja-build supports this atm, make doesn't.
+build $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json: regenerate | $
+  $J2_ENV $MK_INF $MK_NAV $FMT_CSS $
+  {% for fmt in SRC_FORMATS %}$BIN/{{fmt.lower()}}2main {% endfor %}
+
+build configure: phony $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json
+
+################################################################################
+# Metadata targets
+################################################################################
+
+rule site_json_combine
+  command = mkdir -p "$$(dirname $out)"; jq -s '.[0] * .[1] * .[2] | del(._comment) | del(._)' $in > $out
+
+build $GEN/site.json: site_json_combine $ENG/site.json $THM/site.json $SRC/site.json
+
+# if the metadata hasn't changed, then don't update the target file. this
+# avoids rebuilding the navtree, which in turn
+# avoids rebuilding *every output page* since it depends on the navtree
+rule build_inf
+  restat = true
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    SRC=$SRC $MK_INF $ENG/page.json $THM/page.json "$SRC/$stem" > "$out.tmp"; $
+    if cmp -s "$out" "$out.tmp"; then rm "$out.tmp"; else mv "$out.tmp" "$out"; fi;
+
+# page info files, no override
+{% for out in INF_NV_ALL -%}
+{% set stem = relpath(out, GEN).removesuffix(".json") -%}
+build {{out}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem}}
+  stem = {{stem}}
+{% endfor -%}
+# page info files, with override
+{% for out in INF_OV_ALL -%}
+{% set stem = relpath(out, GEN).removesuffix(".json") -%}
+build {{out}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem}} $SRC/{{stem}}.json
+  stem = {{stem}}
+{% endfor -%}
+
+rule mk_sitenav
+  restat = true
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    GEN=$GEN DST=$DST $MK_NAV $bindings > "$out.tmp"; $
+    if cmp -s "$out" "$out.tmp"; then rm "$out.tmp"; else mv "$out.tmp" "$out"; fi;
+
+build $GEN/sitenav.json: mk_sitenav $MK_NAV {{" ".join(INF_ALL)}}
+  bindings = $
+{%- for fmt in ["HTML_J2"] + SRC_FORMATS -%}
+  {%- for gen, dst in zip(INF_D[fmt], DST_D[fmt]) %}
+    {{gen}}={{dst}} $
+  {%- endfor -%}
+{%- endfor %}
+
+################################################################################
+# Data targets
+################################################################################
+
+INF_SITE = $GEN/site.json
+INF_NAV = $GEN/sitenav.json
+J2_ARGS = site="json:$GEN/site.json" $
+  sitenav="json:$GEN/sitenav.json" $
+  path_themedir="$THM" $
+  path_themepage="$THM/page.html.j2" $
+  path_srcdir="$SRC" $
+  path_gendir="$GEN"
+
+rule build_j2
+  depfile = $GEN/$stem.d
+  #mkdir -p "$$(dirname $depfile)"; $ # https://github.com/ninja-build/ninja/issues/2305
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    $J2_ENV $J2_ARGS $
+      "$SRC/$stem.j2" "$GEN/$stem.j2.json" "$out" "$depfile"
+
+{% for out in DST_D["J2"] -%}
+{% set stem = relpath(out, DST).removesuffix(".j2") -%}
+build $DST/{{stem}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem}}.j2.json $SRC/{{stem}}.j2
+  stem = {{stem}}
+{% endfor %}
+
+{% macro build_TY(fmt, ext) -%}
+# build the main part of the page using {{fmt}}2main
+rule build_{{fmt}}_main
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    { echo "{{"{%- raw -%}"}}" && $BIN/{{fmt}}2main && echo "{{"{% endraw -%}"}}"; } < "$SRC/$stem.{{ext}}" > $out
+
+# build the complete page using j2
+rule build_{{fmt}}_html
+  depfile = $GEN/$stem.d
+  #mkdir -p "$$(dirname $depfile)"; $ # https://github.com/ninja-build/ninja/issues/2305
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    $J2_ENV $J2_ARGS path_main="$GEN/$stem.{{ext}}.html" $
+      "$THM/page.html.j2" "$GEN/$stem.{{ext}}.json" "$out" "$depfile"
+
+{% for out in DST_D[fmt.upper()] -%}
+{% set stem = relpath(out, DST).removesuffix(".html") -%}
+build $GEN/{{stem}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $SRC/{{stem}}.{{ext}}
+  stem = {{stem}}
+build $DST/{{stem}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem}}.{{ext}}.json $GEN/{{stem}}.{{ext}}.html
+  stem = {{stem}}
+
+{% endfor %}
+{%- endmacro -%}
+
+{% for fmt in SRC_FORMATS -%}
+{{ build_TY(fmt.lower(), fmt.lower()) }}
+{% endfor -%}
+
+rule format_css
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    $FMT_CSS "$in" > "$out"
+
+{% for out in DST_ENG_CSS -%}
+{% set stem = relpath(out, ENGDST) -%}
+build $ENGDST/{{stem}}: format_css $ENGSRC/{{stem}} | $FMT_CSS
+{% endfor -%}
+
+rule copy
+  command = $
+    mkdir -p "$$(dirname $out)"; $
+    cp -a "$in" "$out"
+
+{% macro copy_LOC(targets,srcdir,dstdir) -%}
+{% for out in targets -%}
+{% set stem = relpath(out, dstdir) -%}
+build {{out}}: copy {{srcdir}}/{{stem}}
+{% endfor -%}
+{% endmacro -%}
+
+{{ copy_LOC(DST_ENG_COPY,ENGSRC,ENGDST) }}
+{{ copy_LOC(DST_THM,THMSRC,THMDST) }}
+{{ copy_LOC(DST_COPY,SRC,DST) }}
+
+################################################################################
+# Convenience targets
+################################################################################
+
+build all: phony {{" ".join(DST_ALL)}}
+
+rule check
+  command = $
+    echo "Allowed_Protocols = file" > ${GEN}/checklink.conf; $
+    set -e; X="$$(which checklink)"; $
+    W3C_CHECKLINK_CFG=${GEN}/checklink.conf perl -XT "$$X" -X '^http' -r -q "${DST}"; $
+    echo "All checks passed!" | tee $ts
+
+build $GEN/check.stamp: check all
+  ts = $GEN/check.stamp
+
+# rerun tests regardless of whether they already passed against the latest output
+build $GEN/check.nonexistent: check all
+  ts = $GEN/check.stamp
+
+build check: phony $GEN/check.stamp
+
+build recheck: phony $GEN/check.nonexistent
+
+default check

@@ -8,7 +8,9 @@ Version: 0.20221212
 Maintainer: Ximin Luo <infinity0@pwned.gg>
 Depends:
   python3 (>= 3.9),
+  ninja-build,
   jq,
+  python3-jinja2,
   python3-tinycss2,
 Recommends:
   python3-docutils (>= 0.19),

@@ -59,7 +59,7 @@ def j2_meta(subject):
     if n.node is None and n.name.endswith("2main")]
   return title, ["j2"] + sorted(set(formats))
 
-def main(eng_def, thm_def, subject, rel_subject):
+def main(eng_def, thm_def, subject, *args):
   # git-shortlog for some reason doesn't work when run in parallel
   authors = runlines(GIT_LOG_NONMINOR + ["--format=%an <%ae>", subject])
   authors = [a[0] for a in collections.Counter(authors).most_common()]
@@ -68,6 +68,7 @@ def main(eng_def, thm_def, subject, rel_subject):
   if not authors or not dates:
     print("no git info for %s; continuing but there may be errors in output" % subject, file=sys.stderr)
 
+  rel_subject = os.path.relpath(subject, os.getenv("SRC"))
   rel_subject = os.path.normpath(rel_subject)
   nav_path = os.path.splitext(os.path.splitext(rel_subject)[0])[0]
   nav_path = nav_path.split(os.sep)

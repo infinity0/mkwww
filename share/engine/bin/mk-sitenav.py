@@ -14,11 +14,15 @@ def sortnav(node):
   for child in node["children"].values():
     sortnav(child)
 
-def main(prefix, overrides, *args):
+def main(*args):
+  prefix = os.getenv("GEN")
+  target = os.getenv("DST")
   suffix = ".json"
   treedata = []
   for arg in args:
     (info, dst) = arg.split("=", 1)
+    info = os.path.relpath(info, prefix)
+    dst = os.path.relpath(dst, target)
     if not info.endswith(suffix):
       print("cannot add to navtree: %s" % info, file=sys.stderr)
       return 1
