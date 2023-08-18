@@ -5,6 +5,7 @@ from docutils.io import FileInput
 from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
 from mkwww.rst.mixins import PermalinkSectionHTML, DetailsListHTML
 
+import json
 import os
 import os.path
 import subprocess
@@ -20,7 +21,7 @@ class Writer(_Writer):
     super().__init__()
     self.translator_class = HTMLTranslator
 
-def main(progname, id_prefix="", initial_header_level=1):
+def main(progname, ctxfile, id_prefix="", initial_header_level=1):
   parser_name = os.path.split(progname)[1].removesuffix("2main.py").removesuffix("2main")
   if parser_name == "md":
     parser_name = "myst"
@@ -30,12 +31,14 @@ def main(progname, id_prefix="", initial_header_level=1):
   if has_pandoc:
     os.environ["PATH"] = "%s:%s" % (bin_base, os.environ["PATH"])
 
+  with open(ctxfile) as fp:
+    ctx = json.load(fp)
   parts = publish_parts(
     parser_name=parser_name,
     writer=Writer(),
     source_class=FileInput,
     source=sys.stdin,
-    settings_overrides={
+    settings_overrides=ctx.get("settings_override",{}) | {
       "embed_stylesheet": False,
 
       # set idprefix from parameter

@@ -19,7 +19,7 @@ def main(*args):
   for k, v in context.items():
     ctx[k] = v
 
-  j2env = mkwww.j2.default_env()
+  j2env = mkwww.j2.default_env(ctxfile)
   result = j2env.get_template(infile).render(ctx)
   with open(outfile, 'w') as fp:
     fp.write(result)

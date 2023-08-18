@@ -108,7 +108,7 @@ build $DST/{{stem|nj_qo}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi
 rule build_{{fmt}}_main
   command = $
     mkdir -p "$$(dirname $out)"; $
-    { echo "{{"{% raw -%}"}}" && $BIN/{{fmt}}2main && echo "{{"{% endraw -%}"}}"; } < "$SRC/$stem.{{ext}}" > $out
+    { echo "{{"{% raw -%}"}}" && $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.json" && echo "{{"{% endraw -%}"}}"; } < "$SRC/$stem.{{ext}}" > $out
 
 # build the complete page using j2
 rule build_{{fmt}}_html
@@ -121,7 +121,7 @@ rule build_{{fmt}}_html
 
 {% for out in DST_D[fmt.upper()] -%}
 {% set stem = relpath(out, DST).removesuffix(".html") -%}
-build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $SRC/{{stem|nj_qi}}.{{ext}}
+build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.json $SRC/{{stem|nj_qi}}.{{ext}}
   stem = {{stem}}
 build $DST/{{stem|nj_qo}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.json $GEN/{{stem|nj_qi}}.{{ext}}.html
   stem = {{stem}}

@@ -64,7 +64,7 @@ def readfile(n):
   with open(n) as fp:
     return fp.read()
 
-def default_env():
+def default_env(ctxfile=None):
   j2env = DependencyRecordedEnvironment(
     loader = loaders.FunctionLoader(readfile),
     remember_parsed_names = True,
@@ -80,6 +80,11 @@ def default_env():
     name: func
     for name, func in inspect.getmembers(filters)
     if inspect.isfunction(func)
+  }
+  j2env.filters |= {
+    name: func
+    for name, func in inspect.getmembers(filters.DynamicFilters(ctxfile))
+    if not name.startswith("_") and inspect.ismethod(func)
   }
   j2env.globals |= {
     "path_exists": os.path.exists,
