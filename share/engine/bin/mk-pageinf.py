@@ -73,7 +73,7 @@ def main(eng_def, thm_def, subject, *args):
 
   dates = list(runlines(GIT_LOG_NONMINOR + ["--format=%at", subject]))
   if not authors or not dates:
-    print("no git info for %s; continuing but there may be errors in output" % subject, file=sys.stderr)
+    print("mkwww: mk-pageinf: no git info for %s; continuing but there may be errors or missing data in output" % subject, file=sys.stderr)
 
   rel_subject = os.path.relpath(subject, os.getenv("SRC"))
   rel_subject = os.path.normpath(rel_subject)

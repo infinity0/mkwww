@@ -18,14 +18,11 @@ MK_NAV = $BIN/mk-sitenav.py
 FMT_CSS = $BIN/format-css.py
 
 rule regenerate
-  command = $BIN/mkwww noninja
+  command = $BIN/mkwww gen
   generator = true
 
-# TODO: ideally declare dependencies on the *list of files* in SRC,ENGSRC,THMSRC,
-# (not their contents). not sure if ninja-build supports this atm, make doesn't.
 build $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json: regenerate | $
-  $J2_ENV $MK_INF $MK_NAV $FMT_CSS $
-  {% for fmt in SRC_FORMATS %}$BIN/{{fmt.lower()}}2main {% endfor %}
+  $BIN/mkwww $J2_ENV {% for f in GENERATE_DEPS %}{{f|nj_qi}} {% endfor %}
 
 build configure: phony $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json
 
@@ -34,7 +31,9 @@ build configure: phony $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json
 ################################################################################
 
 rule site_json_combine
-  command = mkdir -p "$$(dirname $out)"; jq -s '.[0] * .[1] * .[2] | del(._comment) | del(._)' $in > $out
+  command = mkdir -p "$$(dirname $out)"; jq -s '.[0] * .[1] * .[2] | del(._comment) | del(._)
+{%- if MKWWW_DEV %} | setpath(["dev"]; true){% endif -%}
+' $in > $out
 
 build $GEN/site.json: site_json_combine $ENG/site.json $THM/site.json $SRC/site.json
 
@@ -51,13 +50,13 @@ rule build_inf
 # page info files, no override
 {% for out in INF_NV_ALL -%}
 {% set stem = relpath(out, GEN).removesuffix(".json") -%}
-build {{out|nj_qo}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem|nj_qi}}
+build $GEN/{{relpath(out, GEN)|nj_qo}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem|nj_qi}}
   stem = {{stem}}
 {% endfor -%}
 # page info files, with override
 {% for out in INF_OV_ALL -%}
 {% set stem = relpath(out, GEN).removesuffix(".json") -%}
-build {{out|nj_qo}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem|nj_qi}} $SRC/{{stem|nj_qi}}.json
+build $GEN/{{relpath(out, GEN)|nj_qo}}: build_inf $MK_INF $ENG/page.json $THM/page.json $SRC/{{stem|nj_qi}} $SRC/{{stem|nj_qi}}.json
   stem = {{stem}}
 {% endfor -%}
 
@@ -68,11 +67,11 @@ rule mk_sitenav
     SRC=$SRC GEN=$GEN DST=$DST $MK_NAV $bindings > $out.tmp; $
     if cmp -s $out $out.tmp; then rm $out.tmp; else mv $out.tmp $out; fi;
 
-build $GEN/sitenav.json: mk_sitenav $MK_NAV {% for f in INF_ALL %}{{f|nj_qi}} {% endfor %}
+build $GEN/sitenav.json: mk_sitenav $MK_NAV {% for f in INF_ALL %}$GEN/{{relpath(f, GEN)|nj_qi}} {% endfor %}
   bindings = $
 {%- for fmt in ["HTML_J2"] + SRC_FORMATS -%}
   {%- for gen, dst in zip(INF_D[fmt], DST_D[fmt]) %}
-    "{{gen|nj_q}}={{dst|nj_q}}" $
+    "$GEN/{{relpath(gen, GEN)|nj_q}}=$DST/{{relpath(dst, DST)|nj_q}}" $
   {%- endfor -%}
 {%- endfor %}
 
@@ -148,22 +147,22 @@ rule copy
     mkdir -p "$$(dirname $out)"; $
     cp -a $in $out
 
-{% macro copy_LOC(targets,srcdir,dstdir) -%}
+{% macro copy_LOC(targets,srcvar,dstvar,dstdir) -%}
 {% for out in targets -%}
 {% set stem = relpath(out, dstdir) -%}
-build {{out|nj_qo}}: copy {{srcdir|nj_qi}}/{{stem|nj_qi}}
+build ${{dstvar}}/{{stem|nj_qo}}: copy ${{srcvar}}/{{stem|nj_qi}}
 {% endfor -%}
 {% endmacro -%}
 
-{{ copy_LOC(DST_ENG_COPY,ENGSRC,ENGDST) }}
-{{ copy_LOC(DST_THM,THMSRC,THMDST) }}
-{{ copy_LOC(DST_COPY,SRC,DST) }}
+{{ copy_LOC(DST_ENG_COPY,"ENGSRC","ENGDST",ENGDST) }}
+{{ copy_LOC(DST_THM,"THMSRC","THMDST",THMDST) }}
+{{ copy_LOC(DST_COPY,"SRC","DST",DST) }}
 
 ################################################################################
 # Convenience targets
 ################################################################################
 
-build all: phony {% for f in DST_ALL %}{{f|nj_qi}} {% endfor %}
+build all: phony {% for f in DST_ALL %}$DST/{{relpath(f, DST)|nj_qi}} {% endfor %}
 
 rule check
   command = $

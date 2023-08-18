@@ -45,6 +45,9 @@
 {% for style in page_styles -%}
 <link rel="stylesheet" href="{{style}}.css">
 {% endfor -%}
+{% if site.dev -%}
+<script src="{{baseCommon}}/engine/mkwww-dev.js"></script>
+{% endif -%}
 {% for script in engine_scripts -%}
 <script src="{{baseCommon}}/engine/{{script}}.js"></script>
 {% endfor -%}
@@ -88,6 +91,16 @@
 {% endif -%}
 {%- endmacro -%}
 {{ nav_branch(sitenav) }}
+{%- if site.dev -%}
+<p>&nbsp;</p>
+<small>
+<table id="dev-mode">
+<tr><th colspan="2" style="text-align:left">dev mode</th></tr>
+<tr><td>site settings</td><td><a id="dev-settings-clear">CLEAR</a></td></tr>
+<tr><td>auto-refresh</td><td><a id="dev-auto-refresh">OFF</a></td></tr>
+</table>
+</small>
+{% endif -%}
 {%- endblock -%}
 </nav>
 </details>

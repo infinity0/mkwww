@@ -21,7 +21,11 @@ def ts_time(ts):
 
 def nj_q(f):
   # https://ninja-build.org/manual.html#ref_lexer
-  return f.replace("$", "$$").replace("\n", "$\n")
+  if f[0] == "$":
+    # allow values relative to mkwww dirs
+    return "$" + f[1:].replace("$", "$$").replace("\n", "$\n")
+  else:
+    return f.replace("$", "$$").replace("\n", "$\n")
 
 def nj_qi(f):
   # https://ninja-build.org/manual.html#ref_lexer
