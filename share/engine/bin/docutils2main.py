@@ -3,7 +3,7 @@
 from docutils.core import publish_parts
 from docutils.io import FileInput
 from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
-from mkwww.rst.mixins import PermalinkSectionHTML, DetailsListHTML
+from mkwww.rst.mixins import PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML
 
 import json
 import os
@@ -13,7 +13,7 @@ import sys
 
 bin_base = os.getenv("MKWWW_BIN", ".")
 
-class HTMLTranslator(PermalinkSectionHTML, DetailsListHTML, _HTMLTranslator):
+class HTMLTranslator(PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, _HTMLTranslator):
   pass
 
 class Writer(_Writer):

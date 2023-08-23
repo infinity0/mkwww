@@ -1,6 +1,17 @@
 from mkwww.rst.base import *
 from docutils.nodes import SparseNodeVisitor
 
+import re
+from urllib.parse import urlparse
+
+
+class ReplaceLastTagMixin(object):
+  def _replace_last_tag(self, fr, to):
+    for i in (1,2,3):
+      if len(self.body) >= i and self.body[-i].strip():
+        self.body[-i] = self.body[-i].replace(fr, to)
+        return
+
 
 # code for section heading anchors ("permalinks")
 # lifted and adapted slightly from sphinx.writers.html5.HTML5Translator
@@ -26,6 +37,51 @@ class PermalinkSectionHTML(object):
         self.add_permalink_ref(node.parent, 'Permalink to this section', True)
       elif close_tag.startswith('</h'):
         self.add_permalink_ref(node.parent, 'Permalink to this section', False)
+
+
+# code copied from sphinx.utils.docutils.ReferenceRole to avoid dependency
+explicit_title_re = re.compile(r'^(.+?)\s*(?<!\x00)<(.*?)>$', re.DOTALL)
+def parse_linktext(text):
+  matched = explicit_title_re.match(text)
+  if matched:
+    has_explicit_title = True
+    title = nodes.unescape(matched.group(1))
+    target = nodes.unescape(matched.group(2))
+  else:
+    has_explicit_title = False
+    title = nodes.unescape(text)
+    target = nodes.unescape(text)
+
+  return has_explicit_title, title, target
+
+class ExtlinkHTML(ReplaceLastTagMixin):
+  def visit_reference(self, node):
+    super().visit_reference(node)
+    if "target" in node:
+      self._replace_last_tag("<a", "<a target=\"%s\"" % self.attval(node["target"]))
+
+def ext(name, rawtext, text, lineno, inliner, options=None, content=None):
+  """:ext: role function.
+
+  Indicate an external link. Can nest markup inside the text, unlike the
+  default set of rST roles.
+
+  Automatically registered as a local rule.
+  """
+  (h, text, target) = parse_linktext(text)
+  if h and text == "_":
+    text = urlparse(target).netloc.removeprefix("www.")
+
+  # https://stackoverflow.com/questions/44829580/composing-roles-in-restructuredtext/68865718#68865718
+  label = nodes.reference(rawtext, refuri=target, classes=["extlink-label"], target="_blank")
+  out, messages = inliner.parse(text, lineno, inliner, label)
+  label += out
+  # icon text is empty in the html; the actual icon is added in CSS
+  # non-empty icon text can screw with auto-id-name logic
+  icon = nodes.reference('', '', refuri=target, classes=["extlink-icon"], target="_blank")
+  # two <a> so it's easier to style them separately
+  return [label, icon], messages
+roles.register_local_role("ext", ext)
 
 
 DETAILS_LIST = "dtlist"
@@ -73,12 +129,7 @@ class DetailsList(NextElementDirective):
 directives.register_directive("dtlist", DetailsList)
 
 
-class DetailsListHTML(object):
-  def _replace_last_tag(self, fr, to):
-    for i in (1,2,3):
-      if len(self.body) >= i and self.body[-i].strip():
-        self.body[-i] = self.body[-i].replace(fr, to)
-        return
+class DetailsListHTML(ReplaceLastTagMixin):
 
   def visit_bullet_list(self, node) -> None:
     super().visit_bullet_list(node)

@@ -18,6 +18,18 @@
   visibility: visible;
 }
 
+/* == :ext: role */
+
+a.extlink-icon {
+  display: inline-block;
+  transform: scaleX(-1);
+  text-decoration: inherit;
+  margin-left: 0.3ex;
+}
+a.extlink-icon::after {
+  content: "⎋";
+}
+
 /* == Details lists */
 
 /* === Layout */
