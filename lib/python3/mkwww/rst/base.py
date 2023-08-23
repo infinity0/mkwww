@@ -1,4 +1,4 @@
-from docutils.parsers.rst import directives, Directive
+from docutils.parsers.rst import directives, Directive, roles
 from docutils.transforms import Transform
 from docutils import nodes
 

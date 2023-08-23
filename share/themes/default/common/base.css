@@ -151,6 +151,6 @@ footer {
 }
 
 a.self-link {
-  color: var(--main-fg-color);
-  text-decoration: none;
+  color: inherit;
+  text-decoration: inherit;
 }
