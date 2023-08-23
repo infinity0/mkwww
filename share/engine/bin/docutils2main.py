@@ -2,8 +2,9 @@
 
 from docutils.core import publish_parts
 from docutils.io import FileInput
+from docutils.readers.standalone import Reader as _Reader
 from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
-from mkwww.rst.mixins import AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML
+from mkwww.rst.mixins import PropagateTargetsListFix, DetailsListIdsTransform, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML
 
 import json
 import os
@@ -15,6 +16,13 @@ bin_base = os.getenv("MKWWW_BIN", ".")
 
 class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, _HTMLTranslator):
   pass
+
+class Reader(_Reader):
+  def get_transforms(self):
+    return super().get_transforms() + [
+      PropagateTargetsListFix,
+      DetailsListIdsTransform,
+    ]
 
 class Writer(_Writer):
   def __init__(self):
@@ -35,12 +43,14 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
     ctx = json.load(fp)
   parts = publish_parts(
     parser_name=parser_name,
+    reader=Reader(),
     writer=Writer(),
     source_class=FileInput,
     source_path=infile,
     source=sys.stdin,
     settings_overrides=ctx.get("settings_override",{}) | {
       "embed_stylesheet": False,
+      #"report_level": 1, # e.g. to show "duplicate implicit target name"
 
       # set idprefix from parameter
       # by default, make this "_" to be slightly more consistent with asciidoc

@@ -2,6 +2,17 @@ from docutils.parsers.rst import directives, Directive, roles
 from docutils.transforms import Transform
 from docutils import nodes
 
+
+def find_ancestor_element(node, pred):
+  parent = node.parent
+  child = node
+  while parent:
+    if pred(parent):
+      return parent
+    child = parent
+    parent = parent.parent
+  return None
+
 # copied mostly from docutils.transforms.ClassAttribute
 # TODO: upstream to docutils
 class NextElementTransform(Transform):

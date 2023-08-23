@@ -36,6 +36,7 @@ fi
 ctxfile="$1" # TODO: read extra args from this file, document this & the docutils version too
 infile="$2"
 idprefix="$3"
+cancellink='<a class="anchor-cancel" href="#" title="Cancel anchor target"></a>'
 
 # set idprefix from parameter
 # set idseparator to be slightly more consistent with docutils
@@ -43,4 +44,5 @@ fwd | \
 asciidoctor -a sectanchors -a idprefix="${idprefix}_" -a idseparator=- \
   -a toc=macro -a toc-title=Contents $args -s -o - - | \
 rev | \
-sed -e 's/class="sect/class="main-asciidoc sect/g'
+sed -e 's/class="sect/class="main-asciidoc sect/g' \
+  -e 's;<a class="anchor";'"${cancellink}"'<a class="anchor";g'

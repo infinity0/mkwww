@@ -2,18 +2,17 @@
 
 /* == Section heading anchors ("permalinks") */
 
-:is(h1, h2, h3, h4, h5, h6) .anchor {
+:is([role="heading"], h1, h2, h3, h4, h5, h6) :is(.anchor, .anchor-cancel) {
   position: absolute;
-  text-decoration: none;
-  width: 1.75ex;
   margin-left: -1.25ex;
-  visibility: hidden;
+  width: 1.75ex;
+  text-decoration: none;
 }
 
-:is(h1, h2, h3, h4, h5, h6) .anchor::before {
-  content: "\00a7";
+:not(:target, :target>*):is([role="heading"], h1, h2, h3, h4, h5, h6):hover .anchor::before {
+  content: "§";
 }
 
-:is(h1, h2, h3, h4, h5, h6):hover .anchor {
-  visibility: visible;
+:is(:target, :target>*):is([role="heading"], h1, h2, h3, h4, h5, h6) .anchor-cancel::before {
+  content: "×";
 }

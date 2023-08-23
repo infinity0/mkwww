@@ -12,10 +12,16 @@
   --spacer-padding-horizontal: 1em;
   --content-padding-default: 1em;
   --main-fg-color: black;
-  --main-fg-color-translucent: gray;
+  --main-bg-color: white;
+  --highlight-bg-color: #f66;
 }
 
 /** Layout */
+
+* {
+  /* give some context when scrolling to / opening at anchors */
+  scroll-margin-block-start: 16.67vh;
+}
 
 /* hack #1:
  * this is a workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1803783
@@ -104,6 +110,7 @@ main {
 
 body {
   color: var(--main-fg-color);
+  background: var(--main-bg-color);
   font-family: "Noto Sans", "Liberation Sans", sans-serif;
 }
 
@@ -119,6 +126,11 @@ body {
 
 main, #sitenav nav {
   padding: var(--content-padding-default);
+}
+
+.footnote {
+  font-size: smaller;
+  opacity: 0.75;
 }
 
 footer {
@@ -138,7 +150,7 @@ footer {
   text-align: center;
   line-height: calc(var(--navswitch-height) - 0.7ex);
   font-size: smaller;
-  border: 1px solid var(--main-fg-color-translucent);
+  border: 1px solid color-mix(in srgb, var(--main-fg-color) 25%, transparent);
   cursor: pointer;
 }
 
@@ -150,4 +162,20 @@ footer {
 a.self-link {
   color: inherit;
   text-decoration: inherit;
+}
+
+:is(:target, :target>*):is([role="heading"], h1, h2, h3, h4, h5, h6)::before {
+  position: absolute;
+  right: -2em;
+  content: "🠘";
+}
+
+:is(:target, :target>*):is([role="heading"], h1, h2, h3, h4, h5, h6, p[id], aside[id]) {
+  background-color: color-mix(in srgb, var(--highlight-bg-color) 50%, transparent);
+}
+
+:is(:target, :target>*):is(h1, h2, h3, h4, h5, h6) {
+  /* have the highlight-bg-color bleed out a little bit */
+  margin-inline-start: -1.6ex;
+  padding-inline-start: 1.6ex;
 }

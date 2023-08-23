@@ -28,6 +28,7 @@ asciidoctor_disable = re.compile("|".join([
   r"\.paragraph\.lead>p\b$",
   r"^table tr td$",
   r"\.videoblock\b$",
+  r"\.anchor\b$",
 ]))
 
 def transform_rules(rules, prune_asciidoctor, prefix):
@@ -40,8 +41,9 @@ def transform_rules(rules, prune_asciidoctor, prefix):
         # drop certain selectors
         parts = ["#disabled-rule-asciidoctor"]
       else:
+        mux = lambda prefix, s: prefix + s[1:] if s.startswith("/") else prefix + " " + s
         selectors, commas = parts[0::2], parts[1::2]
-        parts[0::2] = [prefix + " " + s for s in selectors]
+        parts[0::2] = [mux(prefix, s) for s in selectors]
       rule.prelude = tinycss2.parse_component_value_list("".join(parts))
 
       # transform content
