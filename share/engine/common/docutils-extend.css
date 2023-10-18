@@ -62,21 +62,25 @@ a.extlink-icon::after {
   margin-block-start: 0; margin-block-end: 0;
 }
 
-/* === Tooltips */
+/* === ctls */
 
-.dtlist summary:not(:only-child) .dtlist-tooltip:hover {
+.dtlist summary .dtlist-ctl {
+  padding: 0 0.5ex;
+  font-size: smaller;
+  user-select: none;
+}
+.dtlist summary .dtlist-ctl:hover {
   cursor: pointer;
 }
-.dtlist summary:not(:only-child) .dtlist-tooltip::after {
-  content: "[↴↴↴]";
-  font-size: smaller;
-  display: inline;
-  margin-left: 0.5em;
-  font-family: monospace;
+.dtlist summary .dtlist-ctl::before {
+  content: "[↴|";
 }
-.dtlist details:not([open]) > summary:not(:only-child) .dtlist-tooltip::after {
-  background-color: color-mix(in srgb, var(--highlight-bg-color) 50%, transparent);
+.dtlist summary .dtlist-ctl::after {
+  content: "]";
 }
-.dtlist details[open] > summary:not(:only-child) .dtlist-tooltip::after {
-  content: "[↰↰↰]";
+.dtlist details[open] > summary .dtlist-ctl::before {
+  content: "[↰|";
+}
+.dtlist details[open] > summary .dtlist-ctl::after {
+  content: "]";
 }

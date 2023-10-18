@@ -216,6 +216,35 @@ def ensure_full_stop(text):
     text = text + FULL_BREAK_STD
   return text
 
+UNICODE_RANGES_CHINESE = [
+  ("\u4E00", "\u9FFF"),
+  ("\u3400", "\u4DBF"),
+  ("\u20000", "\u2A6DF"),
+  ("\u2A700", "\u2B73F"),
+  ("\u2B740", "\u2B81F"),
+  ("\u2B820", "\u2CEAF"),
+  ("\u2CEB0", "\u2EBEF"),
+  ("\u30000", "\u3134F"),
+  ("\u31350", "\u323AF"),
+  ("\uF900", "\uFAFF"),
+  ("\u2F800", "\u2FA1F"),
+]
+
+def approx_words(text):
+  alnum = re.findall("\w", text)
+  chinese = sum(1 for c in alnum if any(a <= c <= b for (a, b) in UNICODE_RANGES_CHINESE))
+  english = len(alnum) - chinese
+  return round(english / 5.75 + chinese * 0.8)
+
+def rough_approx(n):
+  r = None
+  for t in (10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000):
+    k = t / 10
+    if n < t:
+      r = round(n / k) * k
+      break
+  return "bruh" if r is None else "%g" % r if r < 1000 else "%gk" % (r / 1000)
+
 DTLIST_FLAGHOW = {
   "self": None,
   "sub": False,
@@ -328,17 +357,43 @@ class DtList(NextElementDirective):
 directives.register_directive("dtlist", DtList)
 
 
+_old_dtlist_item_astext = nodes.list_item.astext
+def dtlist_item_astext(self):
+  if is_dtlist_item(self) and "open" not in self:
+    return self.children[0].astext() if len(self.children) else ""
+  else:
+    return _old_dtlist_item_astext(self)
+
 class DetailsListIdsVisitor(SparseNodeVisitor):
   def visit_paragraph(self, node):
     if is_dtlist_summary(node):
       details_node = node.parent
+
+      # generate id. this must be done first.
       if details_node['ids']:
         # item was already given a manual id
-        return
-      name = normalize_name(dtlist_extract_name(node))
-      if name: # skip empty items
-        details_node['names'].append(name)
-        self.document.note_implicit_target(details_node, details_node)
+        pass
+      else:
+        name = normalize_name(dtlist_extract_name(node))
+        if name: # skip empty items
+          details_node['names'].append(name)
+          self.document.note_implicit_target(details_node, details_node)
+
+      # generate child control button and tooltip
+      other_children = [n for n in details_node.children[1:] if not is_invisible(n, self.document.reporter)]
+      # word count excluding hidden sub-children; we monkey-patch astext() to make this work
+      nodes.list_item.astext = dtlist_item_astext
+      wc1 = sum(approx_words(n.astext()) for n in other_children)
+      nodes.list_item.astext = _old_dtlist_item_astext
+      # word count including hidden sub-children
+      wc2 = sum(approx_words(n.astext()) for n in other_children)
+      if wc1 > 0 or wc2 > 0:
+        node.append(nodes.Text(" "))
+        if wc1 == wc2:
+          text = rough_approx(wc1)
+        else:
+          text = "%s|%s" % (rough_approx(wc1), rough_approx(wc2))
+        node.append(nodes.inline("", text, classes=["dtlist-ctl"]))
 
 class DetailsListIdsTransform(Transform):
   """Automatically generate names and IDs for details-list items.
@@ -428,4 +483,4 @@ class DetailsListHTML(ReplaceLastTagMixin, PermalinkSectionMixin):
   def depart_paragraph(self, node):
     super().depart_paragraph(node)
     if is_dtlist_summary(node):
-      self._replace_last_tag("</p", "<span class=\"dtlist-tooltip\"></span></summary")
+      self._replace_last_tag("</p", "</summary")

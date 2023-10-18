@@ -179,3 +179,11 @@ a.self-link {
   margin-inline-start: -1.6ex;
   padding-inline-start: 1.6ex;
 }
+
+.dtlist details[open] > summary .dtlist-ctl {
+  background-color: color-mix(in srgb, var(--main-fg-color) 20%, var(--main-bg-color));
+}
+
+.dtlist details:not([open]) > summary .dtlist-ctl {
+  background-color: color-mix(in srgb, var(--highlight-bg-color) 50%, var(--main-bg-color));
+}

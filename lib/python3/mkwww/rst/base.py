@@ -13,6 +13,9 @@ def find_ancestor_element(node, pred):
     parent = parent.parent
   return None
 
+def is_invisible(node, reporter):
+  return isinstance(node, nodes.Invisible) or isinstance(node, nodes.system_message) and node['level'] < reporter.report_level
+
 # copied mostly from docutils.transforms.ClassAttribute
 # TODO: upstream to docutils
 class NextElementTransform(Transform):
