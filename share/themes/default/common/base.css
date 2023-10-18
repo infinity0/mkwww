@@ -17,19 +17,6 @@
 
 /** Layout */
 
-html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-/* https://github.com/w3c/csswg-drafts/issues/8184 */
-details > * {
-  box-sizing: border-box;
-}
-
 /* hack #1:
  * this is a workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1803783
  * our (non-negotiable) use of min-width for <main> triggers the bug, and makes
@@ -118,6 +105,16 @@ main {
 body {
   color: var(--main-fg-color);
   font-family: "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+/* Chrome doesn't support lang-commas yet */
+:is(:lang(zh-Hans), :lang(zh-CN)) > body {
+  font-family: "Noto Sans", "Noto Sans CJK SC", "Liberation Sans", sans-serif;
+}
+
+/* Chrome doesn't support lang-commas yet */
+:is(:lang(zh-Hant), :lang(zh-TW), :lang(zh-HK)) > body {
+  font-family: "Noto Sans", "Noto Sans CJK TC", "Liberation Sans", sans-serif;
 }
 
 main, #sitenav nav {
