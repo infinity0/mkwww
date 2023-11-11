@@ -20,5 +20,11 @@
   "scripts": [],
   "_comment": "Scripts to include on every page; filenames underneath dir_common",
 
+  "ext_styles": [],
+  "_comment": "Styles to include on every page; absolute URLs",
+
+  "ext_scripts": [],
+  "_comment": "Scripts to include on every page; absolute URLs",
+
   "_": "_"
 }

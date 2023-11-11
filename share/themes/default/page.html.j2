@@ -43,7 +43,7 @@
 {% for style in site.styles + common_styles -%}
 <link rel="stylesheet" href="{{baseCommon}}/{{style}}.css">
 {% endfor -%}
-{% for style in page_styles -%}
+{% for style in site.ext_styles + page_styles -%}
 <link rel="stylesheet" href="{{style}}.css">
 {% endfor -%}
 {% if site.dev -%}
@@ -53,6 +53,9 @@
 <script src="{{baseCommon}}/engine/{{script}}.js"></script>
 {% endfor -%}
 <script src="{{baseCommon}}/theme/base.js"></script>
+{% for script in site.ext_scripts -%}
+<script src="{{script}}.js"></script>
+{% endfor -%}
 {% for script in site.scripts + common_scripts -%}
 <script src="{{baseCommon}}/{{script}}.js"></script>
 {% endfor -%}
