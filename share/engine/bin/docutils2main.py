@@ -21,7 +21,7 @@ class Writer(_Writer):
     super().__init__()
     self.translator_class = HTMLTranslator
 
-def main(progname, ctxfile, id_prefix="", initial_header_level=1):
+def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
   parser_name = os.path.split(progname)[1].removesuffix("2main.py").removesuffix("2main")
   if parser_name == "md":
     parser_name = "myst"
@@ -37,7 +37,8 @@ def main(progname, ctxfile, id_prefix="", initial_header_level=1):
     parser_name=parser_name,
     writer=Writer(),
     source_class=FileInput,
-    source=sys.stdin,
+    source_path=infile,
+    source=None,
     settings_overrides=ctx.get("settings_override",{}) | {
       "embed_stylesheet": False,
 

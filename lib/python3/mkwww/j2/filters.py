@@ -38,16 +38,17 @@ def nj_qo(f):
 # filters that depend on the environment
 class DynamicFilters(object):
 
-  def __init__(self, ctxfile):
+  def __init__(self, ctxfile, infile):
     self.ctxfile = ctxfile # note, can be none, in which case the filters will throw an error
+    self.infile = infile
 
   def md2main(self, x, id_prefix=""):
     # TODO: affected by https://github.com/executablebooks/MyST-Parser/issues/644
     # user has to avoid it for now, we don't have a workaround
-    return fmt2main("md", x, self.ctxfile, id_prefix)
+    return fmt2main("md", x, self.ctxfile, self.infile, id_prefix)
 
   def rst2main(self, x, id_prefix="", initial_header_level=1):
-    return fmt2main("rst", x, self.ctxfile, id_prefix, initial_header_level)
+    return fmt2main("rst", x, self.ctxfile, self.infile, id_prefix, initial_header_level)
 
   def adoc2main(self, x, id_prefix=""):
-    return fmt2main("adoc", x, self.ctxfile, id_prefix)
+    return fmt2main("adoc", x, self.ctxfile, self.infile, id_prefix)
