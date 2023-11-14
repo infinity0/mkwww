@@ -5,6 +5,28 @@ import re
 from urllib.parse import urlparse
 
 
+# :abbr: implementation copied from sphinx
+abbr_re = re.compile(r'\((.*)\)$', re.S)
+def abbr(name, rawtext, text, lineno, inliner, options=None, content=None):
+  options = options or {}
+  matched = abbr_re.search(text)
+  if matched:
+    text = text[:matched.start()].strip()
+    options['title'] = matched.group(1)
+  else:
+    text = self.text
+
+  return [nodes.abbreviation(rawtext, text, **options)], []
+roles.register_local_role("abbr", abbr)
+
+class AbbrHTML(object):
+  def visit_abbreviation(self, node):
+    attrs = {}
+    if node.hasattr('title'):
+      attrs['title'] = node['title']
+    self.body.append(self.starttag(node, 'abbr', '', **attrs))
+
+
 class ReplaceLastTagMixin(object):
   def _replace_last_tag(self, fr, to):
     for i in (1,2,3):
