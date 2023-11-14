@@ -34,7 +34,8 @@ if gem list --silent -i -v ">= 0.1003" '^asciidoctor-mathematical$'; then
 fi
 
 ctxfile="$1" # TODO: read extra args from this file, document this & the docutils version too
-idprefix="$2"
+infile="$2"
+idprefix="$3"
 
 # set idprefix from parameter
 # set idseparator to be slightly more consistent with docutils
