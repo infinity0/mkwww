@@ -2,9 +2,7 @@
 
 from docutils.core import publish_parts
 from docutils.io import FileInput
-from docutils.readers.standalone import Reader as _Reader
-from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
-from mkwww.rst.mixins import PropagateTargetsListFix, DetailsListIdsTransform, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML
+from mkwww.rst import HTMLTranslator, Reader, Writer
 
 import json
 import os
@@ -13,21 +11,6 @@ import subprocess
 import sys
 
 bin_base = os.getenv("MKWWW_BIN", ".")
-
-class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, _HTMLTranslator):
-  pass
-
-class Reader(_Reader):
-  def get_transforms(self):
-    return super().get_transforms() + [
-      PropagateTargetsListFix,
-      DetailsListIdsTransform,
-    ]
-
-class Writer(_Writer):
-  def __init__(self):
-    super().__init__()
-    self.translator_class = HTMLTranslator
 
 def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
   parser_name = os.path.split(progname)[1].removesuffix("2main.py").removesuffix("2main")

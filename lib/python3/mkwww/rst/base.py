@@ -72,3 +72,25 @@ class NextElementDirective(Directive):
                                     container)
             node_list.extend(container.children)
         return node_list
+
+class ReplaceLastTagMixin(object):
+  def _replace_last_tag(self, fr, to):
+    for i in (1,2,3):
+      if len(self.body) >= i and self.body[-i].strip():
+        self.body[-i] = self.body[-i].replace(fr, to)
+        return
+
+# code for section heading anchors ("permalinks")
+# lifted and adapted slightly from sphinx.writers.html5.HTML5Translator
+# main differences are to match asciidoc:
+# - anchor is generated before the heading, instead of after
+# - anchor class name is "anchor", instead of "headerlink"
+class PermalinkSectionMixin(object):
+  def add_permalink_ref(self, node, title, toc_backref=False) -> None:
+    if node['ids']:
+      cancel = '<a class="anchor-cancel" href="#" title="Cancel anchor target"></a>'
+      link = '%s<a class="anchor" href="#%s" title="%s"></a>' % (cancel, node['ids'][0], self.attval(title))
+      if toc_backref:
+        self.body[-1] = self.body[-1].replace("><a ", ">%s<a " % link)
+      else:
+        self.body[-1] += link
