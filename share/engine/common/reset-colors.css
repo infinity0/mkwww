@@ -1,0 +1,93 @@
+:root {
+  /* define vars corresponding to system colors so we can override them consistently */
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/system-color */
+  --AccentColor: AccentColor;
+  --AccentColorText: AccentColorText;
+  --ActiveText: ActiveText;
+  --ButtonBorder: ButtonBorder;
+  --ButtonFace: ButtonFace;
+  --ButtonText: ButtonText;
+  --Canvas: Canvas;
+  --CanvasText: CanvasText;
+  --Field: Field;
+  --FieldText: FieldText;
+  --GrayText: GrayText;
+  --Highlight: Highlight;
+  --HighlightText: HighlightText;
+  --LinkText: LinkText;
+  --Mark: Mark;
+  --MarkText: MarkText;
+  --SelectedItem: SelectedItem;
+  --SelectedItemText: SelectedItemText;
+  --VisitedText: VisitedText;
+}
+
+@media (forced-colors: active) {
+  /* force system colors in forced-colors mode, ignore overrides */
+  :root {
+    --AccentColor: AccentColor !important;
+    --AccentColorText: AccentColorText !important;
+    --ActiveText: ActiveText !important;
+    --ButtonBorder: ButtonBorder !important;
+    --ButtonFace: ButtonFace !important;
+    --ButtonText: ButtonText !important;
+    --Canvas: Canvas !important;
+    --CanvasText: CanvasText !important;
+    --Field: Field !important;
+    --FieldText: FieldText !important;
+    --GrayText: GrayText !important;
+    --Highlight: Highlight !important;
+    --HighlightText: HighlightText !important;
+    --LinkText: LinkText !important;
+    --Mark: Mark !important;
+    --MarkText: MarkText !important;
+    --SelectedItem: SelectedItem !important;
+    --SelectedItemText: SelectedItemText !important;
+    --VisitedText: VisitedText !important;
+  }
+}
+
+:root {
+  background: var(--Canvas);
+  color: var(--CanvasText);
+}
+
+:is(a, area):link {
+  color: var(--LinkText);
+}
+:is(a, area):active {
+  color: var(--ActiveText);
+}
+:is(a, area):visited {
+  color: var(--VisitedText);
+}
+
+::selection {
+  background: var(--Highlight);
+  color: var(--HighlightText);
+}
+mark {
+  background: var(--Mark);
+  color: var(--MarkText);
+}
+
+:is(input, select, textarea):not(:disabled) {
+  background: var(--Field);
+  color: var(--FieldText);
+}
+:is(input[type=button], ::file-selector-button, button):not(:disabled) {
+  background: var(--ButtonFace);
+  color: var(--ButtonText);
+  border-color: var(--ButtonBorder);
+}
+:is(input[type=radio], input[type=checkbox], input[type=range], progress):not(:disabled) {
+  accent-color: var(--AccentColor);
+  color: var(--AccentColorText);
+}
+:focus > :checked, :focus:checked {
+  background: var(--SelectedItem);
+  color: var(--SelectedItemText);
+}
+:disabled {
+  color: var(--GrayText);
+}

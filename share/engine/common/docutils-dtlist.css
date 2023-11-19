@@ -53,3 +53,11 @@
 .dtlist details[open] > summary .dtlist-ctl::after {
   content: "]";
 }
+.dtlist details[open] > summary .dtlist-ctl {
+  background-color: color-mix(in srgb, var(--CanvasText) 25%, var(--Canvas));
+}
+
+.dtlist details:not([open]) > summary .dtlist-ctl {
+  background-color: color-mix(in srgb, var(--AccentColor) 50%, var(--Canvas));
+}
+
