@@ -1,11 +1,12 @@
 from mkwww.rst.extensions import PropagateTargetsListFix, PropagateClassesListFix, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML
+from mkwww.rst.tables import MoreColsRowsPostTransform, TableGroupsHTML
 from mkwww.rst.dtlist import DetailsListIdsTransform, DetailsListHTML
 
 from docutils.readers.standalone import Reader as _Reader
 from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
 
 
-class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, _HTMLTranslator):
+class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, TableGroupsHTML, _HTMLTranslator):
   pass
 
 class Reader(_Reader):
@@ -13,6 +14,7 @@ class Reader(_Reader):
     return super().get_transforms() + [
       PropagateClassesListFix,
       PropagateTargetsListFix,
+      MoreColsRowsPostTransform,
       DetailsListIdsTransform,
     ]
 
