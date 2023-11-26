@@ -1,6 +1,7 @@
 from mkwww.rst.base import *
 from docutils.nodes import SparseNodeVisitor
 from docutils.transforms.references import PropagateTargets
+from docutils.transforms.misc import ClassAttribute
 
 import re
 from urllib.parse import urlparse
@@ -101,6 +102,24 @@ class PropagateTargetsListFix(Transform):
 
   def apply(self):
     self.document.walkabout(PropagateTargetsListFixer(self.document))
+
+class PropagateClassesListFixer(SparseNodeVisitor):
+
+  def visit_pending(self, node):
+    super().visit_pending(node)
+    # TODO: the way we exclude simple here is a bit of a hack. What about other stuff?
+    if node.transform is ClassAttribute and "simple" not in node.details["class"]:
+      target = node.next_node(ascend=True)
+      parent = node.parent
+      if isinstance(target, (nodes.bullet_list, nodes.enumerated_list)):
+        parent.remove(node)
+        target.insert(0, node)
+
+class PropagateClassesListFix(Transform):
+  default_priority = ClassAttribute.default_priority - 1
+
+  def apply(self):
+    self.document.walkabout(PropagateClassesListFixer(self.document))
 
 
 # code copied from sphinx.utils.docutils.ReferenceRole to avoid dependency

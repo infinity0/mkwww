@@ -1,4 +1,4 @@
-from mkwww.rst.extensions import PropagateTargetsListFix, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML
+from mkwww.rst.extensions import PropagateTargetsListFix, PropagateClassesListFix, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML
 from mkwww.rst.dtlist import DetailsListIdsTransform, DetailsListHTML
 
 from docutils.readers.standalone import Reader as _Reader
@@ -11,6 +11,7 @@ class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTM
 class Reader(_Reader):
   def get_transforms(self):
     return super().get_transforms() + [
+      PropagateClassesListFix,
       PropagateTargetsListFix,
       DetailsListIdsTransform,
     ]
