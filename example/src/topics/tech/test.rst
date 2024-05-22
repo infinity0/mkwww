@@ -2,6 +2,12 @@
 Test: rst
 =========
 
+.. class:: description
+
+  Test description
+  description line1 wrap
+  description line2 wrap
+
 This page should look pretty much similar to the other test pages.
 
 `adoc <../../test%20with%20spaces.html>`_ | `md <../../blog/test%20with%20spaces.html>`_

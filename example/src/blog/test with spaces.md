@@ -1,5 +1,11 @@
 # Test: md
 
+```{class} description
+Test description
+description line1 wrap
+description line2 wrap
+```
+
 This page should look pretty much similar to the other test pages.
 
 [rst](../topics/tech/test.html) | [adoc](../test%20with%20spaces.html)

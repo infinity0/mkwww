@@ -65,6 +65,14 @@ def guess_main_format(subject):
     return ext
   return None
 
+def j2_find_assign(template, var):
+  val = None
+  for n in template.find_all(nodes.Assign):
+    if isinstance(n.target, nodes.Name) and n.target.name == var:
+      val = n.node.as_const()
+      break
+  return val
+
 def j2_meta(subject):
   # we must extract the metadata before rendering the template (for final
   # distribution), because we need the title for sitenav.json, which is in turn
@@ -72,15 +80,12 @@ def j2_meta(subject):
   j2env = mkwww.j2.default_env()
   with open(subject) as fp:
     template = j2env.parse(fp.read())
-  title = None
-  for n in template.find_all(nodes.Assign):
-    if isinstance(n.target, nodes.Name) and n.target.name == "title":
-      title = n.node.as_const()
-      break
+  title = j2_find_assign(template, "title")
+  description = j2_find_assign(template, "description")
   formats = [n.name.removesuffix("2main")
     for n in template.find_all(nodes.Filter)
     if n.node is None and n.name.endswith("2main")]
-  return title, ["j2"] + sorted(set(formats))
+  return title, description, ["j2"] + sorted(set(formats))
 
 def main(eng_def, thm_def, subject, *args):
   # git-shortlog for some reason doesn't work when run in parallel
@@ -102,19 +107,26 @@ def main(eng_def, thm_def, subject, *args):
 
   # TODO(--): maybe extract titles "properly" via their respective tools
   title = None
+  description = None
   formats = None
   UT = "<%s>" % os.path.basename(os.path.splitext(rel_subject)[0].removesuffix("/index"))
   fmt = guess_main_format(subject)
   if fmt == "j2":
-    title, formats = j2_meta(subject)
+    title, description, formats = j2_meta(subject)
   elif fmt == "md":
     title = runfirstline(["sed", "-rne", r"s/^# ?(.*)/\1/gp;T;q", subject]) or UT
+    description = runlines(["sed", "-rne", r'/^```\{class\} description/,/^```/p', subject])
+    description = " ".join(description[1:-1])
     formats = ["md"]
   elif fmt == "rst":
     title = runfirstline(["sed", "-rne", r's/^(=+)$/&/;t y;h;b;:y x;p', subject]) or UT
+    description = runlines(["sed", "-rne", r'/^.. class:: description/,${x;s/^$//;t;x;s/^\S/\0/;T x;q;:x p}', subject])
+    description = " ".join(l.lstrip() for l in description[1:])
     formats = ["rst"]
   elif fmt == "adoc":
     title = runfirstline(["sed", "-rne", r"s/^= ?(.*)/\1/gp;T;q", subject]) or UT
+    description = runlines(["sed", "-rne", r'/^:description:/,${p;s/[^\\]$/\0/;T;q}', subject])
+    description = "".join(l.rstrip("\\") for l in description).removeprefix(":description: ")
     formats = ["adoc"]
   else:
     print("don't know how to extract metadata from:", subject, file=sys.stderr)
@@ -135,7 +147,8 @@ def main(eng_def, thm_def, subject, *args):
     "modifiedTs": dates[0] if dates else 0,
     "baseRel": os.path.relpath(".", os.path.dirname(rel_subject)),
     "navPath": nav_path,
-    "title": title,
+    "title": title or "",
+    "description": description or "",
     "engine_styles": [s for g in engineGroups for s in ENGINE_STYLES[g]],
     "engine_scripts": [s for g in engineGroups for s in ENGINE_SCRIPTS[g]],
   }

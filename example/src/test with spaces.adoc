@@ -1,4 +1,9 @@
 = Test: adoc
+:description: Test description \
+description line1 wrap \
+description line2 wrap
+
+{description}
 
 This page should look pretty much similar to the other test pages.
 
