@@ -64,6 +64,29 @@ def readfile(n):
   with open(n) as fp:
     return fp.read()
 
+def _startPath(cwd, path="", rel=True):
+  sep = os.path.sep
+  if type(path) == str:
+    if path.startswith(sep):
+      startPath = path
+    else:
+      startPath = sep + sep.join(cwd + [path]) if rel else path
+  elif type(path) == list:
+    if path and path[0] == sep:
+      startPath = sep.join(path)
+    else:
+      startPath = sep + sep.join(cwd + path if rel else path)
+  startPath = os.path.normpath(startPath).split(sep)[1:]
+  return [] if startPath == [""] else startPath
+
+def nav(sitenav, cwd, path="", rel=True):
+  pagenav = sitenav
+  navPath = _startPath(cwd, path, rel)
+  while navPath:
+    head = navPath.pop(0)
+    pagenav = pagenav["subpages"][head]
+  return pagenav
+
 def default_env(ctxfile=None, infile=None):
   j2env = DependencyRecordedEnvironment(
     loader = loaders.FunctionLoader(readfile),
@@ -94,3 +117,29 @@ def default_env(ctxfile=None, infile=None):
     "zip": zip,
   }
   return j2env
+
+def main():
+  import itertools
+  results = {
+    (('a', 'b'), '', True): ['a', 'b'],
+    (('a', 'b'), '.', True): ['a', 'b'],
+    (('a', 'b'), '..', True): ['a'],
+    (('a', 'b'), (), True): ['a', 'b'],
+    (('a', 'b'), ('.',), True): ['a', 'b'],
+    (('a', 'b'), ('..',), True): ['a'],
+  }
+  errors = False
+  for s, p, r in itertools.product(
+      ([], ["a", "b"]),
+      ("", "/", ".", "..", [], ["/"], ["."], [".."]),
+      (False, True)
+    ):
+    res = _startPath(s, p, r)
+    k = tuple([tuple(s), (tuple(p) if type(p) == list else p), r])
+    if res != results.get(k, []):
+      print(k, res)
+      errors = True
+  return 1 if errors else 0
+
+if __name__ == "__main__":
+  sys.exit(main())

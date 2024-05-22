@@ -69,7 +69,12 @@ rule mk_sitenav
 
 build $GEN/sitenav.json: mk_sitenav $MK_NAV {% for f in INF_ALL %}$GEN/{{relpath(f, GEN)|nj_qi}} {% endfor %}
   bindings = $
-{%- for fmt in ["HTML_J2"] + SRC_FORMATS -%}
+{%- for fmt in ["HTML"] + SRC_FORMATS -%}
+  {%- for gen, dst in zip(INF_D[fmt + "_J2"], DST_D[fmt + "_J2"]) %}
+    "$GEN/{{relpath(gen, GEN)|nj_q}}=$DST/{{relpath(dst, DST)|nj_q}}" $
+  {%- endfor -%}
+{%- endfor %}
+{%- for fmt in SRC_FORMATS -%}
   {%- for gen, dst in zip(INF_D[fmt], DST_D[fmt]) %}
     "$GEN/{{relpath(gen, GEN)|nj_q}}=$DST/{{relpath(dst, DST)|nj_q}}" $
   {%- endfor -%}
@@ -107,7 +112,7 @@ build $DST/{{stem|nj_qo}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi
 rule build_{{fmt}}_main
   command = $
     mkdir -p "$$(dirname $out)"; $
-    { echo "{{"{% raw -%}"}}" && $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.json" "$SRC/$stem.{{ext}}" && echo "{{"{% endraw -%}"}}"; } < "$SRC/$stem.{{ext}}" > $out
+    { echo "{{"{% raw -%}"}}" && $BIN/{{fmt}}2main "$ctxfile" "$infile" && echo "{{"{% endraw -%}"}}"; } < "$infile" > $out
 
 # build the complete page using j2
 rule build_{{fmt}}_html
@@ -116,14 +121,30 @@ rule build_{{fmt}}_html
   command = $
     mkdir -p "$$(dirname $out)"; $
     $J2_ENV $J2_ARGS path_main="$GEN/$stem.{{ext}}.html" $
-      "$THM/page.html.j2" "$GEN/$stem.{{ext}}.json" $out "$depfile"
+      "$THM/page.html.j2" "$ctxfile" $out "$depfile"
 
 {% for out in DST_D[fmt.upper()] -%}
 {% set stem = relpath(out, DST).removesuffix(".html") -%}
 build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.json $SRC/{{stem|nj_qi}}.{{ext}}
   stem = {{stem}}
+  infile = $SRC/{{stem}}.{{ext}}
+  ctxfile = $GEN/{{stem}}.{{ext}}.json
 build $DST/{{stem|nj_qo}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.json $GEN/{{stem|nj_qi}}.{{ext}}.html
   stem = {{stem}}
+  ctxfile = $GEN/{{stem}}.{{ext}}.json
+
+{% endfor -%}
+{% for out in DST_D[fmt.upper() + "_J2"] -%}
+{% set stem = relpath(out, DST).removesuffix(".html") -%}
+build $GEN/{{stem|nj_qo}}.{{ext}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $SRC/{{stem|nj_qi}}.{{ext}}.j2
+  stem = {{stem}}.{{ext}}
+build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}
+  stem = {{stem}}
+  infile = $GEN/{{stem}}.{{ext}}
+  ctxfile = $GEN/{{stem}}.{{ext}}.j2.json
+build $DST/{{stem|nj_qo}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}.html
+  stem = {{stem}}
+  ctxfile = $GEN/{{stem}}.{{ext}}.j2.json
 
 {% endfor %}
 {%- endmacro -%}

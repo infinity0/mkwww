@@ -49,6 +49,22 @@ ENGINE_SCRIPTS = {
   "*1": [],
 }
 
+def guess_main_format(subject):
+  (main, ext) = os.path.splitext(subject)
+  fmts = [f for f in FORMAT_GROUPS.keys() if f != "j2"]
+  if not ext:
+    return None
+  ext = ext[1:]
+  if ext == "j2":
+    (main, ext2) = os.path.splitext(main)
+    if ext2 and ext2[1:] in fmts:
+      return ext2[1:]
+    else:
+      return ext
+  elif ext in fmts:
+    return ext
+  return None
+
 def j2_meta(subject):
   # we must extract the metadata before rendering the template (for final
   # distribution), because we need the title for sitenav.json, which is in turn
@@ -88,15 +104,16 @@ def main(eng_def, thm_def, subject, *args):
   title = None
   formats = None
   UT = "<%s>" % os.path.basename(os.path.splitext(rel_subject)[0].removesuffix("/index"))
-  if subject.endswith(".j2"):
+  fmt = guess_main_format(subject)
+  if fmt == "j2":
     title, formats = j2_meta(subject)
-  elif subject.endswith(".md"):
+  elif fmt == "md":
     title = runfirstline(["sed", "-rne", r"s/^# ?(.*)/\1/gp;T;q", subject]) or UT
     formats = ["md"]
-  elif subject.endswith(".rst"):
+  elif fmt == "rst":
     title = runfirstline(["sed", "-rne", r's/^(=+)$/&/;t y;h;b;:y x;p', subject]) or UT
     formats = ["rst"]
-  elif subject.endswith(".adoc"):
+  elif fmt == "adoc":
     title = runfirstline(["sed", "-rne", r"s/^= ?(.*)/\1/gp;T;q", subject]) or UT
     formats = ["adoc"]
   else:

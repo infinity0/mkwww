@@ -21,7 +21,7 @@
 {%- macro nav_title(node) -%}
 {#- Generate the full title, from all titles in the navPath. -#}
 {%- if navPath[:(node.navPath|length)] == node.navPath -%}
-{%- for item in node.children.values() -%}
+{%- for item in node.subpages.values() -%}
 {{ nav_title(item) }}
 {%- endfor -%}
 {%- if title_maxdepth < 0 or node.navPath|length == 0 or
@@ -82,9 +82,9 @@
 {% macro nav_branch(node) -%}
 {#- Generate a branch of the navigation tree. -#}
 <a class="nav-link{% if node.navPath == navPath %} self-link{% endif %}" href="{{baseRel}}/{{node.href|urlencode}}">{{node.title|e}}</a>
-{% if navPath[:(node.navPath|length)] == node.navPath and node.children -%}
+{% if navPath[:(node.navPath|length)] == node.navPath and node.subpages -%}
 <ul class="sitemap">
-{% for item in node.children.values() -%}
+{% for item in node.subpages.values() -%}
   <li>
     {% filter indent(width=4) -%}
     {{ nav_branch(item) }}

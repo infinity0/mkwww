@@ -245,9 +245,9 @@ def mk_config():
   dst_THM = lambda x: pj(THMDST, rel(x, THMSRC))
   re_suf = lambda a, x, y: a.removesuffix(x)+y
 
-  def def_fmt_vars(FMT, ext, isuf, osuf):
-    SRC_D[FMT] = list(filter(lambda x: x.endswith("."+ext), SRC_ALL))
-    IOV_D[FMT] = list(filter(lambda x: x.endswith("."+ext+".json"), SRC_ALL))
+  def def_fmt_vars(FMT, ext, isuf, osuf, disj=True, src_all=SRC_ALL):
+    SRC_D[FMT] = list(filter(lambda x: x.endswith("."+ext), src_all))
+    IOV_D[FMT] = list(filter(lambda x: x.endswith("."+ext+".json"), src_all))
     SRC_OV_D[FMT] = [x.removesuffix(".json") for x in intersect([x+".json" for x in SRC_D[FMT]], IOV_D[FMT])]
     SRC_NV_D[FMT] = filterout(SRC_OV_D[FMT], SRC_D[FMT])
     INF_OV_D[FMT] = list(map(gen_INF, SRC_OV_D[FMT]))
@@ -256,8 +256,7 @@ def mk_config():
     DEP_D[FMT] = list(map(lambda x: gen_DEP(re_suf(x, isuf, osuf)), SRC_D[FMT]))
     DST_D[FMT] = list(map(lambda x: dst_SRC(re_suf(x, isuf, osuf)), SRC_D[FMT]))
 
-    # filter out our special handling of .html.j2
-    if "."+ext == isuf:
+    if disj:
       IOV_ALL.extend(IOV_D[FMT])
       INF_OV_ALL.extend(INF_OV_D[FMT])
       INF_NV_ALL.extend(INF_NV_D[FMT])
@@ -267,10 +266,14 @@ def mk_config():
       DST_NONCOPY.extend(DST_D[FMT])
 
   # path variables
-  def_fmt_vars("J2", "j2", ".j2", "")
-  def_fmt_vars("HTML_J2", "html.j2", ".j2", "") # for sitenav - subset of *.j2 files that are *.html.j2
+  src_non_fmt = set(SRC_ALL)
   for fmt in SRC_FORMATS:
-    def_fmt_vars(fmt, fmt.lower(), "."+fmt.lower(), ".html")
+    fmt_ = fmt.lower()
+    def_fmt_vars(fmt + "_J2", fmt_ + ".j2", ".%s.j2" % fmt_, ".html")
+    def_fmt_vars(fmt, fmt_, "."+fmt_, ".html")
+    src_non_fmt -= set(SRC_D[fmt + "_J2"])
+  def_fmt_vars("J2", "j2", ".j2", "", src_all=src_non_fmt)
+  def_fmt_vars("HTML_J2", "html.j2", ".j2", "", False)
 
   SRC_SPEC = [ pj(SRC, "site.json") ]
   SRC_COPY = filterout(IOV_ALL + SRC_SPEC + SRC_NONCOPY, SRC_ALL)

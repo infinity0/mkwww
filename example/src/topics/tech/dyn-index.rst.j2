@@ -1,0 +1,10 @@
+Dynamic index
+=============
+
+This file is a ``.rst.j2`` file that is mostly rST, without the j2 preamble boilerplate (as we have in `Blog <../../blog/index.html>`_), with embedded j2 template content.
+
+The j2 is parsed before the rst, hence the ``.rst.j2`` extension.
+
+{% for page in nav("..").subpages.values() if navPath != page.navPath -%}
+* {{page.modifiedTs|ts_date}} - `{{page.title}} <{{baseRel}}/{{page.href|urlencode}}>`_
+{% endfor %}

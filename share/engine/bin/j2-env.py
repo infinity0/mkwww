@@ -7,7 +7,6 @@ import mkwww.j2.filters
 import json
 import sys
 
-
 def main(*args):
   (context, args) = mkwww.j2.read_context(list(args))
   infile = args.pop(0)
@@ -18,6 +17,8 @@ def main(*args):
     ctx = json.load(fp)
   for k, v in context.items():
     ctx[k] = v
+  if "navPath" in ctx and "sitenav" in ctx:
+    ctx["nav"] = lambda *args: mkwww.j2.nav(ctx["sitenav"], ctx["navPath"], *args)
 
   j2env = mkwww.j2.default_env(ctxfile, infile)
   result = j2env.get_template(infile).render(ctx)

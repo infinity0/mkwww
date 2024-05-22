@@ -6,17 +6,17 @@ import os.path
 import sys
 
 def sortnav(srcdir, node):
-  children = list(node["children"].items())
-  for elem in children:
+  subpages = list(node["subpages"].items())
+  for elem in subpages:
     if "title" not in elem[1]:
       path = "/".join([srcdir] + node["navPath"] + [elem[0]])
       print("ERROR: please create an empty page for path '%s' in either %s.$fmt or %s/index.$fmt" % (elem[0], path, path), file=sys.stderr)
       raise ValueError("see error message above")
-  children.sort(key=lambda elem: elem[1]["navSortKey"] or elem[0],
+  subpages.sort(key=lambda elem: elem[1]["navSortKey"] or elem[0],
                 reverse=node["navSortChildrenRev"])
   # python 3.6 onwards maintains dictionary insert order
-  node["children"] = dict(children)
-  for child in node["children"].values():
+  node["subpages"] = dict(subpages)
+  for child in node["subpages"].values():
     sortnav(srcdir, child)
 
 def main(*args):
@@ -36,15 +36,15 @@ def main(*args):
       meta = json.load(fp)
     treedata.append((meta, dst))
 
-  tree = { "children": {} }
+  tree = { "subpages": {} }
   for (meta, dst) in treedata:
     cur = tree
     path = meta["navPath"][:]
     while path:
       ch = path.pop(0)
-      if ch not in cur["children"]:
-        cur["children"][ch] = { "children": {} }
-      cur = cur["children"][ch]
+      if ch not in cur["subpages"]:
+        cur["subpages"][ch] = { "subpages": {} }
+      cur = cur["subpages"][ch]
     if "navPath" in cur:
       print("ERROR: duplicate item", file=sys.stderr)
       return 1
