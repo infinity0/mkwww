@@ -1,8 +1,0 @@
-#!/bin/sh
-# Hack, to make docutils use pandoc instead of latexml
-# Pandoc works better than the main docutils latexml integration:
-# - it automatically loads common packages like amsfonts; docutils only loads amsmath
-# - it generates only one <math> element; latexml can generate multiple, but docutils only takes the first one
-# Tested with docutils 0.19
-# TODO: delete this after https://sourceforge.net/p/docutils/patches/197/
-exec pandoc --mathml -f latex -t html5

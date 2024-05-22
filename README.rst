@@ -61,7 +61,7 @@ Dependencies
 - jq -- tested with v1.6
 - python-tinycss2 -- tested with v1.2.1
 - python-myst, python-linkify-it -- optional for MarkDown support; tested with v0.18.1; requires python-docutils
-- python-docutils -- optional for reStructuredText support; tested with v0.19
+- python-docutils -- optional for reStructuredText support; tested with v0.21
 - asciidoctor -- optional for AsciiDoc support; tested with v2.0.17
 - pandoc -- optional for better LaTeX MathML support in MarkDown and reStructuredText; tested with v2.17
 - asciidoctor-mathematical `custom fork <https://github.com/infinity0/asciidoctor-mathematical>`_ -- optional for LaTeX MathML support in AsciiDoc; tested with `v0.1003.5 <https://github.com/infinity0/asciidoctor-mathematical/tree/local-testing>`_; requires pandoc

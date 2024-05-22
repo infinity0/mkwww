@@ -32,6 +32,12 @@ class AbbrHTML(object):
 class PermalinkSectionHTML(PermalinkSectionMixin):
   def visit_title(self, node) -> None:
     super().visit_title(node)
+    # work around annoying bug in docutils 0.21
+    if isinstance(node.parent, nodes.topic):
+      if (self.settings.toc_backlinks
+          and 'contents' in node.parent['classes']):
+        self._replace_last_tag(' href="#top">', '>')
+
     close_tag = self.context[-1]
     if (node.parent.hasattr('ids') and node.parent['ids']):
       # add permalink anchor

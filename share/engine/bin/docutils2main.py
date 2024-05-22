@@ -18,9 +18,6 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
     parser_name = "myst"
   initial_header_level = int(initial_header_level)
   has_pandoc = 0 == subprocess.call(["which", "pandoc"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-  # TODO: drop after https://sourceforge.net/p/docutils/patches/197/
-  if has_pandoc:
-    os.environ["PATH"] = "%s:%s" % (bin_base, os.environ["PATH"])
 
   with open(ctxfile) as fp:
     ctx = json.load(fp)
@@ -42,8 +39,7 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       "id_prefix": id_prefix + "_",
       # mathml works in chrome (in >> 110, behind a flag), firefox, opera
       # this is good enough for us, we can avoid messing with mathjax.
-      # TODO: switch latexml to pandoc after https://sourceforge.net/p/docutils/patches/197/
-      "math_output": "mathml latexml" if has_pandoc else "mathml",
+      "math_output": "mathml pandoc" if has_pandoc else "mathml",
 
       # rst "autodetects" section heading levels, but this runs into issues
       # when e.g. mixing multiple formats using our *2main jinja filters
@@ -69,9 +65,6 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       # TODO: remove this after https://github.com/executablebooks/MyST-Parser/issues/641
       "myst_all_links_external": True,
     })
-  # TODO: bug with docutils; remove after https://sourceforge.net/p/docutils/patches/197/
-  if os.path.exists("./latexmlpost.log"):
-    os.unlink("./latexmlpost.log")
   main = parts['html_body'].replace("<main", '<div class="main-docutils"', 1).replace("</main>", "</div>", 1)
   sys.stdout.write(main.rstrip())
   sys.stdout.write("\n")
