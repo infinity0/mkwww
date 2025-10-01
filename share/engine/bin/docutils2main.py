@@ -57,6 +57,7 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       # further override this on a per-document basis, for details see
       # https://myst-parser.readthedocs.io/en/latest/configuration.html#local-configuration
       "myst_enable_extensions": [
+        "deflist",
         "linkify",
         "strikethrough",
         "tasklist",

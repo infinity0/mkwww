@@ -24,7 +24,7 @@ def runfirstline(*args, **kwargs):
       p.terminate()
       return i.decode("utf-8").rstrip("\n")
 
-GIT_LOG_NONMINOR = ["git", "log", "--invert-grep", "--grep=^\[minor\]"]
+GIT_LOG_NONMINOR = ["git", "log", "--invert-grep", r"--grep=^\[minor\]"]
 
 FORMAT_GROUPS = {
   "j2": "mkwww-j2",
