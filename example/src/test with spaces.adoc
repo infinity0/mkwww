@@ -13,9 +13,9 @@ toc::[]
 
 == Link check
 
-Link from adoc link:blog/test%20with%20spaces.html#_link-check[to md]
+Link from adoc link:blog/test%20with%20spaces.html#link-check[to md]
 
-Link from adoc link:topics/tech/test.html#_link-check[to rst]
+Link from adoc link:topics/tech/test.html#link-check[to rst]
 
 === Internal link check
 

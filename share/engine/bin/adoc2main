@@ -41,7 +41,7 @@ cancellink='<a class="anchor-cancel" href="#" title="Cancel anchor target"></a>'
 # set idprefix from parameter
 # set idseparator to be slightly more consistent with docutils
 fwd | \
-asciidoctor -a sectanchors -a idprefix="${idprefix}_" -a idseparator=- \
+asciidoctor -a sectanchors -a idprefix="${idprefix:+${idprefix}_}" -a idseparator=- \
   -a toc=macro -a toc-title=Contents $args -s -o - - | \
 rev | \
 sed -e 's/class="sect/class="main-asciidoc sect/g' \

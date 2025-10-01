@@ -17,9 +17,9 @@ This page should look pretty much similar to the other test pages.
 Link check
 ==========
 
-Link from rst `to adoc <../../test%20with%20spaces.html#_link-check>`_.
+Link from rst `to adoc <../../test%20with%20spaces.html#link-check>`_.
 
-Link from rst `to md <../../blog/test%20with%20spaces.html#_link-check>`_.
+Link from rst `to md <../../blog/test%20with%20spaces.html#link-check>`_.
 
 Internal link check
 -------------------

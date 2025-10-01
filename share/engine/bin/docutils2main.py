@@ -36,7 +36,7 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       # by default, make this "_" to be slightly more consistent with asciidoc
       # also makes non-XML section headings like numbers and dates ("2022-02-22")
       # generate a nicer section name
-      "id_prefix": id_prefix + "_",
+      "id_prefix": id_prefix + "_" if id_prefix else "",
       # mathml works in chrome (in >> 110, behind a flag), firefox, opera
       # this is good enough for us, we can avoid messing with mathjax.
       "math_output": "mathml pandoc" if has_pandoc else "mathml",

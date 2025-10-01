@@ -15,9 +15,9 @@ This page should look pretty much similar to the other test pages.
 
 ## Link-check
 
-Link from md [to rst](../topics/tech/test.html#_link-check)
+Link from md [to rst](../topics/tech/test.html#link-check)
 
-Link from md [to adoc](../test%20with%20spaces.html#_link-check)
+Link from md [to adoc](../test%20with%20spaces.html#link-check)
 
 ### Internal link check
 
