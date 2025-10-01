@@ -19,22 +19,6 @@ def ts_date(ts):
 def ts_time(ts):
   return datetime.utcfromtimestamp(int(ts)).strftime('%H:%M:%S')
 
-def nj_q(f):
-  # https://ninja-build.org/manual.html#ref_lexer
-  if f[0] == "$":
-    # allow values relative to mkwww dirs
-    return "$" + f[1:].replace("$", "$$").replace("\n", "$\n")
-  else:
-    return f.replace("$", "$$").replace("\n", "$\n")
-
-def nj_qi(f):
-  # https://ninja-build.org/manual.html#ref_lexer
-  return nj_q(f).replace(" ", "$ ")
-
-def nj_qo(f):
-  # https://ninja-build.org/manual.html#ref_lexer
-  return nj_qi(f).replace(":","$:")
-
 # filters that depend on the environment
 class DynamicFilters(object):
 

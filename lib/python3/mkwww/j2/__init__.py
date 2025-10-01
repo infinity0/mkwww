@@ -27,24 +27,6 @@ def read_context(args):
       break
   return (context, args)
 
-# TODO: drop after https://github.com/pallets/jinja/pull/1776
-class DependencyRecordedEnvironment(Environment):
-  def __init__(self, *args, remember_parsed_names=False, **kwargs):
-    super().__init__(*args, **kwargs)
-    self._parsed_names = [] if remember_parsed_names else None
-
-  def _parse(self, source, name, filename):
-    if name is not None and self._parsed_names is not None:
-        self._parsed_names.append(name)
-    return super()._parse(source, name, filename)
-
-  def extract_parsed_names(self):
-    if self._parsed_names is None:
-        return None
-    names = self._parsed_names[:]
-    self._parsed_names.clear()
-    return names
-
 # https://stackoverflow.com/a/64392515
 class IncludeRawExtension(ext.Extension):
   tags = {"include_raw"}
@@ -88,10 +70,7 @@ def nav(sitenav, cwd, path="", rel=True):
   return pagenav
 
 def default_env(ctxfile=None, infile=None):
-  j2env = DependencyRecordedEnvironment(
-    loader = loaders.FunctionLoader(readfile),
-    remember_parsed_names = True,
-    keep_trailing_newline = True,
+  j2env = Environment(
     extensions = [
       'jinja2.ext.i18n',
       'jinja2.ext.do',
@@ -108,13 +87,6 @@ def default_env(ctxfile=None, infile=None):
     name: func
     for name, func in inspect.getmembers(filters.DynamicFilters(ctxfile, infile))
     if not name.startswith("_") and inspect.ismethod(func)
-  }
-  j2env.globals |= {
-    "path_exists": os.path.exists,
-    "path_join": os.path.join,
-    "relpath": os.path.relpath,
-    "map": map,
-    "zip": zip,
   }
   return j2env
 

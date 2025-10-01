@@ -4,6 +4,7 @@
 import mkwww.j2
 import mkwww.j2.filters
 
+import njinja
 import json
 import sys
 
@@ -21,14 +22,7 @@ def main(*args):
     ctx["nav"] = lambda *args: mkwww.j2.nav(ctx["sitenav"], ctx["navPath"], *args)
 
   j2env = mkwww.j2.default_env(ctxfile, infile)
-  result = j2env.get_template(infile).render(ctx)
-  with open(outfile, 'w') as fp:
-    fp.write(result)
-
-  deps = j2env.extract_parsed_names()
-  assert deps[0] == infile
-  with open(depfile, 'w') as fp:
-    print("%s: %s" % (outfile, " ".join(deps)), file=fp)
+  njinja.run_j2(infile, ctx, outfile, depfile=depfile, j2env=j2env)
 
 if __name__ == "__main__":
   sys.exit(main(*sys.argv[1:]))

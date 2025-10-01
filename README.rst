@@ -58,6 +58,7 @@ Dependencies
 - ninja-build -- tested with v1.11.1
 - Python 3 -- tested with v3.10
 - jinja2 -- tested with v3.0.3
+- njinja -- tested with v0.1
 - jq -- tested with v1.6
 - python-tinycss2 -- tested with v1.2.1
 - python-myst, python-linkify-it -- optional for MarkDown support; tested with v0.18.1; requires python-docutils

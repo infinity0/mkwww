@@ -1,3 +1,3 @@
 /build
 /dist
-/.ninja_log
+/.ninja_*

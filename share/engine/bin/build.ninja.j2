@@ -1,5 +1,3 @@
-{{"\n".join(MKWWW_NINJA_HEADER)}}
-
 SRC = {{SRC}}
 GEN = {{GEN}}
 DST = {{DST}}
@@ -18,11 +16,11 @@ MK_NAV = $BIN/mk-sitenav.py
 FMT_CSS = $BIN/format-css.py
 
 rule regenerate
-  command = $BIN/mkwww gen
+  command = $BIN/mkwww conf
   generator = true
 
 build $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json: regenerate | $
-  $BIN/mkwww $J2_ENV {% for f in GENERATE_DEPS %}{{f|nj_qi}} {% endfor %}
+  $BIN/mkwww {% for f in CONFIGURE_DEPS %}{{f|nj_qi}} {% endfor %}
 
 build configure: phony $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json
 
