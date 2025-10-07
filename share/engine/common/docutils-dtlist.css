@@ -4,7 +4,8 @@
 
 /* details-list has same indent as all other lists */
 .dtlist details, ul, ol, dd {
-  margin-inline-start: 1em;
+  /* both firefox and chrome default to 40px, this is half of that */
+  margin-inline-start: 20px;
   padding-inline-start: 0;
 }
 .dtlist details > *, li, dd {

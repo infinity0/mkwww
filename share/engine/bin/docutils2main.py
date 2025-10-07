@@ -52,12 +52,15 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       "initial_header_level": max(2, initial_header_level),
       "doctitle_xform": initial_header_level <= 1,
 
-      # automatically enable extensions that are included in GFM, but also
-      # leave MyST features enabled such as roles and directives. the user can
-      # further override this on a per-document basis, for details see
+      # - enable extensions that are included in GFM
+      # - enable extensions that add formatting features present in rST
+      # - leave MyST features enabled such as roles and directives
+      # the user can further override this per-document; for details see
       # https://myst-parser.readthedocs.io/en/latest/configuration.html#local-configuration
       "myst_enable_extensions": [
+        "attrs_block",
         "deflist",
+        "fieldlist",
         "linkify",
         "strikethrough",
         "tasklist",
