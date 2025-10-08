@@ -139,7 +139,8 @@ def detect_pythonpath():
   try:
     import mkwww
   except ImportError:
-    return "%s/../../lib/python3:%s" % (ENG_ABS, env("PYTHONPATH", ""))
+    oldpath = env("PYTHONPATH", "")
+    return "%s/../../lib/python3" % ENG_ABS + (":" + oldpath if oldpath else "")
 
 def mk_config():
   bcfg = njinja.BuildConfig()
@@ -147,7 +148,7 @@ def mk_config():
   PYTHONPATH = detect_pythonpath()
   if not PYTHONPATH:
     del PYTHONPATH
-  # only record the config here, we set os.environ later. this decomposes better.
+
   MKWWW_DEV = env("MKWWW_DEV", "") in TRUE
 
   def read_site():
@@ -234,26 +235,18 @@ def mk_config():
     extra_dirs=[GEN, DST, ENG]
   )
 
-def mk_ninja(caller):
-  print("mkwww: %s: configure:" % caller, CFG, OUT)
-  config = mk_config()
-  MKWWW_NINJA_HEADER = """This file was automatically generated. ANY EDITS WILL BE LOST.
+def mk_ninja(force=False):
+  headers="""This file was automatically generated. ANY EDITS WILL BE LOST.
 
 This file expects to be run via mkwww.
 You can run it directly via ninja but you may have to ensure the following environment:
 
-""".rstrip().split("\n")
-  MKWWW_NINJA_HEADER += ["cd %s" % cwd]
-  MKWWW_NINJA_HEADER += ["MKWWW_BIN=%s" % BIN_ABS]
-  if "PYTHONPATH" in config:
-    MKWWW_NINJA_HEADER += ["PYTHONPATH=%s" % config["PYTHONPATH"]]
-  njinja.mk_ninja(
-    pj(BIN, "build.ninja.j2"),
-    config,
-    GEN,
-    headers=MKWWW_NINJA_HEADER,
-  )
-  return config
+cd %s
+MKWWW_BIN={BIN_ABS}
+PYTHONPATH={PYTHONPATH}
+""" % cwd
+  return njinja.mk_ninja(
+    pj(BIN, "build.ninja.j2"), mk_config, GEN, headers=headers, force=force)
 
 def wipe(_=None):
   # This is implemented outside of ninja rather than inside as a "phony target"
@@ -280,30 +273,20 @@ def wipe(_=None):
 def conf(_=None):
   # This unconditionally builds build.ninja and is therefore appropriate to
   # be defined as generator rule in build.ninja.
-  mk_ninja("conf")
+  mk_ninja(force=True)
 
-def run_with_env(caller, args, **kwargs):
-  config = None
-  if not os.path.exists(CFG) or not os.path.exists(OUT):
-    print("mkwww: %s: not found:" % caller, CFG, OUT)
-    config = mk_ninja(caller)
-
-  global CFGLOADED
-  if not CFGLOADED:
-    if config is None:
-      with open(CFG) as fp:
-        config = json.load(fp)
-
-    if "BIN_ABS" in config:
-      os.environ["MKWWW_BIN"] = config["BIN_ABS"]
-    if "PYTHONPATH" in config:
-      os.environ["PYTHONPATH"] = config["PYTHONPATH"]
-
-    CFGLOADED = True
-  return subprocess.run(["ninja", "-f", OUT] + args, **kwargs)
+def maybe_ninja(args, **kwargs):
+  cmdline = mk_ninja()
+  if "ninja" in cmdline:
+    # everything succeeded, now set the environment
+    with open(CFG) as fp:
+      config = json.load(fp)
+      os.environ["MKWWW_BIN"] = config.get("BIN_ABS", "")
+      os.environ["PYTHONPATH"] = config.get("PYTHONPATH", "")
+  return subprocess.run(cmdline + list(args), **kwargs)
 
 def make(args):
-  return run_with_env("make", args).returncode
+  return maybe_ninja(args).returncode
 
 def runall(it, sleep=0):
   for f, a in it:
@@ -330,10 +313,10 @@ def serve(args):
           patharg = [self.translate_path(self.path)]
         if rebuild:
           print("mkwww/serve: clean", patharg)
-          proc = run_with_env("GET", args + ["-t", "clean"] + patharg, capture_output=True)
+          proc = maybe_ninja(args + ["-t", "clean"] + patharg, capture_output=True)
           proc.check_returncode()
         print("mkwww/serve: build", patharg)
-        proc = run_with_env("GET", args + patharg, capture_output=True)
+        proc = maybe_ninja(args + patharg, capture_output=True)
         proc.check_returncode()
         return super().do_GET()
 

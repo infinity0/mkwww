@@ -58,7 +58,7 @@ Dependencies
 - ninja-build -- tested with v1.11.1
 - Python 3 -- tested with v3.10
 - jinja2 -- tested with v3.0.3
-- njinja -- tested with v0.2
+- njinja -- tested with v0.3
 - jq -- tested with v1.6
 - python-tinycss2 -- tested with v1.2.1
 - Beautiful Soup 4 -- tested with v4.13.4
