@@ -48,46 +48,6 @@ class AutoContentsTransform(Contents):
         self.startnode.parent.remove(self.startnode)
 
 
-# :abbr: implementation copied from sphinx
-abbr_re = re.compile(r'\((.*)\)$', re.S)
-def abbr(name, rawtext, text, lineno, inliner, options=None, content=None):
-  options = options or {}
-  matched = abbr_re.search(text)
-  if matched:
-    text = text[:matched.start()].strip()
-    options['title'] = matched.group(1)
-  else:
-    text = self.text
-
-  return [nodes.abbreviation(rawtext, text, **options)], []
-roles.register_local_role("abbr", abbr)
-
-class AbbrHTML(object):
-  def visit_abbreviation(self, node):
-    attrs = {}
-    if node.hasattr('title'):
-      attrs['title'] = node['title']
-    self.body.append(self.starttag(node, 'abbr', '', **attrs))
-
-
-class PermalinkSectionHTML(PermalinkSectionMixin):
-  def visit_title(self, node) -> None:
-    super().visit_title(node)
-    # work around annoying bug in docutils 0.21
-    if isinstance(node.parent, nodes.topic):
-      if (self.settings.toc_backlinks
-          and 'contents' in node.parent['classes']):
-        self._replace_last_tag(' href="#top">', '>')
-
-    close_tag = self.context[-1]
-    if (node.parent.hasattr('ids') and node.parent['ids']):
-      # add permalink anchor
-      if close_tag.startswith('</a></h'): # toc-backref
-        self.add_permalink_ref(node.parent, 'Link to this section', True)
-      elif close_tag.startswith('</h'):
-        self.add_permalink_ref(node.parent, 'Link to this section', False)
-
-
 class PropagateTargetsListFixer(SparseNodeVisitor):
   """
   rST can't give manual names to the first list item::
@@ -167,6 +127,46 @@ class PropagateClassesListFix(Transform):
 
   def apply(self):
     self.document.walkabout(PropagateClassesListFixer(self.document))
+
+
+# :abbr: implementation copied from sphinx
+abbr_re = re.compile(r'\((.*)\)$', re.S)
+def abbr(name, rawtext, text, lineno, inliner, options=None, content=None):
+  options = options or {}
+  matched = abbr_re.search(text)
+  if matched:
+    text = text[:matched.start()].strip()
+    options['title'] = matched.group(1)
+  else:
+    text = self.text
+
+  return [nodes.abbreviation(rawtext, text, **options)], []
+roles.register_local_role("abbr", abbr)
+
+class AbbrHTML(object):
+  def visit_abbreviation(self, node):
+    attrs = {}
+    if node.hasattr('title'):
+      attrs['title'] = node['title']
+    self.body.append(self.starttag(node, 'abbr', '', **attrs))
+
+
+class PermalinkSectionHTML(PermalinkSectionMixin):
+  def visit_title(self, node) -> None:
+    super().visit_title(node)
+    # work around annoying bug in docutils 0.21
+    if isinstance(node.parent, nodes.topic):
+      if (self.settings.toc_backlinks
+          and 'contents' in node.parent['classes']):
+        self._replace_last_tag(' href="#top">', '>')
+
+    close_tag = self.context[-1]
+    if (node.parent.hasattr('ids') and node.parent['ids']):
+      # add permalink anchor
+      if close_tag.startswith('</a></h'): # toc-backref
+        self.add_permalink_ref(node.parent, 'Link to this section', True)
+      elif close_tag.startswith('</h'):
+        self.add_permalink_ref(node.parent, 'Link to this section', False)
 
 
 # code copied from sphinx.utils.docutils.ReferenceRole to avoid dependency

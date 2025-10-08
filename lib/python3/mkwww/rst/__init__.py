@@ -6,7 +6,7 @@ from docutils.readers.standalone import Reader as _Reader
 from docutils.writers.html5_polyglot import Writer as _Writer, HTMLTranslator as _HTMLTranslator
 
 
-class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTML, TableGroupsHTML, _HTMLTranslator):
+class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, TableGroupsHTML, DetailsListHTML, _HTMLTranslator):
   pass
 
 class Reader(_Reader):
