@@ -36,7 +36,7 @@ FORMAT_GROUPS = {
 ENGINE_STYLES = {
   "*0": ["reset", "reset-colors"],
   "mkwww-j2": ["mkwww-j2-" + f for f in ["extend"]],
-  "docutils": ["docutils-" + f for f in ["minimal", "math", "extend", "dtlist"]],
+  "docutils": ["docutils-" + f for f in ["minimal", "math", "extend"]],
   "asciidoctor": ["asciidoctor-" + f for f in ["default", "reset"]],
   "*1": [],
 }
@@ -44,7 +44,7 @@ ENGINE_STYLES = {
 ENGINE_SCRIPTS = {
   "*0": ["prep"],
   "mkwww-j2": [],
-  "docutils": ["docutils-" + f for f in ["dtlist"]],
+  "docutils": ["docutils-" + f for f in []],
   "asciidoctor": [],
   "*1": [],
 }
