@@ -21,7 +21,7 @@ def main(*args):
   if "navPath" in ctx and "sitenav" in ctx:
     ctx["nav"] = lambda *args: mkwww.j2.nav(ctx["sitenav"], ctx["navPath"], *args)
 
-  j2env = mkwww.j2.default_env(ctxfile, infile)
+  j2env = mkwww.j2.default_env(fmt2main_args=[ctxfile, infile])
   njinja.run_j2(infile, ctx, outfile, depfile=depfile, j2env=j2env)
 
 if __name__ == "__main__":

@@ -5,11 +5,13 @@
   --max-body-width: 72em;
   --navswitch-width: 4em;
   --navswitch-height: 3ex;
+  --navbar-sitetree-percent: 33.3333%;
   --footer-max-height: 5ex; /* max height the footer is expected to wrap to */
 
   /** Appearance */
   --spacer-padding-vertical: 0.5em;
   --spacer-padding-horizontal: 1em;
+  --navbar-fontsize-percent: 88%;
   --content-padding-default: 1em;
 }
 
@@ -57,6 +59,7 @@ body {
 }
 
 #sitenav {
+  order: 1;
   position: relative;
   /* make sure navswitch is always clickable */
   z-index: 25;
@@ -65,6 +68,7 @@ body {
 }
 
 main {
+  order: 2;
   position: relative;
   min-width: var(--min-main-width);
   /* fill the page, up to body max-width */
@@ -72,7 +76,7 @@ main {
   z-index: 0;
 }
 
-#sitenav .navbar {
+#sitenav #navbar {
   position: sticky;
   top: 0;
   /* make sure navswitch is always visible */
@@ -83,24 +87,68 @@ main {
   overflow: auto;
   /* take up less space when closed */
   margin-right: calc(0px - var(--navswitch-height));
-}
-#sitenav .navbar[open] {
-  /* default margin when open */
-  margin-right: 0;
-}
 
-#sitenav .navswitch {
-  position: absolute;
-  right: 0;
-  top: var(--navswitch-width);
-  width: var(--navswitch-width);
-  height: var(--navswitch-height);
-  transform: rotate(90deg);
-  transform-origin: right top;
-}
+  &[open] {
+    /* default margin when open */
+    margin-right: 0;
+    /* expand fully */
+    height: 100%;
+    display: flex; /* this is needed to propagate the height through the <details> shadow-root */
+  }
 
-#sitenav nav {
-  width: var(--sidebar-width);
+  & #navswitch {
+    position: absolute;
+    right: 0;
+    top: var(--navswitch-width);
+    width: var(--navswitch-width);
+    height: var(--navswitch-height);
+    transform: rotate(90deg);
+    transform-origin: right top;
+  }
+
+  & > nav {
+    width: var(--sidebar-width);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    & #sitetree {
+      flex-basis: var(--navbar-sitetree-percent);
+      overflow: auto;
+    }
+    & #pagetree {
+      flex-basis: calc(100% - var(--navbar-sitetree-percent));
+      overflow: auto;
+    }
+    padding: var(--content-padding-default);
+  }
+
+  /** Appearance */
+
+  & #navswitch:before { content: "▲"; }
+  & #navswitch:after  { content: "▲"; }
+  &[open] #navswitch:before { content: "▼"; }
+  &[open] #navswitch:after  { content: "▼"; }
+  & #navswitch {
+    /* remove list-item bullet-point */
+    display: inline-block;
+    margin-top: var(--spacer-padding-vertical);
+    text-align: center;
+    line-height: calc(var(--navswitch-height) - 0.7ex);
+    font-size: smaller;
+    border: 1px solid color-mix(in srgb, var(--CanvasText) 25%, transparent);
+    cursor: pointer;
+  }
+
+  & > nav {
+    font-size: var(--navbar-fontsize-percent);
+    & ul {
+      padding-inline-start: var(--spacer-padding-horizontal);
+      list-style: "• " outside;
+    }
+    & p, & ul + ul {
+      margin-block: 0;
+    }
+  }
 }
 
 /** Appearance */
@@ -119,7 +167,7 @@ body {
   font-family: "Noto Sans", "Noto Sans CJK TC", "Liberation Sans", sans-serif;
 }
 
-main, #sitenav nav {
+main {
   padding: var(--content-padding-default);
 }
 
@@ -132,26 +180,6 @@ footer {
   text-align: center;
   font-size: smaller;
   padding: var(--spacer-padding-vertical) var(--content-padding-default);
-}
-
-#sitenav .navbar .navswitch:before { content: "▲"; }
-#sitenav .navbar .navswitch:after  { content: "▲"; }
-#sitenav .navbar[open] .navswitch:before { content: "▼"; }
-#sitenav .navbar[open] .navswitch:after  { content: "▼"; }
-#sitenav .navswitch {
-  /* remove list-item bullet-point */
-  display: inline-block;
-  margin-top: var(--spacer-padding-vertical);
-  text-align: center;
-  line-height: calc(var(--navswitch-height) - 0.7ex);
-  font-size: smaller;
-  border: 1px solid color-mix(in srgb, var(--CanvasText) 25%, transparent);
-  cursor: pointer;
-}
-
-#sitenav nav .sitemap {
-  padding-inline-start: var(--spacer-padding-horizontal);
-  list-style: "• " outside;
 }
 
 a.self-link {

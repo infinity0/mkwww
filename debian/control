@@ -18,6 +18,7 @@ Recommends:
   python3-linkify-it,
   asciidoctor,
 # asciidoctor-mathematical,
+  python3-bs4,
   w3c-linkchecker,
 Suggests:
   pandoc,

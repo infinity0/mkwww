@@ -20,7 +20,8 @@
 DIR="$(mktemp -d)"
 cleanup() { rm -rf "$DIR"; }
 trap 'cleanup; trap - EXIT;' EXIT HUP INT QUIT PIPE TERM
-mkfifo "$DIR/pipe"
+mkfifo "$DIR/pipe1"
+mkfifo "$DIR/pipe2"
 
 # asciidoctor treats the level-0 heading in a special way
 # we don't like that and it's inconsistent with other document formats, so we
@@ -28,20 +29,20 @@ mkfifo "$DIR/pipe"
 
 fwd() {
   # in adoc, convert the first level-0 heading into a level-1 heading
-  sed -r -e '0,/^= (.*)/s//== \1/w '"$DIR/pipe"
+  sed -r -e '0,/^= (.*)/s//== \1/w '"$DIR/pipe1"
 }
 
 rev() {
-  read x < "$DIR/pipe"
+  read x < "$DIR/pipe1"
+  printf "%s" "$x" > "$DIR/pipe2"
   if [ -z "$x" ]; then
     cat
   else
     # if fwd applied then
     # in html, convert the first level-1 heading into a level-0 heading
-    # also drop the first entry of any toc
+    conj=true
     sed -r \
       -e '0,/div class="sect1"/s//div class="sect0"/' \
-      -e '/\bsectlevel1\b/,/\bhref=/{s/\bhref=//;T;d;q}' \
       -e '0,/<h2(.*)<\/h2>/s//<h1\1<\/h1>/'
   fi
 }
@@ -52,14 +53,40 @@ fi
 
 ctxfile="$1" # TODO: read extra args from this file, document this & the docutils version too
 infile="$2"
-idprefix="$3"
+tocfile="$3"
+idprefix="$4"
 cancellink='<a class="anchor-cancel" href="#" title="Cancel anchor target"></a>'
 
 # set idprefix from parameter
 # set idseparator to be more consistent with docutils
 fwd | \
 asciidoctor -a sectanchors -a idprefix="${idprefix:+${idprefix}_}" -a idseparator=- \
-  -a toc=macro -a toc-title=Contents $args -s -o - - | \
+  -a toc=auto -a toc-title=Contents $args -s -o - - | \
 rev | \
 sed -e 's/class="sect/class="main-asciidoc sect/g' \
-  -e 's;<a class="anchor";'"${cancellink}"'<a class="anchor";g'
+  -e 's;<a class="anchor";'"${cancellink}"'<a class="anchor";g' | \
+{
+read conj < "$DIR/pipe2"
+python -c '
+from mkwww import html
+import sys
+main = sys.stdin.read()
+def postproc(n):
+  for el in n.select("""*[id$="toctitle"]"""):
+    html.el_lstrip(el.next_sibling)
+    el.extract()
+  # due to our conjugation-like hack, the level-0 heading is the first element in the toctree
+  # extract it and put it in the proper place
+  if sys.argv[2]:
+    el = n.select_one("""ul > li:first-child""")
+    html.el_lstrip(el.next_sibling)
+    el.extract()
+    n.insert(0, el)
+    el.unwrap()
+  return n
+main, toc = html.extract_raw(main, """[id$="toc"]:has([id$="toctitle"])""", postproc=postproc)
+with open(sys.argv[1], "w") as wfp:
+  wfp.write("".join(str(x) for x in toc))
+sys.stdout.write(str(main))
+' "$tocfile" "$conj"
+}

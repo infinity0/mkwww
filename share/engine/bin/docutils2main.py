@@ -23,6 +23,7 @@ id_prefix
 from docutils.core import publish_parts
 from docutils.io import FileInput
 from mkwww.rst import HTMLTranslator, Reader, Writer
+from mkwww import html
 
 import json
 import os
@@ -32,7 +33,7 @@ import sys
 
 bin_base = os.getenv("MKWWW_BIN", ".")
 
-def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
+def main(progname, ctxfile, infile, tocfile, id_prefix="", initial_header_level=1):
   parser_name = os.path.split(progname)[1].removesuffix("2main.py").removesuffix("2main")
   if parser_name == "md":
     parser_name = "myst"
@@ -90,9 +91,14 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       "myst_all_links_external": True,
     })
   main = parts['html_body'].replace("<main", '<div class="main-docutils"', 1).replace("</main>", "</div>", 1)
-  sys.stdout.write(main.rstrip())
-  sys.stdout.write("\n")
-  sys.stdout.flush()
+  main, toc = html.extract(main, '[id$="mkwww-auto-toc"]', postproc=lambda n: n.select_one("""ul > li:first-child"""))
+
+  for i in range(initial_header_level - 1):
+    toc = "<ul>\n<li>%s</li>\n</ul>\n" % toc
+  with open(tocfile, "w") as wfp:
+    wfp.write(toc)
+
+  sys.stdout.write(main)
 
 if __name__ == "__main__":
   sys.exit(main(*sys.argv))

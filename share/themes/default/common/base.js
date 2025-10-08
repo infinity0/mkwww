@@ -12,7 +12,7 @@ function mkwT_writeNavBar(v) {
 
 let mkwT_navBarWidth = null;
 window.addEventListener("DOMContentLoaded", (_) => {
-  let styles = window.getComputedStyle(document.querySelector("#sitenav nav"));
+  let styles = window.getComputedStyle(document.querySelector("#sitenav #navbar > nav"));
   mkwT_navBarWidth = parseInt(styles.width.replace(/px$/, ""));
 });
 function mkwT_autoNavBar(e) {
@@ -21,7 +21,7 @@ function mkwT_autoNavBar(e) {
     // mobile browsers fire spurious resize events sometimes
     return true;
   }
-  let navBar = document.querySelector("#sitenav .navbar");
+  let navBar = document.querySelector("#sitenav #navbar");
   if (document.body.clientWidth < 3 * mkwT_navBarWidth) {
     navBar.removeAttribute("open");
     mkwT_writeNavBar("0");
@@ -32,7 +32,7 @@ function mkwT_autoNavBar(e) {
 }
 
 function mkwT_readNavBar() {
-  let navBar = document.querySelector("#sitenav .navbar");
+  let navBar = document.querySelector("#sitenav #navbar");
   switch (sessionStorage.getItem("mkwT_navBar")) {
     case null: mkwT_autoNavBar(); break;
     case "1": navBar.setAttribute("open", ""); break;

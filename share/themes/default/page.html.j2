@@ -73,10 +73,17 @@
 </header>
 
 <div id="middle">
+{# This needs to go first for fmt2main_toc to work properly -#}
+<main id="main">
+{% block main -%}
+{%- include path_main -%}
+{% endblock -%}
+</main>
+
 {# CSS flex doesn't compose very cleanly with the show/hide behaviour of
   <details>; wrapping it in a div works around this -#}
 <div id="sitenav">
-<details class="navbar"><summary class="navswitch">nav</summary>
+<details id="navbar"><summary id="navswitch">nav</summary>
 <nav>
 {%- block nav %}
 {% macro nav_branch(node) -%}
@@ -97,11 +104,13 @@
 <div id="sitetree">
 {{ nav_branch(sitenav) -}}
 </div>
-<div id="pagetree">
+<div id="pagetree" role="doc-toc">
 {% block toc -%}
 {% if path_toc -%}
-{%- include path_toc -%}
+{%- include_raw path_toc -%}
 {% endif -%}
+{% filter fmt2main_toc() -%}
+{% endfilter -%}
 {% endblock -%}
 </div>
 {% if site.dev -%}
@@ -115,12 +124,6 @@
 </nav>
 </details>
 </div>
-
-<main id="main">
-{% block main -%}
-{%- include path_main -%}
-{% endblock -%}
-</main>
 </div>
 
 <footer>

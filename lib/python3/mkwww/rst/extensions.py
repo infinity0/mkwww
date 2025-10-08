@@ -1,10 +1,51 @@
 from mkwww.rst.base import *
 from docutils.nodes import SparseNodeVisitor
+from docutils.transforms.frontmatter import DocTitle
 from docutils.transforms.references import PropagateTargets
+from docutils.transforms.parts import Contents
 from docutils.transforms.misc import ClassAttribute
 
 import re
 from urllib.parse import urlparse
+
+
+class AutoContentsTransform(Contents):
+  """Create a TOC and insert it at the top of the document.
+
+  Unlike the standard Contents directive, this also includes the document
+  title, if it is available.
+  """
+  default_priority = Contents.default_priority - 1
+
+  def apply(self):
+    # code lifted from directives.parts.Contents.run()
+    topic = nodes.topic(classes=['contents'])
+    topic['names'].append(nodes.fully_normalize_name('mkwww-auto-toc'))
+    self.document.note_implicit_target(topic)
+    pending = nodes.pending(transforms.parts.Contents, rawsource=".. contents::\n")
+    # by default we don't want backlinks, since the user may add their own
+    # custom toc elsewhere in the page and we want any backlinks to link there
+    pending.details.update({"backlinks": "none"})
+    #pending.details.update(self.options) # get from document.settings later, e.g. depth
+    topic += pending
+    orig_document = self.document.deepcopy()
+    self.document.insert(0, topic)
+    self.startnode = pending
+
+    # code simplified from transforms.parts.Contents.apply()
+    details = self.startnode.details
+    self.backlinks = details['backlinks']
+    if self.document['ids']:
+      # create a dummy node that includes the document title
+      startnode = nodes.section("", nodes.section("", *orig_document, ids=self.document['ids']))
+    else:
+      # we are running inside a fmt2main filter, there is no document title
+      startnode = self.document
+    contents = self.build_contents(startnode)
+    if len(contents):
+        self.startnode.replace_self(contents)
+    else:
+        self.startnode.parent.remove(self.startnode)
 
 
 # :abbr: implementation copied from sphinx

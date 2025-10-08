@@ -9,8 +9,6 @@ This page should look pretty much similar to the other test pages.
 
 link:blog/test%20with%20spaces.html[md] | link:topics/tech/test.html[rst]
 
-toc::[]
-
 == Link check
 
 Link from adoc link:blog/test%20with%20spaces.html#link-check[to md]

@@ -65,7 +65,7 @@ def nav(sitenav, cwd, path="", rel=True):
     pagenav = pagenav["subpages"][head]
   return pagenav
 
-def default_env(ctxfile=None, infile=None):
+def default_env(fmt2main_args=[]):
   j2env = Environment(
     extensions = [
       'jinja2.ext.i18n',
@@ -81,7 +81,7 @@ def default_env(ctxfile=None, infile=None):
   }
   j2env.filters |= {
     name: func
-    for name, func in inspect.getmembers(filters.DynamicFilters(ctxfile, infile))
+    for name, func in inspect.getmembers(filters.DynamicFilters(fmt2main_args))
     if not name.startswith("_") and inspect.ismethod(func)
   }
   return j2env

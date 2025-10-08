@@ -111,11 +111,8 @@ build $DST/{{stem|nj_qo}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi
 rule build_{{fmt}}_main
   command = $
     mkdir -p "$$(dirname $out)"; $
-    touch "$GEN/$stem.{{ext}}.toc.html"; echo "FIXME"; $
-    { echo "{{"{% raw -%}"}}" && $
-      $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.$json" "$src/$stem.{{ext}}" && $
-      echo "{{"{% endraw -%}"}}"; $
-    } < "$src/$stem.{{ext}}" > $out
+    $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.$json" "$src/$stem.{{ext}}" "$GEN/$stem.{{ext}}.toc.html" $
+      < "$src/$stem.{{ext}}" > $out
 
 # build the complete page using j2
 rule build_{{fmt}}_html

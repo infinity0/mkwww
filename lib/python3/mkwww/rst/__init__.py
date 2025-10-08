@@ -1,4 +1,4 @@
-from mkwww.rst.extensions import PropagateTargetsListFix, PropagateClassesListFix, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML
+from mkwww.rst.extensions import AutoContentsTransform, PropagateTargetsListFix, PropagateClassesListFix, AbbrHTML, PermalinkSectionHTML, ExtlinkHTML
 from mkwww.rst.tables import MoreColsRowsPostTransform, TableGroupsHTML
 from mkwww.rst.dtlist import DetailsListIdsTransform, DetailsListHTML
 
@@ -12,6 +12,7 @@ class HTMLTranslator(AbbrHTML, PermalinkSectionHTML, ExtlinkHTML, DetailsListHTM
 class Reader(_Reader):
   def get_transforms(self):
     return super().get_transforms() + [
+      AutoContentsTransform,
       PropagateClassesListFix,
       PropagateTargetsListFix,
       MoreColsRowsPostTransform,

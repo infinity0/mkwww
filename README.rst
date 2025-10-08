@@ -61,6 +61,7 @@ Dependencies
 - njinja -- tested with v0.2
 - jq -- tested with v1.6
 - python-tinycss2 -- tested with v1.2.1
+- Beautiful Soup 4 -- tested with v4.13.4
 - python-myst, python-linkify-it -- optional for MarkDown support; tested with v0.18.1; requires python-docutils
 - python-docutils -- optional for reStructuredText support; tested with v0.21
 - asciidoctor -- optional for AsciiDoc support; tested with v2.0.17

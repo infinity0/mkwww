@@ -1,6 +1,6 @@
 from docutils.parsers.rst import directives, Directive, roles
 from docutils.transforms import Transform
-from docutils import nodes
+from docutils import nodes, transforms
 
 
 def find_ancestor_element(node, pred):

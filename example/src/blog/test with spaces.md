@@ -10,9 +10,6 @@ This page should look pretty much similar to the other test pages.
 
 [rst](../topics/tech/test.html) | [adoc](../test%20with%20spaces.html)
 
-```{contents}
-```
-
 ## Link check
 
 Link from md [to rst](../topics/tech/test.html#link-check)
