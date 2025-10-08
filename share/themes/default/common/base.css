@@ -5,14 +5,13 @@
   --max-body-width: 72em;
   --navswitch-width: 4em;
   --navswitch-height: 3ex;
-  --navbar-sitetree-percent: 33.3333%;
+  --navbar-sitetree-rel: 0.3333;
   --footer-max-height: 5ex; /* max height the footer is expected to wrap to */
 
   /** Appearance */
-  --spacer-padding-vertical: 0.5em;
-  --spacer-padding-horizontal: 1em;
-  --navbar-fontsize-percent: 88%;
-  --content-padding-default: 1em;
+  --default-padding-mini: 0.5em;
+  --navbar-fontsize-rel: 0.88;
+  --default-padding-main: 1em;
 }
 
 /** Layout */
@@ -112,14 +111,14 @@ main {
     display: flex;
     flex-direction: column;
     & #sitetree {
-      flex-basis: var(--navbar-sitetree-percent);
+      flex-basis: calc(var(--navbar-sitetree-rel) * var(--percent));
       overflow: auto;
     }
     & #pagetree {
-      flex-basis: calc(100% - var(--navbar-sitetree-percent));
+      flex-basis: calc((1 - var(--navbar-sitetree-rel)) * var(--percent));
       overflow: auto;
     }
-    padding: var(--content-padding-default);
+    padding: var(--default-padding-main);
   }
 
   /** Appearance */
@@ -131,18 +130,18 @@ main {
   & #navswitch {
     /* remove list-item bullet-point */
     display: inline-block;
-    margin-top: var(--spacer-padding-vertical);
+    margin-top: var(--default-padding-mini);
     text-align: center;
     line-height: calc(var(--navswitch-height) - 0.7ex);
-    font-size: smaller;
+    font-size: calc(var(--navbar-fontsize-rel) * var(--percent));
     border: 1px solid color-mix(in srgb, var(--CanvasText) 25%, transparent);
     cursor: pointer;
   }
 
   & > nav {
-    font-size: var(--navbar-fontsize-percent);
+    font-size: calc(var(--navbar-fontsize-rel) * var(--percent));
     & ul {
-      padding-inline-start: var(--spacer-padding-horizontal);
+      margin-inline-start: calc(var(--list-margin-start) * var(--navbar-fontsize-rel));
       list-style: "• " outside;
     }
     & p, & ul + ul {
@@ -168,7 +167,7 @@ body {
 }
 
 main {
-  padding: var(--content-padding-default);
+  padding: var(--default-padding-main);
 }
 
 .footnote {
@@ -179,7 +178,7 @@ main {
 footer {
   text-align: center;
   font-size: smaller;
-  padding: var(--spacer-padding-vertical) var(--content-padding-default);
+  padding: var(--default-padding-mini) var(--default-padding-main);
 }
 
 a.self-link {

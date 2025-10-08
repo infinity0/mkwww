@@ -35,7 +35,6 @@
 {% if site.favicon is string -%}
 <link rel="icon" href="{{baseCommon}}/{{site.favicon|default("favicon.svg", true)}}">
 {% endif -%}
-<link rel="stylesheet" href="{{baseCommon}}/theme/reset.css">
 {% for style in engine_styles -%}
 <link rel="stylesheet" href="{{baseCommon}}/engine/{{style}}.css">
 {% endfor -%}

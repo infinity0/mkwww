@@ -2,20 +2,18 @@
 
 /* == Layout */
 
-/* details-list has same indent as all other lists */
-.dtlist details, ul, ol, dd {
-  /* both firefox and chrome default to 40px, this is half of that */
-  margin-inline-start: 20px;
+/* details-list and list-item have same indent as other lists */
+.dtlist details {
+  margin-inline-start: var(--list-margin-start);
   padding-inline-start: 0;
 }
-.dtlist details > *, li, dd {
-  padding-inline-start: 0.5ex; /* space for permalink anchor */
+.dtlist details > * {
+  padding-inline-start: var(--list-item-padding-start);
+}
+.dtlist summary {
+  list-style-position: var(--list-item-style-position);
 }
 
-/* details-list summary looks like a normal list-item */
-.dtlist summary, li {
-  list-style-position: outside;
-}
 .dtlist summary:only-child {
   list-style-type: disc;
 }

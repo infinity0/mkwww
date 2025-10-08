@@ -34,7 +34,7 @@ FORMAT_GROUPS = {
 }
 
 ENGINE_STYLES = {
-  "*0": ["reset-colors"],
+  "*0": ["reset", "reset-colors"],
   "mkwww-j2": ["mkwww-j2-" + f for f in ["extend"]],
   "docutils": ["docutils-" + f for f in ["minimal", "math", "extend", "dtlist"]],
   "asciidoctor": ["asciidoctor-" + f for f in ["default", "reset"]],

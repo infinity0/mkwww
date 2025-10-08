@@ -1,0 +1,47 @@
+:root {
+  /** Core */
+  --percent: 100%; /* useful for calc() */
+
+  /** Lists */
+  --list-margin-start: 20px; /* both firefox and chrome default to 40px, this is half of that */
+  --list-item-padding-start: 0.5ex;
+  --list-item-style-position: outside;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* https://github.com/w3c/csswg-drafts/issues/8184 */
+details > * {
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.5; /* many chars are taller than English, e.g. Chinese */
+  -webkit-font-smoothing: antialiased;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+/**
+ * Lists
+ */
+ul, ol, dd {
+  margin-inline-start: var(--list-margin-start);
+  padding-inline-start: 0;
+}
+
+li, dd {
+  padding-inline-start: var(--list-item-padding-start); /* space for permalink anchor */
+}
+
+li {
+  list-style-position: var(--list-item-style-position);
+}
