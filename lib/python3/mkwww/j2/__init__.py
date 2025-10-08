@@ -42,10 +42,6 @@ class IncludeRawExtension(ext.Extension):
     self.environment._parsed_names.append(filename)
     return Markup(self.environment.loader.get_source(self.environment, filename)[0])
 
-def readfile(n):
-  with open(n) as fp:
-    return fp.read()
-
 def _startPath(cwd, path="", rel=True):
   sep = os.path.sep
   if type(path) == str:

@@ -1,13 +1,30 @@
 #!/bin/sh
-
-# asciidoctor treats the level-0 heading in a special way
-# we don't like that and it's inconsistent with other document formats, so we
-# do a transform-inverse-transform trick
+# Parse an asciidoctor fragment into a main-like HTML fragment.
+#
+# Usage: $0 <context-filepath> <input-filepath> [<id-prefix>] < <input-filehandle>
+#
+# context-filepath
+#   JSON context/config dictionary. Keys we use:
+#
+#   (none currently)
+#
+# input-filepath
+#   Path to the input source file. This is used for metadata purposes ONLY.
+#   The actual file is not read directly; instead we expect either the whole
+#   file or a portion of it to be passed via stdin. This allows us to support
+#   (e.g.) *.j2 templates that call us selectively for portions of itself.
+#
+# id_prefix
+#   Passed directly to asciidoctor.
 
 DIR="$(mktemp -d)"
 cleanup() { rm -rf "$DIR"; }
 trap 'cleanup; trap - EXIT;' EXIT HUP INT QUIT PIPE TERM
 mkfifo "$DIR/pipe"
+
+# asciidoctor treats the level-0 heading in a special way
+# we don't like that and it's inconsistent with other document formats, so we
+# do a conjugation-like (group theory gag^-1) trick
 
 fwd() {
   # in adoc, convert the first level-0 heading into a level-1 heading
@@ -39,7 +56,7 @@ idprefix="$3"
 cancellink='<a class="anchor-cancel" href="#" title="Cancel anchor target"></a>'
 
 # set idprefix from parameter
-# set idseparator to be slightly more consistent with docutils
+# set idseparator to be more consistent with docutils
 fwd | \
 asciidoctor -a sectanchors -a idprefix="${idprefix:+${idprefix}_}" -a idseparator=- \
   -a toc=macro -a toc-title=Contents $args -s -o - - | \

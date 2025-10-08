@@ -1,4 +1,24 @@
 #!/usr/bin/python3
+"""Parse a rST/markdown fragment into a main-like HTML fragment.
+
+Usage: $0 <context-filepath> <input-filepath> [<id-prefix>] < <input-filehandle>
+
+context-filepath
+  JSON context/config dictionary. Keys we use:
+
+  settings_override
+    Initial parameter to ``docutils.core.publish_parts()``. We also add our own
+    overrides on top of this; RTFS for details.
+
+input-filepath
+  Path to the input source file. This is used for metadata purposes ONLY.
+  The actual file is not read directly; instead we expect either the whole
+  file or a portion of it to be passed via stdin. This allows us to support
+  (e.g.) *.j2 templates that call us selectively for portions of itself.
+
+id_prefix
+  Passed directly to docutils.
+"""
 
 from docutils.core import publish_parts
 from docutils.io import FileInput
@@ -21,6 +41,7 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
 
   with open(ctxfile) as fp:
     ctx = json.load(fp)
+
   parts = publish_parts(
     parser_name=parser_name,
     reader=Reader(),
@@ -33,7 +54,6 @@ def main(progname, ctxfile, infile, id_prefix="", initial_header_level=1):
       #"report_level": 1, # e.g. to show "duplicate implicit target name"
 
       # set idprefix from parameter
-      # by default, make this "_" to be slightly more consistent with asciidoc
       # also makes non-XML section headings like numbers and dates ("2022-02-22")
       # generate a nicer section name
       "id_prefix": id_prefix + "_" if id_prefix else "",

@@ -15,7 +15,7 @@
   "_comment": "In the sitenav, reverse the sort order of child pages",
 
   "navSortKey": null,
-  "_comment": "In the sitenav, override the sort order this page, by giving it a replacement filename used only for sorting",
+  "_comment": "In the sitenav, override the sort order of this page relative to siblings, by giving it a replacement filename used only for sorting",
 
   "_": "_"
 }

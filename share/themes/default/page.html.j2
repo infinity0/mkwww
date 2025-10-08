@@ -94,18 +94,24 @@
 </ul>
 {% endif -%}
 {%- endmacro -%}
-{{ nav_branch(sitenav) }}
-{%- if site.dev -%}
-<p>&nbsp;</p>
-<small>
+<div id="sitetree">
+{{ nav_branch(sitenav) -}}
+</div>
+<div id="pagetree">
+{% block toc -%}
+{% if path_toc -%}
+{%- include path_toc -%}
+{% endif -%}
+{% endblock -%}
+</div>
+{% if site.dev -%}
 <table id="dev-mode">
 <tr><th colspan="2" style="text-align:left">dev mode</th></tr>
 <tr><td>site settings</td><td><a id="dev-settings-clear">CLEAR</a></td></tr>
 <tr><td>auto-refresh</td><td><a id="dev-auto-refresh">OFF</a></td></tr>
 </table>
-</small>
 {% endif -%}
-{%- endblock -%}
+{% endblock -%}
 </nav>
 </details>
 </div>

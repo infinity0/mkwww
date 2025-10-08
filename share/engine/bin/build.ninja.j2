@@ -19,8 +19,9 @@ rule regenerate
   command = $BIN/mkwww conf
   generator = true
 
-build $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json: regenerate | $
+build $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json: regenerate $
   $BIN/mkwww {% for f in CONFIGURE_DEPS %}{{f|nj_qi}} {% endfor %}
+  depfile = $GEN/build.ninja.d
 
 build configure: phony $GEN/build.ninja $GEN/build.ninja.d $GEN/build.ninja.json
 
@@ -93,8 +94,8 @@ J2_ARGS = site="json:$GEN/site.json" $
 
 rule build_j2
   depfile = $GEN/$stem.d
-  #mkdir -p "$$(dirname $depfile)"; $ # https://github.com/ninja-build/ninja/issues/2305
   command = $
+    mkdir -p "$$(dirname "$depfile")"; $
     mkdir -p "$$(dirname $out)"; $
     $J2_ENV $J2_ARGS $
       "$SRC/$stem.j2" "$GEN/$stem.j2.json" $out "$depfile"
@@ -110,39 +111,52 @@ build $DST/{{stem|nj_qo}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi
 rule build_{{fmt}}_main
   command = $
     mkdir -p "$$(dirname $out)"; $
-    { echo "{{"{% raw -%}"}}" && $BIN/{{fmt}}2main "$ctxfile" "$infile" && echo "{{"{% endraw -%}"}}"; } < "$infile" > $out
+    touch "$GEN/$stem.{{ext}}.toc.html"; echo "FIXME"; $
+    { echo "{{"{% raw -%}"}}" && $
+      $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.$json" "$src/$stem.{{ext}}" && $
+      echo "{{"{% endraw -%}"}}"; $
+    } < "$src/$stem.{{ext}}" > $out
 
 # build the complete page using j2
 rule build_{{fmt}}_html
   depfile = $GEN/$stem.d
-  #mkdir -p "$$(dirname $depfile)"; $ # https://github.com/ninja-build/ninja/issues/2305
   command = $
+    mkdir -p "$$(dirname "$depfile")"; $
     mkdir -p "$$(dirname $out)"; $
-    $J2_ENV $J2_ARGS path_main="$GEN/$stem.{{ext}}.html" $
-      "$THM/page.html.j2" "$ctxfile" $out "$depfile"
+    $J2_ENV $J2_ARGS $
+      path_main="$GEN/$stem.{{ext}}.html" $
+      path_toc="$GEN/$stem.{{ext}}.toc.html" $
+      "$THM/page.html.j2" "$GEN/$stem.{{ext}}.$json" $out "$depfile"
 
 {% for out in DST_D[fmt.upper()] -%}
 {% set stem = relpath(out, DST).removesuffix(".html") -%}
-build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.json $SRC/{{stem|nj_qi}}.{{ext}}
+build $GEN/{{stem|nj_qo}}.{{ext}}.html | $GEN/{{stem|nj_qo}}.{{ext}}.toc.html: $
+build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.json $SRC/{{stem|nj_qi}}.{{ext}}
   stem = {{stem}}
-  infile = $SRC/{{stem}}.{{ext}}
-  ctxfile = $GEN/{{stem}}.{{ext}}.json
-build $DST/{{stem|nj_qo}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.json $GEN/{{stem|nj_qi}}.{{ext}}.html
+  json = json
+  src = $SRC
+build $DST/{{stem|nj_qo}}.html: $
+build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $
+$GEN/{{stem|nj_qi}}.{{ext}}.json $GEN/{{stem|nj_qi}}.{{ext}}.html $GEN/{{stem|nj_qi}}.{{ext}}.toc.html
   stem = {{stem}}
-  ctxfile = $GEN/{{stem}}.{{ext}}.json
+  json = json
 
 {% endfor -%}
 {% for out in DST_D[fmt.upper() + "_J2"] -%}
 {% set stem = relpath(out, DST).removesuffix(".html") -%}
-build $GEN/{{stem|nj_qo}}.{{ext}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $SRC/{{stem|nj_qi}}.{{ext}}.j2
+build $GEN/{{stem|nj_qo}}.{{ext}}: $
+build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $SRC/{{stem|nj_qi}}.{{ext}}.j2
   stem = {{stem}}.{{ext}}
-build $GEN/{{stem|nj_qo}}.{{ext}}.html: build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}
+build $GEN/{{stem|nj_qo}}.{{ext}}.html | $GEN/{{stem|nj_qo}}.{{ext}}.toc.html: $
+build_{{fmt}}_main $BIN/{{fmt}}2main $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}
   stem = {{stem}}
-  infile = $GEN/{{stem}}.{{ext}}
-  ctxfile = $GEN/{{stem}}.{{ext}}.j2.json
-build $DST/{{stem|nj_qo}}.html: build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}.html
+  json = j2.json
+  src = $GEN
+build $DST/{{stem|nj_qo}}.html: $
+build_{{fmt}}_html $J2_ENV $INF_SITE $INF_NAV $
+$GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}.html $GEN/{{stem|nj_qi}}.{{ext}}.toc.html
   stem = {{stem}}
-  ctxfile = $GEN/{{stem}}.{{ext}}.j2.json
+  json = j2.json
 
 {% endfor %}
 {%- endmacro -%}
