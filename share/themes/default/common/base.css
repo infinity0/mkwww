@@ -5,7 +5,7 @@
   --max-body-width: 72em;
   --navswitch-width: 4em;
   --navswitch-height: 3ex;
-  --navbar-sitetree-rel: 0.3333;
+  --navbar-sitetree-rel: 0.25;
   --footer-max-height: 5ex; /* max height the footer is expected to wrap to */
 
   /** Appearance */
@@ -110,15 +110,18 @@ main {
     height: 100%;
     display: flex;
     flex-direction: column;
+    /* flex doesn't collapse margins so we do this dance */
+    padding: calc(var(--default-padding-main) / 2) var(--default-padding-main);
+    & > * {
+      padding-block: calc(var(--default-padding-main) / 2);
+      overflow: auto;
+    }
     & #sitetree {
       flex-basis: calc(var(--navbar-sitetree-rel) * var(--percent));
-      overflow: auto;
     }
     & #pagetree {
       flex-basis: calc((1 - var(--navbar-sitetree-rel)) * var(--percent));
-      overflow: auto;
     }
-    padding: var(--default-padding-main);
   }
 
   /** Appearance */
@@ -141,7 +144,7 @@ main {
   & > nav {
     font-size: calc(var(--navbar-fontsize-rel) * var(--percent));
     & ul {
-      margin-inline-start: calc(var(--list-margin-start) * var(--navbar-fontsize-rel));
+      margin-inline-start: calc(var(--list-margin-start) * var(--navbar-fontsize-rel) / 2);
       list-style: "• " outside;
     }
     & p, & ul + ul {

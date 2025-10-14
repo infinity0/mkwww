@@ -24,6 +24,7 @@ details > * {
 body {
   line-height: 1.5; /* many chars are taller than English, e.g. Chinese */
   -webkit-font-smoothing: antialiased;
+  font-size: 1rem; /* monospace same size as normal, see https://stackoverflow.com/a/78903974 */
 }
 
 input, button, textarea, select {
