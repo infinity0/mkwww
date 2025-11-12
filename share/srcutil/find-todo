@@ -1,0 +1,15 @@
+#!/bin/bash
+# Search for TODO tags ordered by org mode priority "[#<A-Z>]" tags
+SRC="${SRC:-src}"
+
+rg --field-match-separator=$'\x1f' --no-heading -n 'TODO' "$SRC" | \
+rg 'TODO\s*(?:\[#(\w*)\])?' -r $'TODO \x1f\033[1;36m[#$1]\033[0m\x1f' | \
+sort -t $'\x1f' -k 4,4 -k 1,1 -k 2n,2n -s | \
+{ if [ -z "$1" ]; then cat; else
+	rg -i $'^.*?\x1f.*?\x1f.*?\x1f.*?\[#'"${1#'#'}"$'\].*?\x1f'
+fi; } | \
+awk -F $'\x1f' 'NR>1 && $4 != last {
+  print ""; print $4
+} {print; last=$4}' | \
+sed 's/\x1f/:/;s/\x1f/:/;s/\x1f//;s/\x1f//' | \
+sed -E 's/^([^:]+):([0-9]+):(.*)$/\x1b[35m\1\x1b[0m:\x1b[32m\2\x1b[0m:\3/'

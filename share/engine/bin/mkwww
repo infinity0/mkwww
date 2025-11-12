@@ -9,9 +9,9 @@ Examples
 
   $ mkwww             # Run tests, first building all targets.
   $ mkwww recheck     # Run tests again, even if no source files changed.
+  $ mkwww all         # Build all targets only, don't run tests.
   $ mkwww -t clean    # Clean all targets.
   $ mkwww wipe        # Thoroughly clean build directories.
-  $ mkwww all         # Build all targets only, don't run tests.
   $ mkwww wipe check  # Wipe, build, then run tests.
   $ mkwww serve check # Serve the site; build and run tests on every request.
 
@@ -47,8 +47,8 @@ Fine-grained command control::
 
   Usage: mkwww [<steps>] <ninja args>
 
-<steps> is a comma-separated (no spaces) list denoting which pre-ninja steps to
-run. If not given, ``conf,make`` is implied. Possible steps are:
+<steps> is a comma-separated (no spaces) list denoting which special steps to
+run. If not given, ``make`` is implied. Possible steps are:
 
 ``wipe``:
   Wipe ``GEN`` and ``DST`` before everything else.
@@ -79,7 +79,7 @@ run. If not given, ``conf,make`` is implied. Possible steps are:
 
 The steps must be given in sequence, as follows::
 
-  wipe -> conf -> (make | auto)
+  wipe -> conf -> (make | auto | serve)
 
 You can omit any of the steps, as long as what you give is in sequence.
 """
@@ -260,10 +260,10 @@ def wipe(_=None):
     raise ValueError("SRC not a directory: %s" % SRC)
 
   if os.path.exists(GEN):
-    print("mkwww: wipe: removing:", GEN)
+    print("mkwww/wipe: removing:", GEN)
     shutil.rmtree(GEN)
   if os.path.exists(DST):
-    print("mkwww: wipe: removing contents of:", DST)
+    print("mkwww/wipe: removing contents of:", DST)
     for e in os.scandir(DST):
       if e.is_dir(follow_symlinks=False):
         shutil.rmtree(e.path)
@@ -344,12 +344,25 @@ def serve(args):
     port=env("PORT", "8000"),
   )
 
+def srcutil(args):
+  SRCUTIL_ABS = rp(pj(ENG, "../srcutil"))
+  if not args:
+    args = ["ls", "-1", SRCUTIL_ABS]
+  elif args[0] == "ls":
+    args.append(SRCUTIL_ABS)
+  else:
+    args[0] = pj(SRCUTIL_ABS, args[0])
+  print("mkwww/srcutil:", args, file=sys.stderr) # in case user wants to pipe output somewhere
+  return subprocess.run(args).returncode
+
 STEPS = {
-  "wipe": (0, wipe),
-  "conf": (1, conf),
-  "make": (2, make),
-  "auto": (2, auto),
-  "serve": (2, serve),
+  "src": (0, srcutil, False),
+  "srcutil": (0, srcutil, False),
+  "wipe": (0, wipe, True),
+  "conf": (1, conf, True),
+  "make": (2, make, False),
+  "auto": (2, auto, False),
+  "serve": (2, serve, False),
 }
 
 def extract_steps(args):
@@ -361,8 +374,8 @@ def extract_steps(args):
     # explicit steps, pop args
     args = args[1:]
 
-  # if there are ninja args, append run step
-  if args and STEPS[steps[-1]][0] < STEPS["make"][0]:
+  # if there are args, and all steps want it, append "make" step
+  if args and all(STEPS[s][2] for s in steps):
     steps.append("make")
 
   stepinfo = [STEPS[n] for n in steps]

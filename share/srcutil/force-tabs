@@ -1,0 +1,56 @@
+#!/bin/bash
+# Force lists etc to use tabs instead of spaces after the initial list-symbol.
+# You might do this to e.g. make ordered ("1. ") and unordered ("- ") lists
+# line up consistently in your text editor.
+#
+# Does not apply to indent prefixes, since we can't autodetect how many spaces
+# equals a tab. However we will detect these cases and output them for you to
+# fix yourself, possibly via the auto-indent feature in your text editor.
+
+SRC="${SRC:-src}"
+
+shopt -s globstar nullglob
+
+if [ -n "$*" ]; then
+  files=( "$@" )
+else
+  files=( "$SRC"/**/*.md "$SRC"/**/*.rst "$SRC"/**/*.adoc )
+fi
+
+dbg() {
+  if [ -n "$debug" ]; then echo >&2 "$0: $@"; fi
+}
+
+force_tabs1() {
+  sed -r \
+    -e 's/^(\t*)([-:>])\s+/\1\2\t/g' \
+    -e 's/^(\t*)([0-9]*)\.\s+/\1\2.\t/g' \
+    "$1" > "${1}.tmp"
+  if cmp -s "$1" "${1}.tmp"; then
+    rm -f "${1}.tmp"
+  else
+    mv -f "${1}.tmp" "$1"
+  fi
+}
+
+i=0
+N="$(nproc)"
+for f in "${files[@]}"; do
+   if ((i >= N)); then wait -n; ((i--)); fi
+   dbg >&2 "$i jobs bfr: $f"
+   force_tabs1 "$f" &
+   dbg >&2 "$i jobs aft: $f"
+   ((i++))
+done
+wait
+
+rg '^ +([-:>]|[0-9]*\.)\s+' "$SRC"
+case "$?" in
+0)
+	echo >&2 "$0: above cases should be fixed manually"
+	exit 1;;
+1)
+	exit 0;;
+*)
+	exit $?;;
+esac
