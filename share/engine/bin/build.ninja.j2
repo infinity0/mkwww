@@ -94,7 +94,7 @@ J2_ARGS = site="json:$GEN/site.json" $
 
 rule build_j2
   depfile = $GEN/$stem.d
-  command = $
+  command = set -e; $
     mkdir -p "$$(dirname "$depfile")"; $
     mkdir -p "$$(dirname $out)"; $
     $J2_ENV $J2_ARGS $
@@ -109,7 +109,7 @@ build $DST/{{stem|nj_qo}}: build_j2 $J2_ENV $INF_SITE $INF_NAV $GEN/{{stem|nj_qi
 {% macro build_TY(fmt, ext) -%}
 # build the main part of the page using {{fmt}}2main
 rule build_{{fmt}}_main
-  command = $
+  command = set -e; $
     mkdir -p "$$(dirname $out)"; $
     $BIN/{{fmt}}2main "$GEN/$stem.{{ext}}.$json" "$src/$stem.{{ext}}" "$GEN/$stem.{{ext}}.toc.html" $
       < "$src/$stem.{{ext}}" > $out
@@ -117,7 +117,7 @@ rule build_{{fmt}}_main
 # build the complete page using j2
 rule build_{{fmt}}_html
   depfile = $GEN/$stem.d
-  command = $
+  command = set -e; $
     mkdir -p "$$(dirname "$depfile")"; $
     mkdir -p "$$(dirname $out)"; $
     $J2_ENV $J2_ARGS $
@@ -163,7 +163,7 @@ $GEN/{{stem|nj_qi}}.{{ext}}.j2.json $GEN/{{stem|nj_qi}}.{{ext}}.html $GEN/{{stem
 {% endfor -%}
 
 rule format_css
-  command = $
+  command = set -e; $
     mkdir -p "$$(dirname $out)"; $
     $FMT_CSS $in > $out
 
@@ -173,9 +173,10 @@ build $ENGDST/{{stem|nj_qo}}: format_css $ENGSRC/{{stem|nj_qi}} | $FMT_CSS
 {% endfor -%}
 
 rule copy
-  command = $
+  command = set -e; $
     mkdir -p "$$(dirname $out)"; $
-    cp -a $in $out
+    cp -a $in $out; $
+    touch $out
 
 {% macro copy_LOC(targets,srcvar,dstvar,dstdir) -%}
 {% for out in targets -%}

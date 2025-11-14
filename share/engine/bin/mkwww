@@ -300,8 +300,13 @@ def auto(args):
   return runall(itertools.repeat((make, args)), 4)
 
 def serve(args):
+  import threading
   import traceback
   from http.server import HTTPStatus, ThreadingHTTPServer, SimpleHTTPRequestHandler, test
+
+  # can drop this lock once ninja supports server mode
+  # https://github.com/ninja-build/ninja/issues/2637
+  lock = threading.Lock()
 
   class NinjaHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -311,13 +316,25 @@ def serve(args):
           patharg = []
         else:
           patharg = [self.translate_path(self.path)]
-        if rebuild:
+        if rebuild and (not patharg or not os.path.exists(patharg[0]) or time.time() - os.path.getmtime(patharg[0]) > 60):
+          # note: this does not clean the run-time dependencies of patharg,
+          # e.g. JS/CSS includes - this information is not tracked by mkwww
+          # since it only cares about building the HTML pages i.e. build-time
+          # dependencies. unfortunately this means this part is suboptimal in
+          # terms of loading speed - the browser will request these includes
+          # only after we have rebuilt the HTML page here.
+          #
+          # fixing this is not worth the effort at present. however, we do a
+          # basic mtime check so that multiple requests in quick succession
+          # for the same include don't build it repeatedly, a small saving.
           print("mkwww/serve: clean", patharg)
-          proc = maybe_ninja(args + ["-t", "clean"] + patharg, capture_output=True)
-          proc.check_returncode()
+          with lock:
+            proc = maybe_ninja(args + ["-t", "clean"] + patharg, capture_output=True)
+            proc.check_returncode()
         print("mkwww/serve: build", patharg)
-        proc = maybe_ninja(args + patharg, capture_output=True)
-        proc.check_returncode()
+        with lock:
+          proc = maybe_ninja(args + patharg, capture_output=True)
+          proc.check_returncode()
         return super().do_GET()
 
       except Exception as e:
