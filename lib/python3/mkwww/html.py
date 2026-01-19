@@ -13,6 +13,8 @@ def extract_raw(main, selector, postproc=lambda x: x):
     el_lstrip(element.next_sibling)
     element.extract()
     element = postproc(element)
+    if element is None:
+      break
     if element.contents:
       el_lstrip(element.contents[0])
     extracted.extend(element.contents)
